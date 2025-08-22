@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-public class Persona
+public class Propietario
 {
     public int id_propietario { get; set; }
     public int dni_propietario { get; set; }
@@ -11,7 +11,7 @@ public class Persona
     public string email_propietario { get; set; }
     public string telefono_propietario { get; set; }
 
-    public Persona(int id_propietario, int dni_propietario, string contrasena_propietario, string nombre_propietario, string apellido_propietario, string email_propietario, string telefono_propietario)
+    public Propietario(int id_propietario, int dni_propietario, string contrasena_propietario, string nombre_propietario, string apellido_propietario, string email_propietario, string telefono_propietario)
     {
         this.id_propietario = id_propietario;
         this.dni_propietario = dni_propietario;
