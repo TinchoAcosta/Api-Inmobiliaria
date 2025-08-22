@@ -42,7 +42,7 @@ namespace inmobiliaria.Models
             int res = 0;
             using (var connection = new MySqlConnection(connectionString))
             {
-                string sql = @"UPDATE propietario SET borrado_propietario=0 WHERE id_propietario=@id;";
+                string sql = @"UPDATE `propietario` SET `borrado_propietario`=0 WHERE `id_propietario` = @id";
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@id", id);
@@ -54,66 +54,66 @@ namespace inmobiliaria.Models
             return res;
         }
 
-        // ====================== MODIFICACION ======================
-        public int Modificacion(Propietario p)
+        public int editarPropietario(Propietario p)
         {
-            int res = -1;
+            int res = 0;
             using (var connection = new MySqlConnection(connectionString))
             {
-                string sql = @"
-                    UPDATE Propietario 
-                    SET dni_propietario=@dni, contrasena_propietario=@contrasena, nombre_propietario=@nombre,
-                        apellido_propietario=@apellido, email_propietario=@email, telefono_propietario=@telefono
-                    WHERE id_propietario=@id;";
-
+                string sql = @"UPDATE propietario 
+                SET 
+                dni_propietario=@dni_propietario,
+                contrasena_propietario=@contrasena_propietario,
+                nombre_propietario=@nombre_propietario,
+                apellido_propietario=@apellido_propietario,
+                email_propietario=@email_propietario,
+                telefono_propietario=@telefono_propietario 
+                WHERE id_propietario = @id_propietario;";
                 using (var command = new MySqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@dni", p.dni_propietario);
-                    command.Parameters.AddWithValue("@contrasena", p.contrasena_propietario);
-                    command.Parameters.AddWithValue("@nombre", p.nombre_propietario);
-                    command.Parameters.AddWithValue("@apellido", p.apellido_propietario);
-                    command.Parameters.AddWithValue("@email", p.email_propietario);
-                    command.Parameters.AddWithValue("@telefono", p.telefono_propietario);
-                    command.Parameters.AddWithValue("@id", p.id_propietario);
-
+                    command.Parameters.AddWithValue("@dni_propietario", p.dni_propietario);
+                    command.Parameters.AddWithValue("@contrasena_propietario", p.contrasena_propietario);
+                    command.Parameters.AddWithValue("@nombre_propietario", p.nombre_propietario);
+                    command.Parameters.AddWithValue("@apellido_propietario", p.apellido_propietario);
+                    command.Parameters.AddWithValue("@email_propietario", p.email_propietario);
+                    command.Parameters.AddWithValue("@telefono_propietario", p.telefono_propietario);
+                    command.Parameters.AddWithValue("@id_propietario", p.id_propietario);
                     connection.Open();
                     res = command.ExecuteNonQuery();
                     connection.Close();
                 }
+                return res;
             }
-            return res;
         }
 
-        // ====================== OBTENER POR ID ======================
-        public Propietario? ObtenerPorId(int id)
+        public Propietario obtenerPropietarioPorId(int id)
         {
-            Propietario? entidad = null;
+            Propietario p = null;
             using (var connection = new MySqlConnection(connectionString))
             {
-                string sql = @"SELECT id_propietario, dni_propietario, contrasena_propietario, nombre_propietario, apellido_propietario, email_propietario, telefono_propietario
-                               FROM Propietario WHERE id_propietario=@id;";
+                string sql = @"SELECT id_propietario, dni_propietario, contrasena_propietario, nombre_propietario, apellido_propietario, email_propietario, telefono_propietario FROM propietario WHERE id_propietario = @id;";
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@id", id);
                     connection.Open();
                     var reader = command.ExecuteReader();
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        entidad = new Propietario
+                        p = new Propietario(
+                            reader.GetInt32("dni_propietario"),
+                            reader.GetString("contrasena_propietario"),
+                            reader.GetString("nombre_propietario"),
+                            reader.GetString("apellido_propietario"),
+                            reader.GetString("email_propietario"),
+                            reader.GetString("telefono_propietario")
+                        )
                         {
-                            id_propietario = reader.GetInt32("id_propietario"),
-                            dni_propietario = reader.GetInt32("dni_propietario"),
-                            contrasena_propietario = reader["contrasena_propietario"]?.ToString() ?? "",
-                            nombre_propietario = reader["nombre_propietario"]?.ToString() ?? "",
-                            apellido_propietario = reader["apellido_propietario"]?.ToString() ?? "",
-                            email_propietario = reader["email_propietario"]?.ToString() ?? "",
-                            telefono_propietario = reader["telefono_propietario"]?.ToString() ?? ""
+                            id_propietario = reader.GetInt32("id_propietario")
                         };
                     }
                     connection.Close();
                 }
+                return p;
             }
-            return entidad;
         }
 
         // ====================== LISTAR TODOS ======================
@@ -123,7 +123,8 @@ namespace inmobiliaria.Models
             using (var connection = new MySqlConnection(connectionString))
             {
                 string sql = @"SELECT id_propietario, dni_propietario, contrasena_propietario, nombre_propietario, apellido_propietario, email_propietario, telefono_propietario
-                               FROM Propietario;";
+                               FROM Propietario
+                               WHERE borrado_propietario=1;";
 
                 using (var command = new MySqlCommand(sql, connection))
                 {

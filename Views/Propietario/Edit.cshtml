@@ -1,0 +1,51 @@
+@model inmobiliaria.Models.Propietario
+
+@{
+    ViewData["Title"] = "Editar un propietario";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Edición de Propietarios</h2>
+
+     <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="id_propietario" />
+        <div class="mb-3">
+            <label asp-for="dni_propietario" class="form-label">DNI</label>
+            <input asp-for="dni_propietario" class="form-control" />
+            <span asp-validation-for="dni_propietario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="nombre_propietario" class="form-label">Nombre</label>
+            <input asp-for="nombre_propietario" class="form-control" />
+            <span asp-validation-for="nombre_propietario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="apellido_propietario" class="form-label">Apellido</label>
+            <input asp-for="apellido_propietario" class="form-control" />
+            <span asp-validation-for="apellido_propietario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="email_propietario" class="form-label">Email</label>
+            <input asp-for="email_propietario" class="form-control" />
+            <span asp-validation-for="email_propietario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="contrasena_propietario" class="form-label">Contraseña</label>
+            <input type="password" asp-for="contrasena_propietario" class="form-control" />
+            <span asp-validation-for="contrasena_propietario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="telefono_propietario" class="form-label">Teléfono</label>
+            <input asp-for="telefono_propietario" class="form-control" />
+            <span asp-validation-for="telefono_propietario" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
