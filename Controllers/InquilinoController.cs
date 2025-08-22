@@ -1,0 +1,26 @@
+using inmobiliaria.Models;
+using Microsoft.AspNetCore.Mvc;
+
+
+
+namespace inmobiliaria.Controllers
+{
+    public class InquilinoController : Controller
+    {
+        private readonly RepositorioInquilino repo;
+        public InquilinoController(RepositorioInquilino repo)
+        {
+            this.repo = repo;
+        }
+        public IActionResult Index()
+        {
+            var inquilinos = repo.obtenerTodos();
+            return View(inquilinos);
+        }
+        /*         public IActionResult Create()
+                {
+
+                    return View();
+                } */
+    }
+}

@@ -118,7 +118,6 @@ namespace inmobiliaria.Models
 
         public IList<Inmueble> ObtenerTodos()
         {
-            Console.WriteLine("Ejecutando ObtenerTodos en RepositorioInmueble");
             IList<Inmueble> res = new List<Inmueble>();
             using (var connection = new MySqlConnection(connectionString))
             {
