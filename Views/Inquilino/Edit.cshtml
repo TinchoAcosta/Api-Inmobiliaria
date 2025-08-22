@@ -1,13 +1,14 @@
 @model inmobiliaria.Models.Inquilino
 
 @{
-    ViewData["Title"] = "Agregar un inquilino";
+    ViewData["Title"] = "Editar un inquilino";
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Alta de Inquilinos</h2>
+    <h2 class="mb-4">Editar de Inquilinos</h2>
 
-     <form asp-action="Create" method="post">
+     <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="id_inquilino" />
         <div class="mb-3">
             <label asp-for="dni_inquilino" class="form-label">DNI</label>
             <input asp-for="dni_inquilino" class="form-control" />

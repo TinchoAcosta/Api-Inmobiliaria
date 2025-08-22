@@ -7,42 +7,42 @@ namespace inmobiliaria.Models
     public class RepositorioPropietario : RepositorioBase
     {
 
-        // ====================== ALTA ======================
-        public int Alta(Propietario p)
+        public int agregarPropietario(Propietario p)
         {
-            int res = -1;
+            int res = 0;
             using (var connection = new MySqlConnection(connectionString))
             {
-                string sql = @"
-                    INSERT INTO Propietario (dni_propietario, contrasena_propietario, nombre_propietario, apellido_propietario, email_propietario, telefono_propietario)
-                    VALUES (@dni, @contrasena, @nombre, @apellido, @email, @telefono);
-                    SELECT LAST_INSERT_ID();";
-
+                string sql = @"INSERT INTO `propietario`(`dni_propietario`, `contrasena_propietario`, `nombre_propietario`, `apellido_propietario`, `email_propietario`, `telefono_propietario`) 
+                VALUES 
+                (@dni_propietario,
+                @contrasena_propietario,
+                @nombre_propietario,
+                @apellido_propietario,
+                @email_propietario,
+                @telefono_propietario);";
                 using (var command = new MySqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@dni", p.dni_propietario);
-                    command.Parameters.AddWithValue("@contrasena", p.contrasena_propietario);
-                    command.Parameters.AddWithValue("@nombre", p.nombre_propietario);
-                    command.Parameters.AddWithValue("@apellido", p.apellido_propietario);
-                    command.Parameters.AddWithValue("@email", p.email_propietario);
-                    command.Parameters.AddWithValue("@telefono", p.telefono_propietario);
+                    command.Parameters.AddWithValue("@dni_propietario", p.dni_propietario);
+                    command.Parameters.AddWithValue("@contrasena_propietario", p.contrasena_propietario);
+                    command.Parameters.AddWithValue("@nombre_propietario", p.nombre_propietario);
+                    command.Parameters.AddWithValue("@apellido_propietario", p.apellido_propietario);
+                    command.Parameters.AddWithValue("@email_propietario", p.email_propietario);
+                    command.Parameters.AddWithValue("@telefono_propietario", p.telefono_propietario);
 
                     connection.Open();
-                    res = Convert.ToInt32(command.ExecuteScalar());
-                    p.id_propietario = res;
+                    res = command.ExecuteNonQuery();
                     connection.Close();
                 }
             }
             return res;
         }
 
-        // ====================== BAJA ======================
-        public int Baja(int id)
+        public int borrarPropietario(int id)
         {
-            int res = -1;
+            int res = 0;
             using (var connection = new MySqlConnection(connectionString))
             {
-                string sql = "DELETE FROM Propietario WHERE id_propietario=@id;";
+                string sql = @"UPDATE propietario SET borrado_propietario=0 WHERE id_propietario=@id;";
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@id", id);

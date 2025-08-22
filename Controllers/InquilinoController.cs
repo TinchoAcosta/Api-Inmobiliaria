@@ -17,10 +17,60 @@ namespace inmobiliaria.Controllers
             var inquilinos = repo.obtenerTodos();
             return View(inquilinos);
         }
-        /*         public IActionResult Create()
-                {
+        public IActionResult Create()
+        {
 
-                    return View();
-                } */
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Inquilino i)
+        {
+            if (ModelState.IsValid)
+            {
+                int res = repo.agregarInquilino(i);
+                if (res != 0)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(i);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var inquilino = repo.obtenerInquilinoPorId(id);
+            if (inquilino == null)
+            {
+                return NotFound();
+            }
+            return View(inquilino);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Inquilino i)
+        {
+            if (ModelState.IsValid)
+            {
+                int res = repo.editarInquilino(i);
+                if (res != 0)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(i);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            int res = repo.borrarInquilino(id);
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }
