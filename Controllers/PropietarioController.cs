@@ -1,29 +1,21 @@
-
 using Microsoft.AspNetCore.Mvc;
+using inmobiliaria.Models;
 
-/* 
-El Controlador de las clases lo que hace es recibir las peticiones del usuario y redireccionarlas a las vistas correspondientes.
-En este caso, el controlador PropietarioController maneja las solicitudes relacionadas con los propietarios.
-El repositorio PropietarioRepository se encarga de las operaciones de acceso a datos relacionadas con los propietarios.
- */
-public class PropietarioController : Controller
+namespace inmobiliaria.Controllers
 {
-    private readonly RepositorioPropietario repo;
-
-    public PropietarioController(RepositorioPropietario repo)
+    public class PropietarioController : Controller
     {
-        this.repo = new RepositorioPropietario();
+        private readonly RepositorioPropietario repo;
+
+        public PropietarioController(RepositorioPropietario repo)
+        {
+            this.repo = repo;
+        }
+
+        public IActionResult Index()
+        {
+            var propietarios = repo.ObtenerTodos();
+            return View(propietarios);
+        }
     }
-
-    public IActionResult Index()
-    {
-        // Aquí se llamaría al repositorio para obtener los propietarios
-        // var propietarios = repo.ObtenerTodos();
-        // return View(propietarios);
-        //esto redireccionaria al index de la vista Propietario
-
-        return View(); // Placeholder, replace with actual data retrieval
-    }
-
-
 }

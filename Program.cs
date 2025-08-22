@@ -1,10 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Aca se agregan todoso los controladores y vistas
 builder.Services.AddControllersWithViews();
 
-// Registrar el servicio RepositorioPropietario
-builder.Services.AddScoped<RepositorioPropietario, RepositorioPropietario>();
+// Registrar los repositorios
+builder.Services.AddScoped<inmobiliaria.Models.RepositorioPropietario>();
+builder.Services.AddScoped<inmobiliaria.Models.RepositorioInmueble>();
 
 var app = builder.Build();
 
