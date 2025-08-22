@@ -1,5 +1,5 @@
 
 public class RepositorioPropietario
 {
-    // Esto decide a que vistas redireccionar
+    // Esto hace las llamadas a la base de datos para el propietario
 }
