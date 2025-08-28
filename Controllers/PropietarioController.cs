@@ -48,6 +48,20 @@ namespace inmobiliaria.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            int res = repo.borrarPropietario(id);
+            if (res == 0)
+            {
+                Console.WriteLine("Propietario no encontrado");
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
+
         public IActionResult Edit(int id)
         {
             var propietario = repo.obtenerPropietarioPorId(id);
