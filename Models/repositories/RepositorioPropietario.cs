@@ -120,6 +120,7 @@ namespace inmobiliaria.Models
         public IList<Propietario> ObtenerTodos()
         {
             IList<Propietario> res = new List<Propietario>();
+
             using (var connection = new MySqlConnection(connectionString))
             {
                 string sql = @"SELECT id_propietario, dni_propietario, contrasena_propietario, nombre_propietario, apellido_propietario, email_propietario, telefono_propietario
@@ -140,7 +141,7 @@ namespace inmobiliaria.Models
                             nombre_propietario = reader["nombre_propietario"]?.ToString() ?? "",
                             apellido_propietario = reader["apellido_propietario"]?.ToString() ?? "",
                             email_propietario = reader["email_propietario"]?.ToString() ?? "",
-                            telefono_propietario = reader["telefono_propietario"]?.ToString() ?? ""
+                            telefono_propietario = reader["telefono_propietario"]?.ToString() ?? "",
                         };
                         res.Add(entidad);
                     }

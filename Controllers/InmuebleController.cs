@@ -14,8 +14,7 @@ namespace inmobiliaria.Controllers
 
         public IActionResult Index()
         {
-            var inmuebles = repo.ObtenerTodos();
-            Console.WriteLine("Inmuebles obtenidos: " + inmuebles);
+            var inmuebles = repo.obtenerTodos();
             return View(inmuebles);
         }
     }
