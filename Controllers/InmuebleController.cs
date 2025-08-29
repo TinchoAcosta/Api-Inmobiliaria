@@ -49,5 +49,43 @@ namespace inmobiliaria.Controllers
             var inmuebles = repo.obtenerTodos();
             return View(inmuebles);
         }
+
+        public IActionResult Edit(int id)
+        {
+            var inmueble = repo.obtenerPorId(id);
+            var propietarios = repoPropietario.ObtenerTodos();
+            var tiposInmueble = repo.obtenerTiposInmueble();
+            ViewBag.propietarios = propietarios;
+            ViewBag.tiposInmueble = tiposInmueble;
+            return View(inmueble);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Inmueble inmueble)
+        {
+            int res = repo.modificarInmueble(inmueble);
+            if (res != 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var inm = repo.obtenerPorId(inmueble.id_inmueble);
+            var propietarios = repoPropietario.ObtenerTodos();
+            var tiposInmueble = repo.obtenerTiposInmueble();
+            ViewBag.propietarios = propietarios;
+            ViewBag.tiposInmueble = tiposInmueble;
+            return View(inm);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            int res = repo.BorrarInmueble(id);
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }
