@@ -64,7 +64,38 @@ WHERE i.estaActivoInmueble = 1;
         }
 
 
-        //Alta
+        //Alta falta probar jaj
+
+        public int AgregarInmueble(Inmueble inmueble)
+        {
+            int res = -1;
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"INSERT INTO inmueble 
+                      (direccion_inmueble, ambientes_inmueble, superficie_inmueble, lat_inmueble, long_inmueble, propietarioId, uso_inmueble) 
+                      VALUES (@direccion, @ambientes, @superficie, @lat, @long, @propietarioId, @uso)";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@direccion", inmueble.direccion_inmueble);
+                    command.Parameters.AddWithValue("@ambientes", inmueble.ambientes_inmueble);
+                    command.Parameters.AddWithValue("@superficie", inmueble.superficie_inmueble);
+                    command.Parameters.AddWithValue("@lat", inmueble.lat_inmueble);
+                    command.Parameters.AddWithValue("@long", inmueble.long_inmueble);
+                    command.Parameters.AddWithValue("@propietarioId", inmueble.PropietarioId);
+                    command.Parameters.AddWithValue("@uso", inmueble.uso_inmueble);
+
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+
+            return res;
+        }
+
+
 
         //Baja
 
