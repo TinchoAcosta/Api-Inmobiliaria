@@ -64,7 +64,7 @@ WHERE i.estaActivoInmueble = 1;
         }
 
 
-        //Alta falta probar jaj
+        //Alta falta probar jaja
 
         public int AgregarInmueble(Inmueble inmueble)
         {
@@ -95,9 +95,24 @@ WHERE i.estaActivoInmueble = 1;
             return res;
         }
 
-
-
         //Baja
+        public int BorrarInmueble(int id)
+        {
+            int res = 0;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"UPDATE `inmueble` SET `estaActivoInmueble`=0 WHERE `id_inmueble` = @id";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
 
         //Modificar
 
