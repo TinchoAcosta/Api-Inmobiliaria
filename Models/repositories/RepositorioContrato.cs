@@ -58,6 +58,31 @@ namespace inmobiliaria.Models
             return res;
         }
 
+        public int AgregarContrato(Contrato contrato)
+        {
+            int res = -1;
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"INSERT INTO `contrato`(`monto_contrato`, `fechaInicio_contrato`, `fechaFin_contrato`, `idInmueble_contrato`, `idInquilino_contrato`) 
+                VALUES (@monto,@fechaI,@fechaF,@idInmueble,@idInquilino);";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@monto", contrato.monto_contrato);
+                    command.Parameters.AddWithValue("@fechaI", contrato.fechaInicio_contrato);
+                    command.Parameters.AddWithValue("@fechaF", contrato.fechaFin_contrato);
+                    command.Parameters.AddWithValue("@idInmueble", contrato.idInmueble);
+                    command.Parameters.AddWithValue("@idInquilino", contrato.idInquilino);
+
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+
+            return res;
+        }
 
     }
 }

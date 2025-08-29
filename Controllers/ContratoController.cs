@@ -6,10 +6,14 @@ namespace inmobiliaria.Controllers
     public class ContratoController : Controller
     {
         private readonly RepositorioContrato repo;
+        private readonly RepositorioInquilino repoInquilino;
+        private readonly RepositorioInmueble repoInmueble;
 
-        public ContratoController(RepositorioContrato repo)
+        public ContratoController(RepositorioContrato repo, RepositorioInquilino repoInquilino, RepositorioInmueble repoInmueble)
         {
             this.repo = repo;
+            this.repoInquilino = repoInquilino;
+            this.repoInmueble = repoInmueble;
         }
 
         public IActionResult Index()
@@ -18,5 +22,35 @@ namespace inmobiliaria.Controllers
             var contratos = repo.obtenerTodos();
             return View(contratos);
         }
+
+        public IActionResult Create()
+        {
+            var inquilinos = repoInquilino.obtenerTodos();
+            var inmuebles = repoInmueble.obtenerTodos();
+            ViewBag.inquilinos = inquilinos;
+            ViewBag.inmuebles = inmuebles;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Contrato contrato)
+        {
+            if (ModelState.IsValid)
+            {
+                int res = repo.AgregarContrato(contrato);
+                if (res != 0)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            var inquilinos = repoInquilino.obtenerTodos();
+            var inmuebles = repoInmueble.obtenerTodos();
+            ViewBag.inquilinos = inquilinos;
+            ViewBag.inmuebles = inmuebles;
+            return View();
+        }
+
     }
 }
