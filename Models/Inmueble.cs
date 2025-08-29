@@ -25,6 +25,10 @@ namespace inmobiliaria.Models
         public bool estaActivoInmueble { get; set; } = true;
 
 
+
+        // El error daba porque no teniamos el constructor vacio 
+        public Inmueble() { }
+
         public Inmueble(string? direccion_inmueble, int ambientes_inmueble, int superficie_inmueble, decimal lat_inmueble, decimal long_inmueble, int PropietarioId, string uso_inmueble, Propietario? propietario_inmueble)
         {
             this.direccion_inmueble = direccion_inmueble;

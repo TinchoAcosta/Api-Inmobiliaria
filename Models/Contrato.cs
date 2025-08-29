@@ -14,7 +14,7 @@ namespace inmobiliaria.Models
         public Inquilino? Inquilino { get; set; }
 
 
-        public Contrato(int id_contrato, DateTime fechaInicio_contrato, DateTime fechaFin_contrato, int monto_contrato, int idInmueble, int idInquilino)
+        public Contrato(int id_contrato, DateTime fechaInicio_contrato, DateTime fechaFin_contrato, int monto_contrato, int idInmueble, int idInquilino, Inmueble? Inmueble, Inquilino? Inquilino)
         {
             this.id_contrato = id_contrato;
             this.fechaInicio_contrato = fechaInicio_contrato;
@@ -22,6 +22,8 @@ namespace inmobiliaria.Models
             this.idInmueble = idInmueble;
             this.idInquilino = idInquilino;
             this.monto_contrato = monto_contrato;
+            this.Inmueble = Inmueble;
+            this.Inquilino = Inquilino;
         }
 
     }

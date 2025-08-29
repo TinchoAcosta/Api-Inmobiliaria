@@ -14,6 +14,7 @@ namespace inmobiliaria.Controllers
 
         public IActionResult Index()
         {
+
             var contratos = repo.obtenerTodos();
             return View(contratos);
         }
