@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-08-2025 a las 22:32:54
+-- Tiempo de generación: 29-08-2025 a las 02:10:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -26,6 +26,22 @@ USE `inmobiliaria`;
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `contrato`
+--
+
+CREATE TABLE `contrato` (
+  `id_contrato` int(11) NOT NULL,
+  `monto_contrato` int(11) NOT NULL,
+  `fechaInicio_contrato` date NOT NULL,
+  `fechaFin_contrato` date NOT NULL,
+  `idInmueble_contrato` int(11) NOT NULL,
+  `idInquilino_contrato` int(11) NOT NULL,
+  `borrado_contrato` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `inmueble`
 --
 
@@ -39,7 +55,8 @@ CREATE TABLE `inmueble` (
   `PropietarioId` int(11) NOT NULL,
   `portada_inmueble` varchar(100) DEFAULT NULL,
   `tipo_inmueble` int(11) NOT NULL,
-  `uso_inmueble` varchar(50) NOT NULL
+  `uso_inmueble` varchar(50) NOT NULL,
+  `estaActivoInmueble` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -122,6 +139,14 @@ INSERT INTO `tipo_inmueble` (`id`, `descripcion`) VALUES
 --
 
 --
+-- Indices de la tabla `contrato`
+--
+ALTER TABLE `contrato`
+  ADD PRIMARY KEY (`id_contrato`),
+  ADD KEY `idInmueble_contrato` (`idInmueble_contrato`),
+  ADD KEY `idInquilino_contrato` (`idInquilino_contrato`);
+
+--
 -- Indices de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
@@ -152,6 +177,12 @@ ALTER TABLE `tipo_inmueble`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `contrato`
+--
+ALTER TABLE `contrato`
+  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
@@ -178,6 +209,13 @@ ALTER TABLE `tipo_inmueble`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `contrato`
+--
+ALTER TABLE `contrato`
+  ADD CONSTRAINT `contrato_ibfk_1` FOREIGN KEY (`idInmueble_contrato`) REFERENCES `inmueble` (`id_inmueble`),
+  ADD CONSTRAINT `contrato_ibfk_2` FOREIGN KEY (`idInquilino_contrato`) REFERENCES `inquilino` (`id_inquilino`);
 
 --
 -- Filtros para la tabla `inmueble`
