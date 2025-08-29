@@ -24,6 +24,7 @@ namespace inmobiliaria.Models
     i.portada_inmueble,
     i.tipo_inmueble,
     i.uso_inmueble,
+    i.tipo_inmueble,
     i.estaActivoInmueble,
     p.nombre_propietario,
     p.id_propietario
@@ -37,7 +38,6 @@ WHERE i.estaActivoInmueble = 1;
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-
                         res.Add(new Inmueble(
                             reader.GetString("direccion_inmueble"),
                             reader.GetInt32("ambientes_inmueble"),
@@ -46,6 +46,7 @@ WHERE i.estaActivoInmueble = 1;
                             reader.GetDecimal("long_inmueble"),
                             reader.GetInt32("PropietarioId"),
                             reader.GetString("uso_inmueble"),
+                            reader.GetInt32("tipo_inmueble"),
                             new Propietario
                             {
                                 nombre_propietario = reader.GetString("nombre_propietario")
@@ -73,8 +74,8 @@ WHERE i.estaActivoInmueble = 1;
             using (var connection = new MySqlConnection(connectionString))
             {
                 string sql = @"INSERT INTO inmueble 
-                      (direccion_inmueble, ambientes_inmueble, superficie_inmueble, lat_inmueble, long_inmueble, propietarioId, uso_inmueble) 
-                      VALUES (@direccion, @ambientes, @superficie, @lat, @long, @propietarioId, @uso)";
+                      (direccion_inmueble, ambientes_inmueble, superficie_inmueble, lat_inmueble, long_inmueble, propietarioId,tipo_inmueble, uso_inmueble) 
+                      VALUES (@direccion, @ambientes, @superficie, @lat, @long, @propietarioId,@tipo_inmueble, @uso)";
 
                 using (var command = new MySqlCommand(sql, connection))
                 {
@@ -84,6 +85,7 @@ WHERE i.estaActivoInmueble = 1;
                     command.Parameters.AddWithValue("@lat", inmueble.lat_inmueble);
                     command.Parameters.AddWithValue("@long", inmueble.long_inmueble);
                     command.Parameters.AddWithValue("@propietarioId", inmueble.PropietarioId);
+                    command.Parameters.AddWithValue("@tipo_inmueble", inmueble.tipo_inmueble);
                     command.Parameters.AddWithValue("@uso", inmueble.uso_inmueble);
 
                     connection.Open();
@@ -152,6 +154,30 @@ WHERE i.estaActivoInmueble = 1;
 
         // ObtenerTipoInmueble
 
+        public IList<TipoInmueble> obtenerTiposInmueble()
+        {
+            IList<TipoInmueble> res = new List<TipoInmueble>();
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT `id`, `descripcion` FROM `tipo_inmueble`;";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(
+                            new TipoInmueble(
+                                reader.GetInt32("id"),
+                                reader.GetString("descripcion")
+                            )
+                        );
+                    }
+                    connection.Close();
+                }
+                return res;
+            }
+        }
 
     }
 }

@@ -1,0 +1,63 @@
+@model inmobiliaria.Models.Inmueble
+
+@{
+    ViewData["Title"] = "Agregar un Inmueble";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Alta de Inmuebles</h2>
+
+    <form asp-action="Create" method="post">
+
+        <div class="mb-3">
+            <label asp-for="direccion_inmueble" class="form-label">Direccion:</label>
+            <input type="text" asp-for="direccion_inmueble" class="form-control">
+            <span asp-validation-for="direccion_inmueble" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ambientes_inmueble" class="form-label">ambientes:</label>
+            <input type="text" asp-for="ambientes_inmueble" class="form-control">
+            <span asp-validation-for="ambientes_inmueble" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="lat_inmueble" class="form-label">lat:</label>
+            <input type="text" asp-for="lat_inmueble" class="form-control">
+            <span asp-validation-for="lat_inmueble" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="long_inmueble" class="form-label">long:</label>
+            <input type="text" asp-for="long_inmueble" class="form-control">
+            <span asp-validation-for="long_inmueble" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <select asp-for="PropietarioId" class="form-control">
+                <option value="">Seleccione un propietario</option>
+                @foreach (var p in ViewBag.propietarios)
+                {
+                    if (p != null)
+                    {
+                        <option value="@p.id_propietario">@p.nombre_propietario</option>
+                    }
+                }
+            </select>
+
+        </div>
+        <select asp-for="tipo_inmueble" class="form-control">
+            <option value="">Seleccione un tipo de inmueble</option>
+            @foreach (var t in ViewBag.tiposInmueble)
+            {
+                <option value="@t.id">@t.descripcion</option>
+            }
+        </select>
+
+
+        <select asp-for="uso_inmueble" class="form-control">
+            <option value="">Seleccione un Uso</option>
+            <option value="comercial">Comercial</option>
+            <option value="residencial">Residencial</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>

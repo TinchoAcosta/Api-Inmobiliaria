@@ -18,7 +18,7 @@ namespace inmobiliaria.Models
         public int PropietarioId { get; set; }
 
         public String uso_inmueble { get; set; }
-
+        public int tipo_inmueble { get; set; }
         public Propietario? propietario_inmueble { get; set; }
         public string? portada_inmueble { get; set; }
         public IList<Imagen> imagenes_inmueble { get; set; } = new List<Imagen>();
@@ -29,7 +29,7 @@ namespace inmobiliaria.Models
         // El error daba porque no teniamos el constructor vacio 
         public Inmueble() { }
 
-        public Inmueble(string? direccion_inmueble, int ambientes_inmueble, int superficie_inmueble, decimal lat_inmueble, decimal long_inmueble, int PropietarioId, string uso_inmueble, Propietario? propietario_inmueble)
+        public Inmueble(string? direccion_inmueble, int ambientes_inmueble, int superficie_inmueble, decimal lat_inmueble, decimal long_inmueble, int PropietarioId, string uso_inmueble, int tipo_inmueble, Propietario? propietario_inmueble)
         {
             this.direccion_inmueble = direccion_inmueble;
             this.ambientes_inmueble = ambientes_inmueble;
@@ -37,6 +37,7 @@ namespace inmobiliaria.Models
             this.lat_inmueble = lat_inmueble;
             this.long_inmueble = long_inmueble;
             this.uso_inmueble = uso_inmueble;
+            this.tipo_inmueble = tipo_inmueble;
             this.PropietarioId = PropietarioId;
             this.estaActivoInmueble = true;
             this.propietario_inmueble = propietario_inmueble;
