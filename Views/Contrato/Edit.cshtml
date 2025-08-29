@@ -1,0 +1,53 @@
+@model inmobiliaria.Models.Contrato
+
+@{
+    ViewData["Title"] = "Editar un Contrato";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Modificación de Contratos</h2>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="id_contrato" />
+        <div class="mb-3">
+            <label asp-for="fechaInicio_contrato" class="form-label">Fecha de Inicio:</label>
+            <input type="date" asp-for="fechaInicio_contrato" class="form-control">
+            <span asp-validation-for="fechaInicio_contrato" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fechaFin_contrato" class="form-label">Fecha de Fin:</label>
+            <input type="date" asp-for="fechaFin_contrato" class="form-control">
+            <span asp-validation-for="fechaFin_contrato" class="text-danger"></span>
+        </div>
+         <div class="mb-3">
+            <label asp-for="monto_contrato" class="form-label">Monto:</label>
+            <input type="text" asp-for="monto_contrato" class="form-control">
+            <span asp-validation-for="monto_contrato" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <select asp-for="idInquilino" class="form-control">
+                <option value="">Seleccione un inquilino</option>
+                @foreach (var p in ViewBag.inquilinos)
+                {
+                    if (p != null)
+                    {
+                        <option value="@p.id_inquilino">@p.nombre_inquilino</option>
+                    }
+                }
+            </select>
+
+        </div>
+        <div class="mb-3">
+            <select asp-for="idInmueble" class="form-control">
+            <option value="">Seleccione el inmueble</option>
+            @foreach (var t in ViewBag.inmuebles)
+            {
+                <option value="@t.id_inmueble">@t.direccion_inmueble</option>
+            }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>

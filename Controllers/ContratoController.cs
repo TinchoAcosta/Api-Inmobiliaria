@@ -52,5 +52,42 @@ namespace inmobiliaria.Controllers
             return View();
         }
 
+        public IActionResult Edit(int id)
+        {
+            var inquilinos = repoInquilino.obtenerTodos();
+            var inmuebles = repoInmueble.obtenerTodos();
+            ViewBag.inquilinos = inquilinos;
+            ViewBag.inmuebles = inmuebles;
+            var contrato = repo.obtenerPorId(id);
+            return View(contrato);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Contrato contrato)
+        {
+            int res = repo.modificarContrato(contrato);
+            if (res != 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var inquilinos = repoInquilino.obtenerTodos();
+            var inmuebles = repoInmueble.obtenerTodos();
+            ViewBag.inquilinos = inquilinos;
+            ViewBag.inmuebles = inmuebles;
+            var contr = repo.obtenerPorId(contrato.id_contrato);
+            return View(contr);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            int res = repo.borrarContrato(id);
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }
