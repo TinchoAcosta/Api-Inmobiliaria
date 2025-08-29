@@ -116,6 +116,40 @@ WHERE i.estaActivoInmueble = 1;
 
         //Modificar
 
+        public int modificarInmueble(Inmueble inmueble)
+        {
+
+            int res = 0;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"UPDATE `inmueble` 
+                SET
+                `direccion_inmueble`=@direccion_inmueble,
+                `ambientes_inmueble`=@ambientes_inmueble,
+                `superficie_inmueble`=@superficie_inmueble,
+                `lat_inmueble`=@lat_inmueble,
+                `long_inmueble`=@long_inmueble,
+                `uso_inmueble`=@uso_inmueble
+                WHERE `id_inmueble` = @id_inmueble;";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@direccion_inmueble", inmueble.direccion_inmueble);
+                    command.Parameters.AddWithValue("@ambientes_inmueble", inmueble.ambientes_inmueble);
+                    command.Parameters.AddWithValue("@superficie_inmueble", inmueble.superficie_inmueble);
+                    command.Parameters.AddWithValue("@lat_inmueble", inmueble.lat_inmueble);
+                    command.Parameters.AddWithValue("@long_inmueble", inmueble.long_inmueble);
+                    command.Parameters.AddWithValue("@uso_inmueble", inmueble.uso_inmueble);
+                    command.Parameters.AddWithValue("@id_inmueble", inmueble.id_inmueble);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                return res;
+            }
+
+        }
+
+
         // ObtenerTipoInmueble
 
 
