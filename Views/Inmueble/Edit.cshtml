@@ -47,21 +47,22 @@
             </select>
 
         </div>
-        <select asp-for="tipo_inmueble" class="form-control">
-            <option value="">Seleccione un tipo de inmueble</option>
-            @foreach (var t in ViewBag.tiposInmueble)
-            {
-                <option value="@t.id">@t.descripcion</option>
-            }
-        </select>
-
-
-        <select asp-for="uso_inmueble" class="form-control">
-            <option value="">Seleccione un Uso</option>
-            <option value="comercial">Comercial</option>
-            <option value="residencial">Residencial</option>
-        </select>
-
+        <div class="mb-3">
+            <select asp-for="tipo_inmueble" class="form-control">
+                <option value="">Seleccione un tipo de inmueble</option>
+                @foreach (var t in ViewBag.tiposInmueble)
+                {
+                    <option value="@t.id">@t.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <select asp-for="uso_inmueble" class="form-control">
+                <option value="">Seleccione un Uso</option>
+                <option value="comercial">Comercial</option>
+                <option value="residencial">Residencial</option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
     </form>

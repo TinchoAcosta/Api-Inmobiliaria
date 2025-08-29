@@ -86,6 +86,18 @@ namespace inmobiliaria.Controllers
             }
             return RedirectToAction("Index");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            int res = repo.BorrarInmueble(id);
+            if (res == 0)
+            {
+                Console.WriteLine("Inmueble no encontrado");
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
 
     }
 }

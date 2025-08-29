@@ -14,17 +14,21 @@
             <input type="date" asp-for="fechaInicio_contrato" class="form-control">
             <span asp-validation-for="fechaInicio_contrato" class="text-danger"></span>
         </div>
+
         <div class="mb-3">
             <label asp-for="fechaFin_contrato" class="form-label">Fecha de Fin:</label>
             <input type="date" asp-for="fechaFin_contrato" class="form-control">
             <span asp-validation-for="fechaFin_contrato" class="text-danger"></span>
         </div>
-         <div class="mb-3">
+
+        <div class="mb-3">
             <label asp-for="monto_contrato" class="form-label">Monto:</label>
             <input type="text" asp-for="monto_contrato" class="form-control">
             <span asp-validation-for="monto_contrato" class="text-danger"></span>
         </div>
+
         <div class="mb-3">
+            <label asp-for="idInquilino" class="form-label">Inquilino:</label>
             <select asp-for="idInquilino" class="form-control">
                 <option value="">Seleccione un inquilino</option>
                 @foreach (var p in ViewBag.inquilinos)
@@ -35,15 +39,16 @@
                     }
                 }
             </select>
-
         </div>
+
         <div class="mb-3">
+            <label asp-for="idInmueble" class="form-label">Inmueble:</label>
             <select asp-for="idInmueble" class="form-control">
-            <option value="">Seleccione el inmueble</option>
-            @foreach (var t in ViewBag.inmuebles)
-            {
-                <option value="@t.id_inmueble">@t.direccion_inmueble</option>
-            }
+                <option value="">Seleccione el inmueble</option>
+                @foreach (var t in ViewBag.inmuebles)
+                {
+                    <option value="@t.id_inmueble">@t.direccion_inmueble</option>
+                }
             </select>
         </div>
 
