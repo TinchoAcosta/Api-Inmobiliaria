@@ -1,0 +1,54 @@
+@model inmobiliaria.Models.Inmueble
+
+@{
+    ViewData["Title"] = "Detalle del Inmueble";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-5 text-purple fw-bold text-center">Detalle del Inmueble</h2>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
+                <h5 class="card-title text-purple fw-bold mb-3">Información General</h5>
+                <div class="mb-2">
+                    <strong>ID:</strong> @Model.id_inmueble
+                </div>
+                <div class="mb-2">
+                    <strong>Dirección:</strong> @Model.direccion_inmueble
+                </div>
+                <div class="mb-2">
+                    <strong>Ambientes:</strong> @Model.ambientes_inmueble
+                </div>
+                <div class="mb-2">
+                    <strong>Superficie:</strong> @Model.superficie_inmueble m²
+                </div>
+                <div class="mb-2">
+                    <strong>Latitud:</strong> @Model.lat_inmueble
+                </div>
+                <div class="mb-2">
+                    <strong>Longitud:</strong> @Model.long_inmueble
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
+                <h5 class="card-title text-purple fw-bold mb-3">Detalles Adicionales</h5>
+                <div class="mb-2">
+                    <strong>Propietario ID:</strong> @Model.PropietarioId
+                </div>
+                <div class="mb-2">
+                    <strong>Tipo de Inmueble:</strong> @Model.tipo_inmueble
+                </div>
+                <div class="mb-2">
+                    <strong>Uso:</strong> @Model.uso_inmueble
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a asp-action="Index" class="btn btn-gradient-success fw-semibold px-4">Volver al Listado</a>
+    </div>
+</div>

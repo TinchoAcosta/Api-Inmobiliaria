@@ -31,9 +31,11 @@
                         <td>@p.email_propietario</td>
                         <td>@p.telefono_propietario</td>
                         <td>
-                            <a class="btn btn-sm btn-info me-1" asp-action="Details">Ver</a>
-                            <a class=" btn btn-sm btn-warning me-1" asp-action="Edit"
-                                asp-route-id="@p.id_propietario">Editar</a>
+                            <a class="btn btn-sm btn-info me-1" asp-action="Details" asp-controller="Propietario"
+                                asp-route-id="@p.id_propietario">Ver</a>
+                            <a class=" btn btn-sm btn-warning me-1" asp-action="Edit" asp-controller="Propietario"
+                                asp-route-id="@p.id_propietario">Editar
+                            </a>
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" data-id="@p.id_propietario"
                                 data-nombre="@p.nombre_propietario @p.apellido_propietario">

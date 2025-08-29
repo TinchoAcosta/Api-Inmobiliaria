@@ -99,5 +99,11 @@ namespace inmobiliaria.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Details(int id)
+        {
+            var inmueble = repo.obtenerPorId(id);
+            return View(inmueble);
+        }
+
     }
 }

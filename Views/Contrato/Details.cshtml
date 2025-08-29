@@ -1,0 +1,45 @@
+@model inmobiliaria.Models.Contrato
+
+@{
+    ViewData["Title"] = "Detalle del Contrato";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-5 text-purple fw-bold text-center">Detalle del Contrato</h2>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
+                <h5 class="card-title text-purple fw-bold mb-3">Información General</h5>
+                <div class="mb-2">
+                    <strong>ID:</strong> @Model.id_contrato
+                </div>
+                <div class="mb-2">
+                    <strong>Fecha de Inicio:</strong> @Model.fechaInicio_contrato.ToString("dd/MM/yyyy")
+                </div>
+                <div class="mb-2">
+                    <strong>Fecha de Fin:</strong> @Model.fechaFin_contrato.ToString("dd/MM/yyyy")
+                </div>
+                <div class="mb-2">
+                    <strong>Monto:</strong> $@Model.monto_contrato
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
+                <h5 class="card-title text-purple fw-bold mb-3">Relaciones</h5>
+                <div class="mb-2">
+                    <strong>Inmueble:</strong> @Model.idInmueble
+                </div>
+                <div class="mb-2">
+                    <strong>Inquilino:</strong> @Model.idInquilino
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a asp-action="Index" class="btn btn-gradient-success fw-semibold px-4">Volver al Listado</a>
+    </div>
+</div>

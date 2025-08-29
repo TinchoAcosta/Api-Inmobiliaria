@@ -72,5 +72,15 @@ namespace inmobiliaria.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Details(int id)
+        {
+            var inquilino = repo.obtenerInquilinoPorId(id);
+            if (inquilino == null)
+            {
+                return NotFound();
+            }
+            return View(inquilino);
+        }
+
     }
 }

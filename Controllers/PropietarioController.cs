@@ -87,5 +87,15 @@ namespace inmobiliaria.Controllers
             return View(p);
         }
 
+        public IActionResult Details(int id)
+        {
+            var propietario = repo.obtenerPropietarioPorId(id);
+            if (propietario == null)
+            {
+                return NotFound();
+            }
+            return View(propietario);
+        }
+
     }
 }
