@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-08-2025 a las 02:10:59
+-- Tiempo de generación: 05-09-2025 a las 20:47:10
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -39,6 +39,14 @@ CREATE TABLE `contrato` (
   `borrado_contrato` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `contrato`
+--
+
+INSERT INTO `contrato` (`id_contrato`, `monto_contrato`, `fechaInicio_contrato`, `fechaFin_contrato`, `idInmueble_contrato`, `idInquilino_contrato`, `borrado_contrato`) VALUES
+(1, 3450, '2025-08-11', '2025-08-20', 2, 1, 0),
+(2, 3, '2025-08-20', '2025-09-06', 2, 2, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -58,6 +66,14 @@ CREATE TABLE `inmueble` (
   `uso_inmueble` varchar(50) NOT NULL,
   `estaActivoInmueble` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inmueble`
+--
+
+INSERT INTO `inmueble` (`id_inmueble`, `direccion_inmueble`, `ambientes_inmueble`, `superficie_inmueble`, `lat_inmueble`, `long_inmueble`, `PropietarioId`, `portada_inmueble`, `tipo_inmueble`, `uso_inmueble`, `estaActivoInmueble`) VALUES
+(1, 'asd', 33, 232, 2.00000000, 2.00000000, 1, NULL, 2, 'comercial', 0),
+(2, 'asd', 33, 232, 99.99999999, 123.00000000, 1, NULL, 1, 'comercial', 1);
 
 -- --------------------------------------------------------
 
@@ -85,6 +101,22 @@ INSERT INTO `inquilino` (`id_inquilino`, `nombre_inquilino`, `apellido_inquilino
 (3, 'inquilino', 'inquilinoapellido', 1112223, '65465464656', 'inquilino@inquilino.inquilino', 1),
 (4, 'asa', 'sas', 123123421, '123213', 'asdasdadsadsa@asas.asa', 0),
 (5, 'borrado_inquilino', 'sas', 134213, '123213', 'asdasdadsadsa@asas.asa', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pago`
+--
+
+CREATE TABLE `pago` (
+  `id` int(11) NOT NULL,
+  `numero_pago` int(11) NOT NULL,
+  `fecha_pago` date NOT NULL,
+  `monto_pago` double NOT NULL,
+  `detalle_pago` varchar(70) NOT NULL,
+  `esta_anulado` tinyint(1) NOT NULL DEFAULT 0,
+  `contratoId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -161,6 +193,13 @@ ALTER TABLE `inquilino`
   ADD PRIMARY KEY (`id_inquilino`);
 
 --
+-- Indices de la tabla `pago`
+--
+ALTER TABLE `pago`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `contratoId` (`contratoId`);
+
+--
 -- Indices de la tabla `propietario`
 --
 ALTER TABLE `propietario`
@@ -180,19 +219,25 @@ ALTER TABLE `tipo_inmueble`
 -- AUTO_INCREMENT de la tabla `contrato`
 --
 ALTER TABLE `contrato`
-  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  MODIFY `id_inmueble` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_inmueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `inquilino`
 --
 ALTER TABLE `inquilino`
   MODIFY `id_inquilino` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `pago`
+--
+ALTER TABLE `pago`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`
@@ -223,6 +268,12 @@ ALTER TABLE `contrato`
 ALTER TABLE `inmueble`
   ADD CONSTRAINT `inmueble_ibfk_1` FOREIGN KEY (`PropietarioId`) REFERENCES `propietario` (`id_propietario`),
   ADD CONSTRAINT `inmueble_ibfk_2` FOREIGN KEY (`tipo_inmueble`) REFERENCES `tipo_inmueble` (`id`);
+
+--
+-- Filtros para la tabla `pago`
+--
+ALTER TABLE `pago`
+  ADD CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`contratoId`) REFERENCES `contrato` (`id_contrato`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

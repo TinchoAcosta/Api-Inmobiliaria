@@ -8,6 +8,21 @@
     <h2 class="mb-4 text-purple fw-bold">@ViewData["Title"]</h2>
 
     <div class="table-responsive">
+        <div class="mb-10">
+            <div class="mb-3">
+                <select id="contratoSelect" class="form-control">
+                    <option value="">Seleccione un contrato</option>
+                    @foreach (var c in ViewBag.contratos)
+                    {
+                        if (c != null)
+                        {
+                            <option value="@c.id_contrato">@c.id_contrato</option>
+                        }
+                    }
+                </select>
+
+            </div>
+        </div>
         <table class="table table-hover table-striped align-middle shadow-sm rounded-3 bg-white">
             <thead class="bg-light-purple text-purple">
                 <tr>
@@ -45,3 +60,17 @@
         <a class="btn btn-gradient-success fw-semibold" asp-action="Create">Agregar Nuevo Pago</a>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById("contratoSelect").addEventListener("change", function () {
+            var idContrato = this.value;
+            if (idContrato) {
+                window.location.href = '/Pago/FiltrarPorContrato?idContrato=' + idContrato;
+            } else {
+                window.location.href = '/Pago/Index';
+
+            }
+        });
+    </script>
+}

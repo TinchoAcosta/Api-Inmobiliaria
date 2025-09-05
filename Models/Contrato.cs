@@ -1,5 +1,8 @@
 
 
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 namespace inmobiliaria.Models
 {
     public class Contrato
@@ -13,7 +16,8 @@ namespace inmobiliaria.Models
         public Inmueble? Inmueble { get; set; }
         public Inquilino? Inquilino { get; set; }
 
-        public List<Pago> pagos_contrato { get; set; }
+        //preguntar al profe
+        //public List<Pago> pagos_contrato { get; set; }
 
         public Contrato() { }
 
