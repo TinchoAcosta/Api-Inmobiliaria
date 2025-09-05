@@ -17,6 +17,12 @@ namespace inmobiliaria.Controllers
             this.repo = repo;
         }
 
+        public IActionResult Index()
+        {
+            var pagos = repo.obtenerTodos();
+            return View(pagos);
+        }
+
     }
 
 

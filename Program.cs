@@ -8,6 +8,7 @@ builder.Services.AddScoped<inmobiliaria.Models.RepositorioPropietario>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioInmueble>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioInquilino>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioContrato>();
+builder.Services.AddScoped<inmobiliaria.Models.RepositorioPago>();
 
 var app = builder.Build();
 
