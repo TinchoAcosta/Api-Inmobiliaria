@@ -13,6 +13,8 @@ namespace inmobiliaria.Models
         public Inmueble? Inmueble { get; set; }
         public Inquilino? Inquilino { get; set; }
 
+        public List<Pago> pagos_contrato { get; set; }
+
         public Contrato() { }
 
         public Contrato(int id_contrato, DateTime fechaInicio_contrato, DateTime fechaFin_contrato, int monto_contrato, int idInmueble, int idInquilino, Inmueble? Inmueble, Inquilino? Inquilino)
