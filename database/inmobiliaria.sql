@@ -146,6 +146,32 @@ INSERT INTO `propietario` (`id_propietario`, `dni_propietario`, `contrasena_prop
 (4, 213412, 'fdsfds', 'prop2', 'asdaddsa', 'asdads@asd.s', '123213', 0);
 
 -- --------------------------------------------------------
+-- --------------------------------------------------------
+-- Estructura de tabla para la tabla `usuario`
+-- --------------------------------------------------------
+
+CREATE TABLE `usuario` (
+  `id_usuario` int(11) NOT NULL,
+  `nombre_usuario` varchar(50) NOT NULL,
+  `apellido_usuario` varchar(50) NOT NULL,
+  `email_usuario` varchar(100) NOT NULL,
+  `password_usuario` varchar(255) NOT NULL,
+  `rol_usuario` varchar(20) NOT NULL,
+  `avatar_usuario` varchar(255) DEFAULT NULL,
+  `borrado_usuario` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Índices de la tabla `usuario`
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id_usuario`);
+
+-- AUTO_INCREMENT de la tabla `usuario`
+ALTER TABLE `usuario`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+
+
+
+
 
 --
 -- Estructura de tabla para la tabla `tipo_inmueble`
