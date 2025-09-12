@@ -11,7 +11,7 @@
         <table class="table table-hover table-striped align-middle shadow-sm rounded-3 bg-white">
             <thead class="bg-light-purple text-purple">
                 <tr>
-                    <th>Id</th>
+
                     <th>Fecha de inicio</th>
                     <th>Fecha de fin</th>
                     <th>Monto</th>
@@ -24,7 +24,6 @@
                 @foreach (var contrato in Model)
                 {
                     <tr>
-                        <td>@contrato.id_contrato</td>
                         <td>@contrato.fechaInicio_contrato.ToString("dd/MM/yyyy")</td>
                         <td>@contrato.fechaFin_contrato.ToString("dd/MM/yyyy")</td>
                         <td>$@contrato.monto_contrato</td>

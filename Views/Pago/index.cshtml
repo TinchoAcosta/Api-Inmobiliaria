@@ -41,7 +41,16 @@
                         <td>@pago.detalle_pago</td>
                         <td>@pago.fecha_de_pago</td>
                         <td>@pago.monto_pago</td>
-                        <td>@pago.esta_anulado</td>
+                        <td>
+                            @if (pago.esta_anulado == false)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Anulado</span>
+                            }
+                        </td>
                         <td>
                             <a class="btn btn-sm btn-info me-1" asp-action="Details" asp-route-id="@pago.id_pago">Ver</a>
                             <a class="btn btn-sm btn-warning me-1" asp-action="Edit" asp-route-id="@pago.id_pago">Editar</a>
