@@ -1,0 +1,52 @@
+@model inmobiliaria.Models.Pago
+
+@{
+    ViewData["Title"] = "Registrar un pago";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Alta de Pagos</h2>
+
+     <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label asp-for="numero_pago" class="form-label">Numero del pago</label>
+            <input asp-for="numero_pago" class="form-control" />
+            <span asp-validation-for="numero_pago" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="detalle_pago" class="form-label">Detalle</label>
+            <input asp-for="detalle_pago" class="form-control" />
+            <span asp-validation-for="detalle_pago" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="fecha_de_pago" class="form-label">Fecha</label>
+            <input asp-for="fecha_de_pago" type="date" class="form-control" />
+            <span asp-validation-for="fecha_de_pago" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="monto_pago" class="form-label">Monto</label>
+            <input asp-for="monto_pago" class="form-control" />
+            <span asp-validation-for="monto_pago" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="contratoId" class="form-label">Contrato:</label>
+            <select asp-for="contratoId" class="form-control">
+                <option value="">Seleccione un contrato</option>
+                @foreach (var c in ViewBag.contratos)
+                {
+                    if (c != null)
+                    {
+                        <option value="@c.id_contrato">@c.Inmueble.direccion_inmueble - @c.Inquilino.nombre_inquilino (@c.fechaInicio_contrato.ToString("dd/MM/yyyy") | @c.fechaFin_contrato.ToString("dd/MM/yyyy"))</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>

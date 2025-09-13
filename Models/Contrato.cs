@@ -14,7 +14,7 @@ namespace inmobiliaria.Models
         public int idInmueble { get; set; }
         public int idInquilino { get; set; }
         public Inmueble? Inmueble { get; set; }
-        public Inquilino? Inquilino { get; set; }
+        public Inquilino? Inquilino { get; set; } 
 
         //preguntar al profe
         //public List<Pago> pagos_contrato { get; set; }

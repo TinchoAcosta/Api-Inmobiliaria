@@ -16,7 +16,7 @@
                     {
                         if (c != null)
                         {
-                            <option value="@c.id_contrato">@c.id_contrato</option>
+                            <option value="@c.id_contrato">@c.Inmueble.direccion_inmueble - @c.Inquilino.nombre_inquilino (@c.fechaInicio_contrato.ToString("dd/MM/yyyy") | @c.fechaFin_contrato.ToString("dd/MM/yyyy"))</option>
                         }
                     }
                 </select>
@@ -39,7 +39,7 @@
                     <tr>
                         <td>@pago.numero_pago</td>
                         <td>@pago.detalle_pago</td>
-                        <td>@pago.fecha_de_pago</td>
+                        <td>@pago.fecha_de_pago.ToString("dd/MM/yyyy")</td>
                         <td>@pago.monto_pago</td>
                         <td>
                             @if (pago.esta_anulado == false)
@@ -73,9 +73,9 @@
 @section Scripts {
     <script>
         document.getElementById("contratoSelect").addEventListener("change", function () {
-            var idContrato = this.value;
-            if (idContrato) {
-                window.location.href = '/Pago/FiltrarPorContrato?idContrato=' + idContrato;
+            var contratoId = this.value;
+            if (contratoId) {
+                window.location.href = '/Pago/FiltrarPorContrato?contratoId=' + contratoId;
             } else {
                 window.location.href = '/Pago/Index';
 
