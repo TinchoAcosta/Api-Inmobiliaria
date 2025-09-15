@@ -64,6 +64,34 @@ namespace inmobiliaria.Controllers
             return View();
         }
 
+
+        public IActionResult Edit(int id)
+        {
+            var Pago = repo.buscarPagoPorId(id);
+            return View(Pago);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id_pago, string detalle_pago)
+        {
+            Pago p = new Pago(id_pago, 0, detalle_pago, DateTime.Now, 0, false, 0, null);
+
+            var res = repo.editarPago(p);
+
+            if (res != 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var pagos = repo.obtenerTodos();
+            var contratos = repositorioContrato.obtenerTodos();
+            ViewBag.contratos = contratos;
+            return View(pagos);
+
+
+        }
+
     }
 
 

@@ -28,7 +28,7 @@
                         <td>@contrato.fechaFin_contrato.ToString("dd/MM/yyyy")</td>
                         <td>$@contrato.monto_contrato</td>
                         <td>@contrato.idInmueble</td>
-                        <td>@contrato.idInquilino</td>
+                        <td>@contrato.Inquilino.nombre_inquilino</td>
                         <td>
                             <a class="btn btn-sm btn-info me-1" asp-action="Details"
                                 asp-route-id="@contrato.id_contrato">Ver</a>
