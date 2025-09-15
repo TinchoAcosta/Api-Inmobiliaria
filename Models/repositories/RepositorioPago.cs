@@ -123,7 +123,7 @@ INNER JOIN inmueble inm ON c.idInmueble_contrato = inm.id_inmueble;";
             int res = 0;
             using (var connection = new MySqlConnection(connectionString))
             {
-                string sql = @"UPDATE `pago` SET `esta_anulado`= 1 WHERE `id_pago` = @id_pago";
+                string sql = @"UPDATE `pago` SET `esta_anulado`= 1 WHERE `id` = @id_pago";
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@id_pago", id_pago);
@@ -323,7 +323,6 @@ WHERE p.id = @id;";
             }
             return res;
         }
-
 
 
     }

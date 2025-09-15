@@ -55,7 +55,7 @@
                             <a class="btn btn-sm btn-info me-1" asp-action="Details" asp-route-id="@pago.id_pago">Ver</a>
                             <a class="btn btn-sm btn-warning me-1" asp-action="Edit" asp-route-id="@pago.id_pago">Editar</a>
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@pago.id_pago" data-nombre="@pago.id_pago">
+                                data-bs-target="#deleteModal" data-id="@pago.id_pago" data-nombre="@pago.numero_pago">
                                 Eliminar
                             </button>
                         </td>
@@ -70,6 +70,28 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-sm">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-purple fw-bold" id="deleteModalLabel">Confirmar eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¿Seguro que deseas eliminar al pago <strong id="pagoNombre"></strong>?
+            </div>
+            <div class="modal-footer border-0">
+                <form id="deleteForm" method="post" asp-action="DeleteConfirmed" asp-controller="Pago">
+                    <input type="hidden" name="id" id="deleteId" />
+                    @Html.AntiForgeryToken()
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         document.getElementById("contratoSelect").addEventListener("change", function () {
@@ -80,6 +102,21 @@
                 window.location.href = '/Pago/Index';
 
             }
+        });
+    </script>
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            var nombre = button.getAttribute('data-nombre');
+
+            var inputId = deleteModal.querySelector('#deleteId');
+            var nombreSpan = deleteModal.querySelector('#pagoNombre');
+            inputId.value = id;
+            nombreSpan.textContent = nombre;
+            var form = deleteModal.querySelector('#deleteForm');
+            form.action = '/Pago/DeleteConfirmed';
         });
     </script>
 }

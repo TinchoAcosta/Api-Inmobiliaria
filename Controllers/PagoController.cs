@@ -92,6 +92,29 @@ namespace inmobiliaria.Controllers
 
         }
 
+        public IActionResult Delete(int id)
+        {
+            int res = repo.anularPago(id);
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            int res = repo.anularPago(id);
+            if (res == 0)
+            {
+                Console.WriteLine("Pago no encontrado");
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 
 
