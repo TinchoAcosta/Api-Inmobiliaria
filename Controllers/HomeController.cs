@@ -1,6 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using mvc_inmobiliaria.Models;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Text;
+using System;
 
 namespace mvc_inmobiliaria.Controllers;
 

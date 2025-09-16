@@ -13,9 +13,10 @@ namespace inmobiliaria.Controllers
         private readonly RepositorioUsuario repo;
         private readonly IConfiguration configuration;
 
-        public UsuarioController(RepositorioUsuario repo)
+        public UsuarioController(RepositorioUsuario repo, IConfiguration configuration) // <--- Lo inyectas en el constructor
         {
             this.repo = repo;
+            this.configuration = configuration;
         }
 
         [Authorize(Policy = "Administrador")]
@@ -82,7 +83,7 @@ namespace inmobiliaria.Controllers
                 return View();
             }
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)

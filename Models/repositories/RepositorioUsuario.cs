@@ -90,7 +90,7 @@ namespace inmobiliaria.Models
                                 email_usuario = reader.GetString("email_usuario"),
                                 password_usuario = reader.GetString("password_usuario"),
                                 rol_usuario = reader.GetString("rol_usuario"),
-                                avatar_usuario = reader.GetString("avatar_usuario")
+                                avatar_usuario = reader.IsDBNull(reader.GetOrdinal("avatar_usuario")) ? null : reader.GetString("avatar_usuario")
                             };
                         }
                     }
@@ -122,7 +122,7 @@ namespace inmobiliaria.Models
                             email_usuario = reader.GetString("email_usuario"),
                             password_usuario = reader.GetString("password_usuario"),
                             rol_usuario = reader.GetString("rol_usuario"),
-                            avatar_usuario = reader.GetString("avatar_usuario")
+                            avatar_usuario = reader.IsDBNull(reader.GetOrdinal("avatar_usuario")) ? null : reader.GetString("avatar_usuario")
                         };
                         res.Add(entidad);
                     }
