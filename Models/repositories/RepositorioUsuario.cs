@@ -68,15 +68,15 @@ namespace inmobiliaria.Models
             return res;
         }
 
-        public Usuario obtenerUsuarioPorId(int id)
+        public Usuario obtenerUsuarioPorEmail(String email)
         {
             Usuario? u = null;
             using (var connection = new MySqlConnection(connectionString))
             {
-                string sql = @"SELECT * FROM usuario WHERE id_usuario = @id AND borrado_usuario = 1";
+                string sql = @"SELECT * FROM usuario WHERE email_usuario = @id AND borrado_usuario = 1";
                 using (var command = new MySqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@id", email);
                     connection.Open();
                     using (var reader = command.ExecuteReader())
                     {
@@ -98,6 +98,38 @@ namespace inmobiliaria.Models
                 }
             }
             return u!;
+        }
+
+        public IList<Usuario> obtenerTodos()
+        {
+            IList<Usuario> res = new List<Usuario>();
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT * FROM `usuario` WHERE borrado_usuario = 1;";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Usuario entidad = new Usuario
+                        {
+                            id_usuario = reader.GetInt32("id_usuario"),
+                            nombre_usuario = reader.GetString("nombre_usuario"),
+                            apellido_usuario = reader.GetString("apellido_usuario"),
+                            email_usuario = reader.GetString("email_usuario"),
+                            password_usuario = reader.GetString("password_usuario"),
+                            rol_usuario = reader.GetString("rol_usuario"),
+                            avatar_usuario = reader.GetString("avatar_usuario")
+                        };
+                        res.Add(entidad);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
         }
 
 
