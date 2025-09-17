@@ -30,8 +30,10 @@ namespace inmobiliaria.Models
         [Required]
         public string rol_usuario { get; set; } = Roles.Empleado.ToString();
 
+        // Esta es la URL del avatar del usuario
         public string avatar_usuario { get; set; } = string.Empty;
 
+        // Esto es el archivo subido desde el formulario, no se mapea a la base de datos
         [NotMapped]
         public IFormFile? avatar_form { get; set; }
     }
