@@ -34,11 +34,14 @@
                             <a class=" btn btn-sm btn-warning me-1" asp-action="Edit" asp-controller="Propietario"
                                 asp-route-id="@p.id_propietario">Editar
                             </a>
-                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@p.id_propietario"
-                                data-nombre="@p.nombre_propietario @p.apellido_propietario">
-                                Eliminar
-                            </button>
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal" data-id="@p.id_propietario"
+                                    data-nombre="@p.nombre_propietario @p.apellido_propietario">
+                                    Eliminar
+                                </button>
+                            }
                         </td>
                     </tr>
                 }

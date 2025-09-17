@@ -32,7 +32,10 @@
                             <a class="btn btn-sm btn-info me-1" asp-action="Details" asp-route-id="@i.id_inquilino">Ver</a>
                             <a class="btn btn-sm btn-warning me-1" asp-action="Edit"
                                 asp-route-id="@i.id_inquilino">Editar</a>
-                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@i.id_inquilino">Eliminar</a>
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@i.id_inquilino">Eliminar</a>
+                            }
                         </td>
                     </tr>
                 }

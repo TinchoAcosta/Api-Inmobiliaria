@@ -17,8 +17,6 @@ namespace inmobiliaria.Models
           `avatar_usuario` varchar(255) DEFAULT NULL,
           `borrado_usuario` tinyint(1) NOT NULL DEFAULT 1
         )
-
-
          */
 
         public int agregarUsuario(Usuario u)

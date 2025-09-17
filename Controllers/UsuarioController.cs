@@ -33,6 +33,44 @@ namespace inmobiliaria.Controllers
             return View();
         }
 
+        [Authorize(Policy = "Administrador")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
+        public IActionResult Create(Usuario u)
+        {
+            if (ModelState.IsValid)
+            {
+                // Hashear la contraseña
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: u.password_usuario,
+                    salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 1000,
+                    numBytesRequested: 256 / 8));
+                u.password_usuario = hashed;
+
+                // falta la implementacion de avatar
+                int res = repo.agregarUsuario(u);
+                if (res != 0)
+                {
+
+                    return RedirectToAction("Index");
+                }
+
+            }
+            return View();
+
+        }
+
+
+
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -96,5 +134,13 @@ namespace inmobiliaria.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public async Task<ActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

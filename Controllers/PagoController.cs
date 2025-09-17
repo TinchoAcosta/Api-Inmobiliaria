@@ -1,4 +1,5 @@
 using inmobiliaria.Models;
+
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -92,8 +93,10 @@ namespace inmobiliaria.Controllers
 
         }
 
+
         public IActionResult Delete(int id)
         {
+            //DEBERIA REGISTRAR EL EMPLEADO QUE REALIZA LA ANULACION
             int res = repo.anularPago(id);
             if (res == 0)
             {

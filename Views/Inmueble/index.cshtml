@@ -43,11 +43,17 @@
                                 asp-route-id="@inmueble.id_inmueble">Ver</a>
                             <a class="btn btn-sm btn-warning me-1" asp-action="Edit"
                                 asp-route-id="@inmueble.id_inmueble">Editar</a>
+                                
+                            @if (User.IsInRole("Administrador"))
+                            {
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" data-id="@inmueble.id_inmueble"
                                 data-nombre="@inmueble.direccion_inmueble">
                                 Eliminar
                             </button>
+                            }
+
+                            
                         </td>
                     </tr>
                 }

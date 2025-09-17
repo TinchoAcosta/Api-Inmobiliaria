@@ -12,6 +12,7 @@ namespace inmobiliaria.Models
             Administrador,
             Empleado
         }
+
         public int id_usuario { get; set; }
 
         [Required]
@@ -23,8 +24,10 @@ namespace inmobiliaria.Models
         [Required, EmailAddress]
         public string email_usuario { get; set; } = string.Empty;
 
+        [Required]
         public string password_usuario { get; set; } = string.Empty;
 
+        [Required]
         public string rol_usuario { get; set; } = Roles.Empleado.ToString();
 
         public string avatar_usuario { get; set; } = string.Empty;

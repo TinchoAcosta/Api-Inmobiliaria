@@ -15,53 +15,83 @@
 
 <body class="d-flex flex-column min-vh-100">
 
+    <!-- HEADER -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm rounded-bottom mb-4">
-            <div class="container">
-                <a class="navbar-brand text-purple fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
-                    Casita
+        <nav class="site-header fixed-top py-2 shadow-sm">
+            <div class="container d-flex flex-md-row align-items-center justify-content-between">
+                <a class="fw-bold text-purple text-decoration-none" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-house-door me-1"></i> Casita
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <!-- Cuando NO está logueado -->
+                    <div class="d-flex gap-3">
+                        <a class="nav-link text-purple fw-semibold" asp-controller="Home" asp-action="Index">
+                            Inicio
+                        </a>
+                        <a class="btn btn-gradient-success fw-semibold px-3" asp-controller="Usuario" asp-action="Login">
+                            Acceder
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <ul class="navbar-nav flex-row gap-3">
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-purple fw-semibold" asp-controller="Usuario" asp-action="Index">
+                                    <i class="bi bi-people-fill me-1"></i> Usuarios
+                                </a>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link text-purple" asp-area="" asp-controller="Home"
-                                asp-action="Index">Home</a>
+                            <a class="nav-link text-purple fw-semibold" asp-controller="Propietario" asp-action="Index">
+                                Propietarios
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-purple" asp-area="" asp-controller="Propietario"
-                                asp-action="Index">Propietarios</a>
+                            <a class="nav-link text-purple fw-semibold" asp-controller="Inmueble" asp-action="Index">
+                                Inmuebles
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-purple" asp-area="" asp-controller="Inmueble"
-                                asp-action="Index">Inmuebles</a>
+                            <a class="nav-link text-purple fw-semibold" asp-controller="Inquilino" asp-action="Index">
+                                Inquilinos
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-purple" asp-area="" asp-controller="Inquilino"
-                                asp-action="Index">Inquilinos</a>
+                            <a class="nav-link text-purple fw-semibold" asp-controller="Contrato" asp-action="Index">
+                                Contratos
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-purple" asp-area="" asp-controller="Contrato"
-                                asp-action="Index">Contratos</a>
+                            <a class="nav-link text-purple fw-semibold" asp-controller="Pago" asp-action="Index">
+                                Pagos
+                            </a>
                         </li>
-                        <li class="nav-item"></li>
-                        <a class="nav-link text-purple" asp-area="" asp-controller="Pago" asp-action="Index">Pagos</a>
+                        <li class="nav-item">
+                            <form asp-controller="Usuario" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-link nav-link text-purple fw-semibold">
+                                    Cerrar sesión
+                                </button>
+                            </form>
                         </li>
                     </ul>
-                </div>
+                }
             </div>
         </nav>
     </header>
 
-    <main class="flex-grow-1 container py-4">
+    <!-- MAIN -->
+    <main class="flex-grow-1 container py-5 mt-5">
         @RenderBody()
     </main>
 
+    <!-- FOOTER -->
     <footer class="bg-white shadow-sm rounded-top py-3 mt-auto">
-        <div class="container d-flex justify-content-center gap-3">
+        <div class="container d-flex justify-content-center gap-4 small">
             <a href="https://github.com/TinchoAcosta" target="_blank" class="text-purple text-decoration-none">
                 <i class="bi bi-github me-1"></i> Martin Acosta
             </a>

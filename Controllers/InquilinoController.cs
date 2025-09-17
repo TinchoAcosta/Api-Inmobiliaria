@@ -1,6 +1,6 @@
 using inmobiliaria.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace inmobiliaria.Controllers
@@ -62,6 +62,7 @@ namespace inmobiliaria.Controllers
             return View(i);
         }
 
+        [Authorize(Policy = "Administrador")]
         public IActionResult Delete(int id)
         {
             int res = repo.borrarInquilino(id);

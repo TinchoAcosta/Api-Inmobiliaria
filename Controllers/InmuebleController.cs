@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using inmobiliaria.Models;
-
+using Microsoft.AspNetCore.Authorization;
 namespace inmobiliaria.Controllers
 {
     public class InmuebleController : Controller
@@ -77,6 +77,8 @@ namespace inmobiliaria.Controllers
             return View(inm);
         }
 
+
+        [Authorize(Policy = "Administrador")]
         public IActionResult Delete(int id)
         {
             int res = repo.BorrarInmueble(id);
@@ -88,6 +90,7 @@ namespace inmobiliaria.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
         public IActionResult DeleteConfirmed(int id)
         {
             int res = repo.BorrarInmueble(id);

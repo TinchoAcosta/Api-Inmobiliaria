@@ -1,0 +1,59 @@
+@model inmobiliaria.Models.Usuario
+
+@{
+    ViewData["Title"] = "Registrar un Usuario Nuevo";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Alta de Usuarios</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label asp-for="nombre_usuario" class=" form-label">Nombre:</label>
+            <input asp-for="nombre_usuario" class="form-control" />
+            <span asp-validation-for="nombre_usuario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="apellido_usuario" class="form-label">Apellido:</label>
+            <input asp-for="apellido_usuario" class="form-control" />
+            <span asp-validation-for="apellido_usuario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="email_usuario" class="form-label">Email:</label>
+            <input asp-for="email_usuario" type="email" class="form-control" />
+            <span asp-validation-for="email_usuario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="password_usuario" class="form-label">Contraseña:</label>
+            <input asp-for="password_usuario" class="form-control" type="password" />
+            <span asp-validation-for="password_usuario" class="text-danger"></span>
+        </div>
+@*         
+    TODO : Agregar campo para confirmar contraseña
+<div class="mb-3">
+            <label asp-for="password_usuario" class="form-label">Monto</label>
+            <input asp-for="password_usuario" class="form-control" type="password" />
+            <span asp-validation-for="password_usuario" class="text-danger"></span>
+        </div> *@
+        <div class="mb-3">
+            <select asp-for="rol_usuario" class="form-control">
+                <option value="">Seleccione un rol</option>
+                <option value="Administrador">Administrador</option>
+                <option value="Empleado">Empleado</option>
+            </select>
+        </div>
+@*         
+    TODO AVATARFILE
+<div class="mb-3">
+            <label asp-for="apellido_usuario" class="form-label">Apellido:</label>
+            <input asp-for="apellido_usuario" class="form-control" />
+            <span asp-validation-for="apellido_usuario" class="text-danger"></span>
+        </div> *@
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
