@@ -10,13 +10,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = "/Usuario/Login";
         options.LogoutPath = "/Usuario/Logout";
-        options.AccessDeniedPath = "/Home/Restringido";
+        options.AccessDeniedPath = "/Home";
         //options.ExpireTimeSpan = TimeSpan.FromMinutes(5);//Tiempo de expiración
     });
-    builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador"));
-    });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador"));
+});
 // Registrar los repositorios
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioPropietario>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioInmueble>();

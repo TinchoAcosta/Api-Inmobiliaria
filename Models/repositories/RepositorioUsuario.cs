@@ -131,5 +131,94 @@ namespace inmobiliaria.Models
         }
 
 
+
+        public Usuario obtenerUsuarioPorId(int id)
+        {
+            Usuario? u = null;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT * FROM usuario WHERE id_usuario = @id AND borrado_usuario = 1";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            u = new Usuario
+                            {
+                                id_usuario = reader.GetInt32("id_usuario"),
+                                nombre_usuario = reader.GetString("nombre_usuario"),
+                                apellido_usuario = reader.GetString("apellido_usuario"),
+                                email_usuario = reader.GetString("email_usuario"),
+                                password_usuario = reader.GetString("password_usuario"),
+                                rol_usuario = reader.GetString("rol_usuario"),
+                                avatar_usuario = reader.IsDBNull(reader.GetOrdinal("avatar_usuario")) ? null : reader.GetString("avatar_usuario")
+                            };
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            return u!;
+        }
+
+
+        public int modificarUsuario(Usuario u)
+        {
+            int res = 0;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"UPDATE `usuario` SET 
+                `nombre_usuario`=@nombre_usuario,
+                `apellido_usuario`=@apellido_usuario,
+                `email_usuario`=@email_usuario,
+                `password_usuario`=@password_usuario,
+                `rol_usuario`=@rol_usuario,
+                `avatar_usuario`=@avatar_usuario
+                WHERE `id_usuario` = @id_usuario;";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id_usuario", u.id_usuario);
+                    command.Parameters.AddWithValue("@nombre_usuario", u.nombre_usuario);
+                    command.Parameters.AddWithValue("@apellido_usuario", u.apellido_usuario);
+                    command.Parameters.AddWithValue("@email_usuario", u.email_usuario);
+                    command.Parameters.AddWithValue("@password_usuario", u.password_usuario);
+                    command.Parameters.AddWithValue("@rol_usuario", u.rol_usuario);
+                    command.Parameters.AddWithValue("@avatar_usuario", u.avatar_usuario);
+
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+        public Boolean emailEsDelUsuario(int id, String email)
+        {
+            Boolean res = false;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT * FROM usuario WHERE id_usuario = @id AND email_usuario = @email AND borrado_usuario = 1";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@email", email);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            res = true;
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
     }
 }

@@ -46,13 +46,22 @@ namespace inmobiliaria.Controllers
         {
             if (ModelState.IsValid)
             {
+                //verificar si el email ya existe
+                var usuario = repo.obtenerUsuarioPorEmail(u.email_usuario);
+                if (usuario != null)
+                {
+                    ModelState.AddModelError("", "El email ya existe");
+                    return View();
+                }
+
+
                 // Hashear la contraseña
                 string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    password: u.password_usuario,
-                    salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
-                    prf: KeyDerivationPrf.HMACSHA1,
-                    iterationCount: 1000,
-                    numBytesRequested: 256 / 8));
+                password: u.password_usuario,
+                salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 1000,
+                numBytesRequested: 256 / 8));
                 u.password_usuario = hashed;
 
                 // falta la implementacion de avatar
@@ -140,6 +149,54 @@ namespace inmobiliaria.Controllers
             await HttpContext.SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
+        }
+
+
+
+        public IActionResult Edit(int id)
+        {
+            var usuario = repo.obtenerUsuarioPorId(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return View(usuario);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Usuario u)
+        {
+            if (ModelState.IsValid)
+            {
+                var usuario = repo.obtenerUsuarioPorEmail(u.email_usuario);
+
+                //verificar si el email ya existe
+                if (usuario != null && usuario.id_usuario != u.id_usuario)
+                {
+                    //Existe?? bien, tengo que ver si es mi propio email
+                    ModelState.AddModelError("", "El email ya existe");
+                    return View();
+                }
+
+                // Hashear la contraseña
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: u.password_usuario,
+                salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 1000,
+                numBytesRequested: 256 / 8));
+                u.password_usuario = hashed;
+
+                int res = repo.modificarUsuario(u);
+                if (res != 0)
+                {
+
+                    return RedirectToAction("Index");
+                }
+
+            }
+            return View();
         }
 
     }
