@@ -25,7 +25,6 @@
 
                 @if (!User.Identity.IsAuthenticated)
                 {
-                    <!-- Cuando NO está logueado -->
                     <div class="d-flex gap-3">
                         <a class="nav-link text-purple fw-semibold" asp-controller="Home" asp-action="Index">
                             Inicio
@@ -69,6 +68,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-purple fw-semibold" asp-controller="Pago" asp-action="Index">
                                 Pagos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" asp-controller="Usuario"
+                                asp-action="ModificarPerfil">
+                                @if (!string.IsNullOrEmpty(User.FindFirst("Avatar")?.Value))
+                                {
+                                    <img src="@User.FindFirst("Avatar")?.Value" alt="Avatar" class="rounded-circle me-2"
+                                        style="width: 30px; height: 30px; object-fit: cover;" />
+                                }
                             </a>
                         </li>
                         <li class="nav-item">

@@ -9,7 +9,7 @@ editar del empleado a si mismo pero no a otros empleados
 }
 <div class="container mt-5">
     <h2 class="mb-4">Modificación de Usuarios</h2>
-    <form asp-action="Edit" method="post">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="id_usuario" />
     <div asp-validation-summary="All" class="text-danger"></div>
         <div class="mb-3">
@@ -53,14 +53,11 @@ editar del empleado a si mismo pero no a otros empleados
             </select>
         </div>
         }
-        
-@*         
-    TODO AVATARFILE
-<div class="mb-3">
-            <label asp-for="apellido_usuario" class="form-label">Apellido:</label>
-            <input asp-for="apellido_usuario" class="form-control" />
-            <span asp-validation-for="apellido_usuario" class="text-danger"></span>
-        </div> *@
+        <div class="mb-3">
+            <label asp-for="avatar_form" class="form-label">Avatar:</label>
+            <input type="file" asp-for="avatar_form" class="form-control" accept="image/*"/>
+            <span asp-validation-for="avatar_form" class="text-danger"></span>
+        </div>
 
         <button type="submit" class="btn btn-primary">Modificar</button>
         <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>

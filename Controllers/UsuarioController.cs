@@ -41,62 +41,6 @@ namespace inmobiliaria.Controllers
             return View();
         }
 
-        /*         [HttpPost]
-                [ValidateAntiForgeryToken]
-                [Authorize(Policy = "Administrador")]
-                public IActionResult Create(Usuario u)
-                {
-                    if (ModelState.IsValid)
-                    {
-                        //verificar si el email ya existe
-                        var usuario = repo.obtenerUsuarioPorEmail(u.email_usuario);
-                        if (usuario != null)
-                        {
-                            ModelState.AddModelError("", "El email ya existe");
-                            return View();
-                        }
-                        // Hashear la contraseña
-                        string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                        password: u.password_usuario,
-                        salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
-                        prf: KeyDerivationPrf.HMACSHA1,
-                        iterationCount: 1000,
-                        numBytesRequested: 256 / 8));
-                        u.password_usuario = hashed;
-
-
-
-                        int res = repo.agregarUsuario(u);
-
-                        if (u.avatar_form != null)
-                        {
-                            String wwwPath = environment.WebRootPath;
-                            string path = Path.Combine(wwwPath, "Uploads");
-                            if (!Directory.Exists(path))
-                            {
-                                Directory.CreateDirectory(path);
-                            }
-                            string fileName = "avatar_" + u.email_usuario + Path.GetExtension(u.avatar_form.FileName);
-                            string pathCompleto = Path.Combine(path, fileName);
-                            //le doy la url al string del usuario
-                            u.avatar_usuario = Path.Combine("/Uploads", fileName);
-                            using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
-                            {
-                                u.avatar_form.CopyTo(stream);
-                            }
-                            repo.modificarUsuario(u);
-                        }
-
-                        if (res != 0)
-                        {
-                            return RedirectToAction("Index");
-                        }
-
-                    }
-                    return View();
-
-                } */
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "Administrador")]
@@ -121,7 +65,6 @@ namespace inmobiliaria.Controllers
                     numBytesRequested: 256 / 8));
                 u.password_usuario = hashed;
 
-                // 📌 Manejo de avatar local
                 if (u.avatar_form != null && u.avatar_form.Length > 0)
                 {
                     string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/usuarios");
@@ -187,6 +130,7 @@ namespace inmobiliaria.Controllers
                         new Claim(ClaimTypes.Name, e.email_usuario),
                         new Claim("FullName", e.nombre_usuario + " " + e.apellido_usuario),
                         new Claim(ClaimTypes.Role, e.rol_usuario),
+                        new Claim("Avatar", e.avatar_usuario ?? "/images/default-avatar.png"),
                     };
 
                     var claimsIdentity = new ClaimsIdentity(
@@ -237,6 +181,15 @@ namespace inmobiliaria.Controllers
             {
                 return NotFound();
             }
+
+            if (!User.IsInRole("Administrador"))
+            {
+                var emailLogueado = User.Identity?.Name;
+                if (usuario.email_usuario != emailLogueado)
+                {
+                    return Forbid();
+                }
+            }
             return View(usuario);
         }
 
@@ -246,7 +199,16 @@ namespace inmobiliaria.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var usuario = repo.obtenerUsuarioPorEmail(u.email_usuario);
+                if (!User.IsInRole("Administrador") && usuario != null)
+                {
+                    var emailLogueado = User.Identity?.Name;
+                    if (usuario.email_usuario != emailLogueado)
+                    {
+                        return Forbid();
+                    }
+                }
 
                 //verificar si el email ya existe
                 if (usuario != null && usuario.id_usuario != u.id_usuario)
@@ -255,6 +217,7 @@ namespace inmobiliaria.Controllers
                     ModelState.AddModelError("", "El email ya existe");
                     return View();
                 }
+
 
                 // Hashear la contraseña
                 string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -265,6 +228,30 @@ namespace inmobiliaria.Controllers
                 numBytesRequested: 256 / 8));
                 u.password_usuario = hashed;
 
+                if (u.avatar_form != null && u.avatar_form.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/usuarios");
+                    if (!Directory.Exists(uploadsFolder))
+                        Directory.CreateDirectory(uploadsFolder);
+
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(u.avatar_form.FileName);
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        u.avatar_form.CopyTo(stream);
+                    }
+
+                    // Guardar la ruta relativa
+                    u.avatar_usuario = "/uploads/usuarios/" + fileName;
+
+                }
+                else
+                {
+                    // Mantener el avatar existente si no se sube uno nuevo
+                    var usuarioExistente = repo.obtenerUsuarioPorId(u.id_usuario);
+                    u.avatar_usuario = usuarioExistente.avatar_usuario;
+                }
                 int res = repo.modificarUsuario(u);
                 if (res != 0)
                 {
@@ -275,6 +262,24 @@ namespace inmobiliaria.Controllers
             }
             return View();
         }
+
+
+
+        public IActionResult ModificarPerfil()
+        {
+            var email = User.Identity.Name;
+            var usuario = repo.obtenerUsuarioPorEmail(email);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return View(usuario);
+        }
+
+
+
+
+
 
     }
 }
