@@ -196,29 +196,5 @@ namespace inmobiliaria.Models
             return res;
         }
 
-        public Boolean emailEsDelUsuario(int id, String email)
-        {
-            Boolean res = false;
-            using (var connection = new MySqlConnection(connectionString))
-            {
-                string sql = @"SELECT * FROM usuario WHERE id_usuario = @id AND email_usuario = @email AND borrado_usuario = 1";
-                using (var command = new MySqlCommand(sql, connection))
-                {
-                    command.Parameters.AddWithValue("@id", id);
-                    command.Parameters.AddWithValue("@email", email);
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            res = true;
-                        }
-                    }
-                    connection.Close();
-                }
-            }
-            return res;
-        }
-
     }
 }
