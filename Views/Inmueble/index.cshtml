@@ -15,6 +15,10 @@
                     <th>Ambientes</th>
                     <th>Superficie</th>
                     <th>Dueño</th>
+                    <th>
+                        Tipo
+                        <a class="btn btn-gradient-success fw-semibold" asp-controller="TipoInmueble" asp-action="Index">Mas</a>
+                    </th>
                     <th>Portada</th>
                     <th>Acciones</th>
                 </tr>
@@ -27,6 +31,7 @@
                         <td>@inmueble.ambientes_inmueble</td>
                         <td>@inmueble.superficie_inmueble m²</td>
                         <td>@(inmueble.propietario_inmueble?.nombre_propietario ?? "Sin dueño")</td>
+                        <td>@inmueble.tipoInmueble?.descripcion</td>
                         <td>
                             @if (!string.IsNullOrEmpty(inmueble.portada_inmueble))
                             {

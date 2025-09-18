@@ -24,6 +24,7 @@ builder.Services.AddScoped<inmobiliaria.Models.RepositorioInquilino>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioContrato>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioPago>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioUsuario>();
+builder.Services.AddScoped<inmobiliaria.Models.RepositorioTipoInmueble>();
 
 var app = builder.Build();
 

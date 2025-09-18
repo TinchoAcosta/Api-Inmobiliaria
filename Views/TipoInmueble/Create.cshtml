@@ -1,0 +1,22 @@
+@model inmobiliaria.Models.TipoInmueble
+
+@{
+    ViewData["Title"] = "Nuevo Tipo de Inmueble";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 fw-bold text-purple">Alta de Tipo de Inmueble</h2>
+
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="descripcion" class="form-label">Descripción</label>
+            <input asp-for="descripcion" class="form-control" />
+            <span asp-validation-for="descripcion" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>

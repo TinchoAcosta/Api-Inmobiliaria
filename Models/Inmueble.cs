@@ -19,6 +19,7 @@ namespace inmobiliaria.Models
 
         public String uso_inmueble { get; set; }
         public int tipo_inmueble { get; set; }
+        public TipoInmueble? tipoInmueble { get; set; }
         public Propietario? propietario_inmueble { get; set; }
         public string? portada_inmueble { get; set; }
         public IList<Imagen> imagenes_inmueble { get; set; } = new List<Imagen>();
@@ -41,6 +42,21 @@ namespace inmobiliaria.Models
             this.PropietarioId = PropietarioId;
             this.estaActivoInmueble = true;
             this.propietario_inmueble = propietario_inmueble;
+        }
+
+        public Inmueble(string? direccion_inmueble, int ambientes_inmueble, int superficie_inmueble, decimal lat_inmueble, decimal long_inmueble, int PropietarioId, string uso_inmueble, int tipo_inmueble, Propietario? propietario_inmueble, TipoInmueble? tipoInmueble)
+        {
+            this.direccion_inmueble = direccion_inmueble;
+            this.ambientes_inmueble = ambientes_inmueble;
+            this.superficie_inmueble = superficie_inmueble;
+            this.lat_inmueble = lat_inmueble;
+            this.long_inmueble = long_inmueble;
+            this.uso_inmueble = uso_inmueble;
+            this.tipo_inmueble = tipo_inmueble;
+            this.PropietarioId = PropietarioId;
+            this.estaActivoInmueble = true;
+            this.propietario_inmueble = propietario_inmueble;
+            this.tipoInmueble = tipoInmueble;
         }
 
     };

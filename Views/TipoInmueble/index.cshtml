@@ -1,0 +1,55 @@
+@model IEnumerable<inmobiliaria.Models.TipoInmueble>
+
+@{
+    ViewData["Title"] = "Tipos de Inmueble";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-purple">Tipos de Inmueble</h2>
+        <a asp-action="Create" class="btn btn-gradient-success fw-semibold">
+            <i class="bi bi-plus-circle me-1"></i> Nuevo Tipo
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No hay tipos de inmuebles registrados todavía.
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover shadow-sm rounded">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Descripción</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tipo in Model)
+                {
+                    <tr>
+                        <td>@tipo.id</td>
+                        <td>@tipo.descripcion</td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@tipo.id" 
+                               class="btn btn-sm btn-outline-primary me-2">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <form asp-action="DeleteConfirmed" asp-route-id="@tipo.id"
+                                  method="post" class="d-inline"
+                                  onsubmit="return confirm('¿Seguro que desea eliminar este tipo de inmueble?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

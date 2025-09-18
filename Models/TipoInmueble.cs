@@ -7,7 +7,14 @@ namespace inmobiliaria.Models
         public string descripcion { get; set; }
 
 
-        public TipoInmueble(int id, string descripcion)
+        public TipoInmueble() {  }
+
+        public TipoInmueble(string descripcion)
+        {
+            this.descripcion = descripcion;
+        }
+
+        public TipoInmueble(int id,string descripcion)
         {
             this.id = id;
             this.descripcion = descripcion;

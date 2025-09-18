@@ -23,13 +23,16 @@ namespace inmobiliaria.Models
     i.PropietarioId,
     i.portada_inmueble,
     i.tipo_inmueble,
+    ti.descripcion,
     i.uso_inmueble,
-    i.tipo_inmueble,
     i.estaActivoInmueble,
     p.nombre_propietario,
     p.id_propietario
 FROM inmueble i
-INNER JOIN propietario p ON i.PropietarioId = p.id_propietario
+INNER JOIN propietario p 
+    ON i.PropietarioId = p.id_propietario
+INNER JOIN tipo_inmueble ti 
+    ON i.tipo_inmueble = ti.id
 WHERE i.estaActivoInmueble = 1;
 ";
                 using (var command = new MySqlCommand(sql, connection))
@@ -50,6 +53,11 @@ WHERE i.estaActivoInmueble = 1;
                             new Propietario
                             {
                                 nombre_propietario = reader.GetString("nombre_propietario")
+                            },
+                            new TipoInmueble
+                            {
+                                id = reader.GetInt32("tipo_inmueble"),
+                                descripcion = reader.GetString("descripcion")
                             }
 
                         )
