@@ -1,0 +1,61 @@
+@model inmobiliaria.Models.Pago
+
+@{
+    ViewData["Title"] = "Detalle del Pago";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-5 text-purple fw-bold text-center">Detalle del Pago</h2>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
+                <h5 class="card-title text-purple fw-bold mb-3">Información del Pago</h5>
+                <div class="mb-2">
+                    <strong>ID:</strong> @Model.id_pago
+                </div>
+                <div class="mb-2">
+                    <strong>Número de Pago:</strong> @Model.numero_pago
+                </div>
+                <div class="mb-2">
+                    <strong>Detalle:</strong> @Model.detalle_pago
+                </div>
+                <div class="mb-2">
+                    <strong>Fecha:</strong> @Model.fecha_de_pago.ToString("dd/MM/yyyy")
+                </div>
+                <div class="mb-2">
+                    <strong>Monto:</strong> $@Model.monto_pago.ToString("N2")
+                </div>
+                <div class="mb-2">
+                    <strong>Estado:</strong> @(Model.esta_anulado ? "Anulado" : "Activo")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
+                <h5 class="card-title text-purple fw-bold mb-3">Contrato Asociado</h5>
+                @if (Model.Contrato != null)
+                {
+                    <div class="mb-2">
+                        <strong>ID Contrato:</strong> @Model.Contrato.id_contrato
+                    </div>
+                    <div class="mb-2">
+                        <strong>Fecha Inicio:</strong> @Model.Contrato.fechaInicio_contrato.ToString("dd/MM/yyyy")
+                    </div>
+                    <div class="mb-2">
+                        <strong>Fecha Fin:</strong> @Model.Contrato.fechaFin_contrato.ToString("dd/MM/yyyy")
+                    </div>
+                }
+                else
+                {
+                    <div class="text-danger">No se encontró información del contrato asociado.</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a asp-action="Index" class="btn btn-gradient-success fw-semibold px-4">Volver al Listado</a>
+    </div>
+</div>

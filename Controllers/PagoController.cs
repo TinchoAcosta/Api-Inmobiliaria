@@ -120,6 +120,16 @@ namespace inmobiliaria.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Details(int id)
+        {
+            var pago = repo.buscarPagoPorId(id);
+            if (pago == null)
+            {
+                return NotFound();
+            }
+            return View(pago);
+        }
+
     }
 
 

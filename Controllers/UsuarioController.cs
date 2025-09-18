@@ -288,7 +288,15 @@ namespace inmobiliaria.Controllers
         }
 
 
-
+        public IActionResult Details(int id)
+        {
+            var user = repo.obtenerUsuarioPorId(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
 
 
 

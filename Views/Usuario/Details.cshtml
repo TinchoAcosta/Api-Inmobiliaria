@@ -1,0 +1,50 @@
+@model inmobiliaria.Models.Usuario
+
+@{
+    ViewData["Title"] = "Detalle del Usuario";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-5 text-purple fw-bold text-center">Detalle del Usuario</h2>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
+                <h5 class="card-title text-purple fw-bold mb-3">Información Personal</h5>
+                <div class="mb-2">
+                    <strong>ID:</strong> @Model.id_usuario
+                </div>
+                <div class="mb-2">
+                    <strong>Nombre:</strong> @Model.nombre_usuario
+                </div>
+                <div class="mb-2">
+                    <strong>Apellido:</strong> @Model.apellido_usuario
+                </div>
+                <div class="mb-2">
+                    <strong>Email:</strong> @Model.email_usuario
+                </div>
+                <div class="mb-2">
+                    <strong>Rol:</strong> @Model.rol_usuario
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4 p-4 h-100 border-0 text-center">
+                <h5 class="card-title text-purple fw-bold mb-3">Avatar</h5>
+                @if (!string.IsNullOrEmpty(Model.avatar_usuario))
+                {
+                    <img src="@Model.avatar_usuario" alt="Avatar del usuario" class="img-fluid rounded-circle shadow-sm" style="max-width: 150px;" />
+                }
+                else
+                {
+                    <div class="text-muted">Sin avatar disponible</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a asp-action="Index" class="btn btn-gradient-success fw-semibold px-4">Volver al Listado</a>
+    </div>
+</div>
