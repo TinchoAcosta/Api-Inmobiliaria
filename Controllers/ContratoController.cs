@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace inmobiliaria.Controllers
 {
+    [Authorize]
     public class ContratoController : Controller
     {
         private readonly RepositorioContrato repo;
@@ -131,12 +132,12 @@ namespace inmobiliaria.Controllers
             if (ModelState.IsValid)
             {
                 int res = repo.AgregarContrato(contrato);
-            if (res != 0)
-            {
-                return RedirectToAction("Index");
+                if (res != 0)
+                {
+                    return RedirectToAction("Index");
+                }
             }
-             }
-            
+
             var inmueble = repoInmueble.obtenerPorId(idInmueble);
             var inquilinos = repoInquilino.obtenerTodos();
 

@@ -1,6 +1,7 @@
 using inmobiliaria.Models;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace inmobiliaria.Controllers
 {
 
+    [Authorize]
     public class PagoController : Controller
     {
 

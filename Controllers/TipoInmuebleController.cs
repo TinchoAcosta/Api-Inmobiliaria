@@ -1,8 +1,10 @@
 using inmobiliaria.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace inmobiliaria.Controllers
 {
+    [Authorize]
     public class TipoInmuebleController : Controller
     {
 

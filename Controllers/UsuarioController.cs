@@ -154,6 +154,7 @@ namespace inmobiliaria.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
         public IActionResult DeleteConfirmed(int id)
         {
             int res = repo.borrarUsuario(id);
@@ -174,6 +175,7 @@ namespace inmobiliaria.Controllers
 
 
 
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var usuario = repo.obtenerUsuarioPorId(id);
@@ -195,6 +197,7 @@ namespace inmobiliaria.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Edit(Usuario u, bool EliminarAvatar)
         {
             if (ModelState.IsValid)
@@ -272,7 +275,7 @@ namespace inmobiliaria.Controllers
         }
 
 
-
+        [Authorize]
         public IActionResult ModificarPerfil()
         {
             var email = User.Identity.Name;

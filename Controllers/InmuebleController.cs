@@ -3,6 +3,7 @@ using inmobiliaria.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace inmobiliaria.Controllers
 {
+    [Authorize]
     public class InmuebleController : Controller
     {
         private readonly RepositorioPropietario repoPropietario;
