@@ -37,7 +37,7 @@
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" data-id="@contrato.id_contrato"
                                 data-nombre="Contrato #@contrato.id_contrato">
-                                Eliminar
+                                 @(User.IsInRole("Administrador") ? "Eliminar" : "Anular")
                             </button>
                         </td>
                     </tr>

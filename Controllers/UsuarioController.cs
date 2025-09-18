@@ -195,7 +195,7 @@ namespace inmobiliaria.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Usuario u)
+        public IActionResult Edit(Usuario u, bool EliminarAvatar)
         {
             if (ModelState.IsValid)
             {
@@ -228,6 +228,7 @@ namespace inmobiliaria.Controllers
                 numBytesRequested: 256 / 8));
                 u.password_usuario = hashed;
 
+
                 if (u.avatar_form != null && u.avatar_form.Length > 0)
                 {
                     string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/usuarios");
@@ -248,9 +249,16 @@ namespace inmobiliaria.Controllers
                 }
                 else
                 {
-                    // Mantener el avatar existente si no se sube uno nuevo
-                    var usuarioExistente = repo.obtenerUsuarioPorId(u.id_usuario);
-                    u.avatar_usuario = usuarioExistente.avatar_usuario;
+                    if (EliminarAvatar)
+                    {
+                        u.avatar_usuario = "/images/default-avatar.png";
+                    }
+                    else
+                    {
+                        // Mantener el avatar existente si no se sube uno nuevo
+                        var usuarioExistente = repo.obtenerUsuarioPorId(u.id_usuario);
+                        u.avatar_usuario = usuarioExistente.avatar_usuario;
+                    }
                 }
                 int res = repo.modificarUsuario(u);
                 if (res != 0)

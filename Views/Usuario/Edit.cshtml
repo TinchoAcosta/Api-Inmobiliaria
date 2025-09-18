@@ -55,11 +55,28 @@ editar del empleado a si mismo pero no a otros empleados
         }
         <div class="mb-3">
             <label asp-for="avatar_form" class="form-label">Avatar:</label>
-            <input type="file" asp-for="avatar_form" class="form-control" accept="image/*"/>
+            <input type="file" asp-for="avatar_form" class="form-control" accept="image/*" id="avatarInput"/>
             <span asp-validation-for="avatar_form" class="text-danger"></span>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="eliminarAvatar" name="EliminarAvatar" value="true" />
+            <label class="form-check-label" for="eliminarAvatar">Eliminar avatar</label>
         </div>
 
         <button type="submit" class="btn btn-primary">Modificar</button>
         <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
     </form>
 </div>
+
+<script>
+    const avatarInput = document.getElementById("avatarInput");
+    const checkbox = document.getElementById("eliminarAvatar"); 
+    checkbox.addEventListener("change", function () {
+        if(checkbox.checked){
+            avatarInput.disabled=true;
+            avatarInput.value="";
+        }else{
+            avatarInput.disabled=false;
+        }
+    });
+</script>
