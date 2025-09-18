@@ -1,5 +1,6 @@
 
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -12,6 +13,8 @@ namespace inmobiliaria.Models
         public DateTime fechaFin_contrato { get; set; }
         public int monto_contrato { get; set; }
         public int idInmueble { get; set; }
+
+        [Required(ErrorMessage = "Debe seleccionar un inquilino.")]
         public int idInquilino { get; set; }
         public Inmueble? Inmueble { get; set; }
         public Inquilino? Inquilino { get; set; } 

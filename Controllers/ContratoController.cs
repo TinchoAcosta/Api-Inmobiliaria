@@ -128,11 +128,15 @@ namespace inmobiliaria.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmarContratacion(Contrato contrato, int idInmueble, DateTime fechaInicio_contrato, DateTime fechaFin_contrato)
         {
-            int res = repo.AgregarContrato(contrato);
+            if (ModelState.IsValid)
+            {
+                int res = repo.AgregarContrato(contrato);
             if (res != 0)
             {
                 return RedirectToAction("Index");
             }
+             }
+            
             var inmueble = repoInmueble.obtenerPorId(idInmueble);
             var inquilinos = repoInquilino.obtenerTodos();
 
