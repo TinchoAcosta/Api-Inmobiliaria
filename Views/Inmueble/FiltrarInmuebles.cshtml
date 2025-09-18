@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Buscar Inmuebles Disponibles";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Buscar Inmuebles Disponibles</h2>
+
+    <form asp-action="FiltrarInmuebles" method="post" class="row g-3 shadow-sm p-4 bg-white rounded-3">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="col-md-6">
+            <label for="fechaInicio" class="form-label fw-semibold">Fecha de inicio</label>
+            <input type="date" name="fechaInicio" id="fechaInicio" class="form-control" required />
+        </div>
+
+        <div class="col-md-6">
+            <label for="fechaFin" class="form-label fw-semibold">Fecha de fin</label>
+            <input type="date" name="fechaFin" id="fechaFin" class="form-control" required />
+        </div>
+
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary px-4">Buscar</button>
+            <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+        </div>
+    </form>
+</div>

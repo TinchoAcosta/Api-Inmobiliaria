@@ -93,11 +93,15 @@ namespace inmobiliaria.Controllers
         [Authorize(Policy = "Administrador")]
         public IActionResult DeleteConfirmed(int id)
         {
-            int res = repo.BorrarInmueble(id);
-            if (res == 0)
+
+            if (User.IsInRole("Administrador"))
             {
-                Console.WriteLine("Inmueble no encontrado");
-                return NotFound();
+                int res = repo.BorrarInmueble(id);
+                if (res == 0)
+                {
+                    Console.WriteLine("Inmueble no encontrado");
+                    return NotFound();
+                }
             }
             return RedirectToAction("Index");
         }
@@ -106,6 +110,54 @@ namespace inmobiliaria.Controllers
         {
             var inmueble = repo.obtenerPorId(id);
             return View(inmueble);
+        }
+
+
+        public IActionResult InmueblesNoDisponibles()
+        {
+            var inmuebles = repo.obtenerInmueblesNoDisponibles();
+            return View(inmuebles);
+        }
+
+        public IActionResult DarDeBaja(int id)
+        {
+            int res = repo.DarDeBajaDisponibilidad(id);
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DarDeAlta(int id)
+        {
+            int res = repo.DarDeAltaDisponibilidad(id);
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("InmueblesNoDisponibles");
+        }
+
+
+
+        public IActionResult FiltrarInmuebles()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult FiltrarInmuebles(DateTime fechaInicio, DateTime fechaFin)
+        {
+            if (fechaInicio >= fechaFin)
+            {
+                ModelState.AddModelError("", "La fecha de inicio debe ser anterior a la fecha de fin.");
+                return View();
+            }
+
+            var inmuebles = repo.obtenerDisponiblesEntreFechas(fechaInicio, fechaFin);
+            ViewBag.fechas = new { fechaInicio, fechaFin };
+            return View("ResultadosFiltrados", inmuebles);
         }
 
     }

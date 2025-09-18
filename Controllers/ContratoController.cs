@@ -108,5 +108,39 @@ namespace inmobiliaria.Controllers
             return View(contrato);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Contratar(int idInmueble, DateTime fechaInicio_contrato, DateTime fechaFin_contrato)
+        {
+            var inmueble = repoInmueble.obtenerPorId(idInmueble);
+
+
+            var inquilinos = repoInquilino.obtenerTodos();
+            ViewBag.fechaInicio = fechaInicio_contrato.ToString("yyyy-MM-dd");
+            ViewBag.fechaFin = fechaFin_contrato.ToString("yyyy-MM-dd");
+            ViewBag.inmueble = inmueble;
+            ViewBag.inquilinos = inquilinos;
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmarContratacion(Contrato contrato, int idInmueble, DateTime fechaInicio_contrato, DateTime fechaFin_contrato)
+        {
+            int res = repo.AgregarContrato(contrato);
+            if (res != 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var inmueble = repoInmueble.obtenerPorId(idInmueble);
+            var inquilinos = repoInquilino.obtenerTodos();
+
+            ViewBag.fechaInicio = fechaInicio_contrato.ToString("yyyy-MM-dd");
+            ViewBag.fechaFin = fechaFin_contrato.ToString("yyyy-MM-dd");
+            ViewBag.inmueble = inmueble;
+            ViewBag.inquilinos = inquilinos;
+            return View("Contratar", contrato);
+        }
     }
 }

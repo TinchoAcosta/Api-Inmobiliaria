@@ -1,0 +1,128 @@
+@model IEnumerable<inmobiliaria.Models.Inmueble>
+
+@{
+    ViewData["Title"] = "Resultados filtrados de inmuebles";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-purple fw-bold">@ViewData["Title"]</h2>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle shadow-sm rounded-3 bg-white">
+            <thead class="bg-light-purple text-purple">
+                <tr>
+                    <th>Dirección</th>
+                    <th>Ambientes</th>
+                    <th>Superficie</th>
+                    <th>Dueño</th>
+                    <th>Tipo</th>
+                    <th>Portada</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var inmueble in Model)
+                    {
+                        <tr>
+                            <td>@inmueble.direccion_inmueble</td>
+                            <td>@inmueble.ambientes_inmueble</td>
+                            <td>@inmueble.superficie_inmueble m²</td>
+                            <td>@(inmueble.propietario_inmueble?.nombre_propietario ?? "Sin dueño")</td>
+                            <td>@inmueble.tipoInmueble?.descripcion</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(inmueble.portada_inmueble))
+                                {
+                                    <img src="~/images/@inmueble.portada_inmueble" alt="Portada" class="img-thumbnail"
+                                        style="width:80px;height:auto;" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Sin imagen</span>
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-info me-1" asp-action="Details"
+                                    asp-route-id="@inmueble.id_inmueble">Ver</a>
+                                <a class="btn btn-sm btn-warning me-1" asp-action="Edit"
+                                    asp-route-id="@inmueble.id_inmueble">Editar</a>
+                                <a class="btn btn-sm btn-warning me-1" asp-action="DarDeBaja"
+                                    asp-route-id="@inmueble.id_inmueble">Dar de baja</a>
+                                <form asp-controller="Contrato" asp-action="Contratar" method="post" class="d-inline">
+                                    <input type="text" name="idInmueble" value="@inmueble.id_inmueble" hidden />
+                                    <input type="text" name="fechaInicio_contrato" value="@ViewBag.fechas.fechaInicio" hidden />
+                                    <input type="text" name="fechaFin_contrato" value="@ViewBag.fechas.fechaFin" hidden />
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        Contratar!
+                                    </button>
+                                </form>
+
+
+                                @if (User.IsInRole("Administrador"))
+                                {
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal" data-id="@inmueble.id_inmueble"
+                                        data-nombre="@inmueble.direccion_inmueble">
+                                        Eliminar
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">No se encontraron inmuebles disponibles en ese rango
+                            de fechas.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4">
+        <a class="btn btn-gradient-success fw-semibold" asp-action="Index">Volver al listado</a>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-sm">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-purple fw-bold" id="deleteModalLabel">Confirmar eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¿Seguro que deseas eliminar el inmueble <strong id="inmuebleNombre"></strong>?
+            </div>
+            <div class="modal-footer border-0">
+                <form id="deleteForm" method="post" asp-action="DeleteConfirmed" asp-controller="Inmueble">
+                    <input type="hidden" name="id" id="deleteId" />
+                    @Html.AntiForgeryToken()
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            var nombre = button.getAttribute('data-nombre');
+
+            var inputId = deleteModal.querySelector('#deleteId');
+            var nombreSpan = deleteModal.querySelector('#inmuebleNombre');
+            inputId.value = id;
+            nombreSpan.textContent = nombre;
+            var form = deleteModal.querySelector('#deleteForm');
+            form.action = '/Inmueble/DeleteConfirmed';
+        });
+    </script>
+}

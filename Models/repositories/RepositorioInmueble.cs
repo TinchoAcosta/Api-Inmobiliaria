@@ -1,6 +1,5 @@
 
 using MySql.Data.MySqlClient;
-
 namespace inmobiliaria.Models
 {
     public class RepositorioInmueble : RepositorioBase
@@ -33,7 +32,7 @@ INNER JOIN propietario p
     ON i.PropietarioId = p.id_propietario
 INNER JOIN tipo_inmueble ti 
     ON i.tipo_inmueble = ti.id
-WHERE i.estaActivoInmueble = 1;
+WHERE i.estaActivoInmueble = 1 and i.disponibilidad_inmueble = 1;
 ";
                 using (var command = new MySqlCommand(sql, connection))
                 {
@@ -220,10 +219,196 @@ WHERE i.estaActivoInmueble = 1;
                     }
                     connection.Close();
                 }
-                return inmueble; 
+                return inmueble;
             }
-            
+
         }
 
+
+        public IList<Inmueble> obtenerInmueblesNoDisponibles()
+        {
+            IList<Inmueble> res = new List<Inmueble>();
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT 
+                        i.id_inmueble,
+                        i.direccion_inmueble,
+                        i.ambientes_inmueble,
+                        i.superficie_inmueble,
+                        i.lat_inmueble,
+                        i.long_inmueble,
+                        i.PropietarioId,
+                        i.portada_inmueble,
+                        i.tipo_inmueble,
+                        ti.id AS tipo_id,
+                        ti.descripcion,
+                        i.uso_inmueble,
+                        i.estaActivoInmueble,
+                        p.nombre_propietario,
+                        p.id_propietario
+                    FROM inmueble i
+                    INNER JOIN propietario p 
+                        ON i.PropietarioId = p.id_propietario
+                    INNER JOIN tipo_inmueble ti 
+                        ON i.tipo_inmueble = ti.id
+                    WHERE i.disponibilidad_inmueble = 0 
+                      AND i.estaActivoInmueble = 1;";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(
+                            new Inmueble(
+                                reader.GetString("direccion_inmueble"),
+                                reader.GetInt32("ambientes_inmueble"),
+                                reader.GetInt32("superficie_inmueble"),
+                                reader.GetDecimal("lat_inmueble"),
+                                reader.GetDecimal("long_inmueble"),
+                                reader.GetInt32("PropietarioId"),
+                                reader.GetString("uso_inmueble"),
+                                reader.GetInt32("tipo_inmueble"),
+                                new Propietario
+                                {
+                                    nombre_propietario = reader.GetString("nombre_propietario")
+                                },
+                                new TipoInmueble(
+                                    reader.GetInt32("tipo_id"),
+                                    reader.GetString("descripcion")
+                                ),
+                                true
+                            )
+                            { id_inmueble = reader.GetInt32("id_inmueble") }
+                        );
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+
+
+        public int DarDeAltaDisponibilidad(int id)
+        {
+            int res = 0;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"UPDATE `inmueble` SET `disponibilidad_inmueble`=1 WHERE `id_inmueble` = @id";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+        public int DarDeBajaDisponibilidad(int id)
+        {
+            int res = 0;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"UPDATE `inmueble` SET `disponibilidad_inmueble`=0 WHERE `id_inmueble` = @id";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+        public IList<Inmueble> obtenerDisponiblesEntreFechas(DateTime fechaInicio, DateTime fechaFin)
+        {
+            IList<Inmueble> res = new List<Inmueble>();
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT 
+                            i.id_inmueble,
+                            i.direccion_inmueble,
+                            i.ambientes_inmueble,
+                            i.superficie_inmueble,
+                            i.lat_inmueble,
+                            i.long_inmueble,
+                            i.PropietarioId,
+                            i.portada_inmueble,
+                            i.tipo_inmueble,
+                            ti.descripcion,
+                            i.uso_inmueble,
+                            i.estaActivoInmueble,
+                            p.nombre_propietario,
+                            p.id_propietario
+                        FROM inmueble i
+                        INNER JOIN propietario p 
+                            ON i.PropietarioId = p.id_propietario
+                        INNER JOIN tipo_inmueble ti 
+                            ON i.tipo_inmueble = ti.id
+                        WHERE i.estaActivoInmueble = 1
+                          AND i.disponibilidad_inmueble = 1
+                          AND i.id_inmueble NOT IN (
+                              SELECT c.idInmueble_contrato
+                              FROM contrato c
+                              WHERE (c.fechaInicio_contrato <= @fechaFin 
+                                     AND c.fechaFin_contrato >= @fechaInicio)
+                          );";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(new Inmueble(
+                            reader.GetString("direccion_inmueble"),
+                            reader.GetInt32("ambientes_inmueble"),
+                            reader.GetInt32("superficie_inmueble"),
+                            reader.GetDecimal("lat_inmueble"),
+                            reader.GetDecimal("long_inmueble"),
+                            reader.GetInt32("PropietarioId"),
+                            reader.GetString("uso_inmueble"),
+                            reader.GetInt32("tipo_inmueble"),
+                            new Propietario
+                            {
+                                id_propietario = reader.GetInt32("id_propietario"),
+                                nombre_propietario = reader.GetString("nombre_propietario")
+                            },
+                            new TipoInmueble
+                            {
+                                id = reader.GetInt32("tipo_inmueble"),
+                                descripcion = reader.GetString("descripcion")
+                            }
+                        )
+                        { id_inmueble = reader.GetInt32("id_inmueble") });
+                    }
+                    connection.Close();
+                }
+            }
+
+            return res;
+        }
+
+
+
+
+
+
+
+
+
+
+
     }
+
 }
