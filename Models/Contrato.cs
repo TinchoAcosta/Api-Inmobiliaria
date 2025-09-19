@@ -11,6 +11,8 @@ namespace inmobiliaria.Models
         public int id_contrato { get; set; }
         public DateTime fechaInicio_contrato { get; set; }
         public DateTime fechaFin_contrato { get; set; }
+
+        [Required(ErrorMessage = "El monto del contrato es obligatorio.")]
         public int monto_contrato { get; set; }
         public int idInmueble { get; set; }
 
@@ -18,11 +20,12 @@ namespace inmobiliaria.Models
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione un inquilino válido.")]
         public int idInquilino { get; set; }
         public Inmueble? Inmueble { get; set; }
-        public Inquilino? Inquilino { get; set; } 
+        public Inquilino? Inquilino { get; set; }
 
         //preguntar al profe
         //public List<Pago> pagos_contrato { get; set; }
 
+        public bool anulado_contrato { get; set; } = false;
         public Contrato() { }
 
         public Contrato(int id_contrato, DateTime fechaInicio_contrato, DateTime fechaFin_contrato, int monto_contrato, int idInmueble, int idInquilino, Inmueble? Inmueble, Inquilino? Inquilino)

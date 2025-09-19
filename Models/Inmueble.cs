@@ -23,8 +23,10 @@ namespace inmobiliaria.Models
         public Propietario? propietario_inmueble { get; set; }
         public string? portada_inmueble { get; set; }
         public IList<Imagen> imagenes_inmueble { get; set; } = new List<Imagen>();
-        public bool estaActivoInmueble { get; set; } = true;
 
+        //borrado
+        public bool estaActivoInmueble { get; set; } = true;
+        //disponibilidad
         public bool disponibilidad_inmueble { get; set; } = true;
 
 

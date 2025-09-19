@@ -1,0 +1,54 @@
+@model IEnumerable<inmobiliaria.Models.Contrato>
+
+@{
+    ViewData["Title"] = "Listado de Contratos Anulados";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-purple fw-bold">@ViewData["Title"]</h2>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary mb-3">
+            Ver Contratos Activos
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle shadow-sm rounded-3 bg-white">
+            <thead class="bg-light-purple text-purple">
+                <tr>
+
+                    <th>Fecha de inicio</th>
+                    <th>Fecha de fin</th>
+                    <th>Monto</th>
+                    <th>Inmueble</th>
+                    <th>Inquilino</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var contrato in Model)
+                {
+                    <tr>
+                        <td>@contrato.fechaInicio_contrato.ToString("dd/MM/yyyy")</td>
+                        <td>@contrato.fechaFin_contrato.ToString("dd/MM/yyyy")</td>
+                        <td>$@contrato.monto_contrato</td>
+                        <td>@contrato.idInmueble</td>
+                        <td>@contrato.Inquilino.nombre_inquilino</td>
+                        <td>
+                            <a class="btn btn-sm btn-info me-1" asp-action="Details"
+                                asp-route-id="@contrato.id_contrato">Ver</a>
+                            <form asp-controller="Contrato" asp-action="Renovar" method="post" class="d-inline">
+                                <input type="text" name="idContrato" value="@contrato.id_contrato" hidden />
+                                <input type="hidden" name="idInmueble" value="@contrato.idInmueble" />
+                                <input type="hidden" name="idInquilino" value="@contrato.idInquilino" />
+                                <button type="submit" class="btn btn-sm btn-success">
+                                    Renovar contrato!
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

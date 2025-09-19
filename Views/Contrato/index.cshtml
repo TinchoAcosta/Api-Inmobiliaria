@@ -6,7 +6,11 @@
 
 <div class="container mt-5">
     <h2 class="mb-4 text-purple fw-bold">@ViewData["Title"]</h2>
-
+    <div>
+        <a  asp-action="ContratosAnulados" class="btn btn-secondary mb-3">
+            Ver Contratos Anulados
+        </a>
+    </div>
     <div class="table-responsive">
         <table class="table table-hover table-striped align-middle shadow-sm rounded-3 bg-white">
             <thead class="bg-light-purple text-purple">
@@ -34,11 +38,16 @@
                                 asp-route-id="@contrato.id_contrato">Ver</a>
                             <a class="btn btn-sm btn-warning me-1" asp-action="Edit"
                                 asp-route-id="@contrato.id_contrato">Editar</a>
-                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@contrato.id_contrato"
-                                data-nombre="Contrato #@contrato.id_contrato">
-                                 @(User.IsInRole("Administrador") ? "Eliminar" : "Anular")
-                            </button>
+                            <a class="btn btn-sm btn-warning me-1" asp-action="BajaContrato"
+                                asp-route-id="@contrato.id_contrato">Dar de Baja</a>
+                            @if(User.IsInRole("Administrador"))
+                            {
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal" data-id="@contrato.id_contrato"
+                                    data-nombre="Contrato #@contrato.id_contrato">
+                                    Eliminar
+                                </button>
+                            }
                         </td>
                     </tr>
                 }

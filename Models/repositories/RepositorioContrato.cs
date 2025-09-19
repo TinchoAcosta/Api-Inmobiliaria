@@ -23,7 +23,9 @@ namespace inmobiliaria.Models
             inm.direccion_inmueble
         FROM contrato c
         INNER JOIN inquilino i ON c.idInquilino_contrato = i.id_inquilino
-        INNER JOIN inmueble inm ON c.idInmueble_contrato = inm.id_inmueble;";
+        INNER JOIN inmueble inm ON c.idInmueble_contrato = inm.id_inmueble
+        WHERE c.borrado_contrato = 1 AND c.anulado_contrato = 0;
+        ";
 
                 using (var command = new MySqlCommand(sql, connection))
                 {
@@ -81,6 +83,34 @@ namespace inmobiliaria.Models
             }
 
             return res;
+        }
+
+        public int renovarContrato(int id, int monto, DateTime fechaI, DateTime fechaF)
+        {
+            int res = 0;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"UPDATE `contrato` SET 
+                `monto_contrato`=@monto,
+                `fechaInicio_contrato`=@fechaI,
+                `fechaFin_contrato`=@fechaF,
+                `anulado_contrato`= 0
+                WHERE `id_contrato` = @id";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@monto", monto);
+                    command.Parameters.AddWithValue("@fechaI", fechaI);
+                    command.Parameters.AddWithValue("@fechaF", fechaF);
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                return res;
+            }
+
+
+
         }
 
         public Contrato obtenerPorId(int id)
@@ -235,6 +265,78 @@ namespace inmobiliaria.Models
 
             connection.Open();
             return Convert.ToInt32(command.ExecuteScalar()) > 0;
+        }
+
+
+
+        public IList<Contrato> obtenerContratosAnulados()
+        {
+
+            IList<Contrato> res = new List<Contrato>();
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT 
+            c.id_contrato,
+            c.monto_contrato,
+            c.fechaInicio_contrato,
+            c.fechaFin_contrato,
+            i.id_inquilino,
+            i.nombre_inquilino,
+            inm.id_inmueble,
+            inm.direccion_inmueble
+        FROM contrato c
+        INNER JOIN inquilino i ON c.idInquilino_contrato = i.id_inquilino
+        INNER JOIN inmueble inm ON c.idInmueble_contrato = inm.id_inmueble
+        WHERE c.anulado_contrato = 1 AND borrado_contrato = 1;";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var contrato = new Contrato(
+                            reader.GetInt32("id_contrato"),
+                            reader.GetDateTime("fechaInicio_contrato"),
+                            reader.GetDateTime("fechaFin_contrato"),
+                            reader.GetInt32("monto_contrato"),
+                            reader.GetInt32("id_inmueble"),
+                            reader.GetInt32("id_inquilino"),
+                            new Inmueble
+                            {
+                                id_inmueble = reader.GetInt32("id_inmueble"),
+                                direccion_inmueble = reader.GetString("direccion_inmueble")
+                            },
+                            new Inquilino
+                            {
+                                id_inquilino = reader.GetInt32("id_inquilino"),
+                                nombre_inquilino = reader.GetString("nombre_inquilino")
+                            }
+                        );
+                        res.Add(contrato);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+        public int AnularContrato(int id)
+        {
+            int res = 0;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"UPDATE `contrato` SET `anulado_contrato`= 1 WHERE `id_contrato` = @id";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            return res;
         }
 
 

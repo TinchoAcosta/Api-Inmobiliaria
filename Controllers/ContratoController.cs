@@ -54,10 +54,6 @@ namespace inmobiliaria.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
-
-
-
             var inquilinos = repoInquilino.obtenerTodos();
             var inmuebles = repoInmueble.obtenerTodos();
             ViewBag.inquilinos = inquilinos;
@@ -79,10 +75,22 @@ namespace inmobiliaria.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Contrato contrato)
         {
-            int res = repo.modificarContrato(contrato);
-            if (res != 0)
+            if (contrato.fechaInicio_contrato >= contrato.fechaFin_contrato)
             {
-                return RedirectToAction("Index");
+                ModelState.AddModelError("fechaFin_contrato", "La fecha de inicio debe ser anterior a la fecha de fin.");
+            }
+            if (repo.ExisteSolapamiento(contrato.idInmueble, contrato.fechaInicio_contrato, contrato.fechaFin_contrato))
+            {
+                ModelState.AddModelError("", "Ya existe un contrato activo para este inmueble en el rango de fechas seleccionado.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                int res = repo.modificarContrato(contrato);
+                if (res != 0)
+                {
+                    return RedirectToAction("Index");
+                }
             }
             var inquilinos = repoInquilino.obtenerTodos();
             var inmuebles = repoInmueble.obtenerTodos();
@@ -140,6 +148,15 @@ namespace inmobiliaria.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmarContratacion(Contrato contrato, int idInmueble, DateTime fechaInicio_contrato, DateTime fechaFin_contrato)
         {
+
+            if (contrato.fechaInicio_contrato >= contrato.fechaFin_contrato)
+            {
+                ModelState.AddModelError("fechaFin_contrato", "La fecha de inicio debe ser anterior a la fecha de fin.");
+            }
+            if (repo.ExisteSolapamiento(contrato.idInmueble, contrato.fechaInicio_contrato, contrato.fechaFin_contrato))
+            {
+                ModelState.AddModelError("", "Ya existe un contrato activo para este inmueble en el rango de fechas seleccionado.");
+            }
             if (ModelState.IsValid)
             {
                 int res = repo.AgregarContrato(contrato);
@@ -158,5 +175,72 @@ namespace inmobiliaria.Controllers
             ViewBag.inquilinos = inquilinos;
             return View("Contratar", contrato);
         }
+
+        public IActionResult BajaContrato(int id)
+        {
+            int res = repo.AnularContrato(id);
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult ContratosAnulados()
+        {
+            var contratosAnulados = repo.obtenerContratosAnulados();
+            return View(contratosAnulados);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Renovar(int idInmueble, int idInquilino, int idContrato)
+        {
+            var inmueble = repoInmueble.obtenerPorId(idInmueble);
+            var inquilino = repoInquilino.obtenerInquilinoPorId(idInquilino);
+
+            var contrato = new Contrato
+            {
+                id_contrato = idContrato,
+                idInmueble = idInmueble,
+                idInquilino = idInquilino
+            };
+
+            ViewBag.inmueble = inmueble;
+            ViewBag.inquilino = inquilino;
+
+            return View("Renovar", contrato);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmarRenovacion(Contrato contrato)
+        {
+            if (contrato.fechaInicio_contrato >= contrato.fechaFin_contrato)
+            {
+                ModelState.AddModelError("fechaFin_contrato", "La fecha de inicio debe ser anterior a la fecha de fin.");
+            }
+            if (repo.ExisteSolapamiento(contrato.idInmueble, contrato.fechaInicio_contrato, contrato.fechaFin_contrato))
+            {
+                ModelState.AddModelError("", "Ya existe un contrato activo para este inmueble en el rango de fechas seleccionado.");
+            }
+            if (ModelState.IsValid)
+            {
+                int res = repo.renovarContrato(contrato.id_contrato, contrato.monto_contrato, contrato.fechaInicio_contrato, contrato.fechaFin_contrato);
+                if (res != 0)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            var inmueble = repoInmueble.obtenerPorId(contrato.idInmueble);
+            var inquilino = repoInquilino.obtenerInquilinoPorId(contrato.idInquilino);
+            ViewBag.inmueble = inmueble;
+            ViewBag.inquilino = inquilino;
+            ViewBag.idContrato = contrato.id_contrato;
+            return View("Renovar", contrato);
+        }
+
     }
 }

@@ -5,20 +5,22 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Contratar!</h2>
+    <h2 class="mb-4">Renovar Contrato</h2>
 
-    <form asp-action="ConfirmarContratacion" method="post">
-
+    <form asp-action="ConfirmarRenovacion" method="post">
+        <input type="hidden" asp-for="id_contrato" />
         <div class="mb-3">
-            <label class="form-label">Fecha de Inicio:</label>
-            <input type="date" class="form-control" value="@ViewBag.fechaInicio" readonly />
-            <input type="hidden" name="fechaInicio_contrato" value="@ViewBag.fechaInicio" />
+            <label asp-for="fechaInicio_contrato" class="form-label">Fecha de Inicio:</label>
+            <input type="date" asp-for="fechaInicio_contrato" class="form-control"
+                min="@DateTime.Now.ToString("yyyy-MM-dd")">
+            <span asp-validation-for="fechaInicio_contrato" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Fecha de Fin:</label>
-            <input type="date" class="form-control" value="@ViewBag.fechaFin" readonly />
-            <input type="hidden" name="fechaFin_contrato" value="@ViewBag.fechaFin" />
+            <label asp-for="fechaFin_contrato" class="form-label">Fecha de Fin:</label>
+            <input type="date" asp-for="fechaFin_contrato" class="form-control"
+                min="@DateTime.Now.ToString("yyyy-MM-dd")">
+            <span asp-validation-for="fechaFin_contrato" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
@@ -29,22 +31,19 @@
 
         <div class="mb-3">
             <label asp-for="idInquilino" class="form-label">Inquilino:</label>
-            <select asp-for="idInquilino" class="form-control">
-                <option value="">Seleccione un inquilino</option>
-                @foreach (var p in ViewBag.inquilinos)
-                {
-                    <option value="@p.id_inquilino">@p.nombre_inquilino</option>
-                }
-            </select>
+            <input type="text" class="form-control" value="@ViewBag.inquilino.nombre_inquilino" readonly />
+            <input type="hidden" asp-for="idInquilino" value="@ViewBag.inquilino.id_inquilino" />
             <span asp-validation-for="idInquilino" class="text-danger"></span>
         </div>
 
-
         <div class="mb-3">
-            <label class="form-label">Inmueble:</label>
+            <label asp-for="idInmueble" class="form-label">Inmueble:</label>
             <input type="text" class="form-control" value="@ViewBag.inmueble.direccion_inmueble" readonly />
-            <input type="hidden" name="idInmueble" value="@ViewBag.inmueble.id_inmueble" />
+            <input type="hidden" asp-for="idInmueble" value="@ViewBag.inmueble.id_inmueble" />
+            <span asp-validation-for="idInmueble" class="text-danger"></span>
         </div>
+
+
         @if (!ViewData.ModelState.IsValid)
         {
             <div class="alert alert-danger">
@@ -57,6 +56,7 @@
                 </ul>
             </div>
         }
+
 
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
