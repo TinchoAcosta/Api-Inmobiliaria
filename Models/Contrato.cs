@@ -15,6 +15,7 @@ namespace inmobiliaria.Models
         public int idInmueble { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar un inquilino.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Seleccione un inquilino válido.")]
         public int idInquilino { get; set; }
         public Inmueble? Inmueble { get; set; }
         public Inquilino? Inquilino { get; set; } 

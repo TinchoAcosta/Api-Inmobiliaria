@@ -159,7 +159,7 @@ namespace inmobiliaria.Models
             }
             return res;
         }
-        
+
         public IList<Contrato> obtenerContratosActivos()
         {
 
@@ -212,6 +212,31 @@ namespace inmobiliaria.Models
             }
             return res;
         }
+
+        public bool ExisteSolapamiento(int idInmueble, DateTime inicio, DateTime fin, int? idContratoActual = null)
+        {
+            var query = @"SELECT COUNT(*) FROM contrato 
+                  WHERE idInmueble_contrato = @idInmueble
+                  AND borrado_contrato = 1 
+                  AND id_contrato != IFNULL(@idContratoActual, -1)
+                  AND (
+                        (@inicio BETWEEN fechaInicio_contrato AND fechaFin_contrato)
+                        OR (@fin BETWEEN fechaInicio_contrato AND fechaFin_contrato)
+                        OR (fechaInicio_contrato BETWEEN @inicio AND @fin)
+                        OR (fechaFin_contrato BETWEEN @inicio AND @fin)
+                     )";
+
+            using var connection = new MySqlConnection(connectionString);
+            using var command = new MySqlCommand(query, connection);
+            command.Parameters.AddWithValue("@idInmueble", idInmueble);
+            command.Parameters.AddWithValue("@inicio", inicio);
+            command.Parameters.AddWithValue("@fin", fin);
+            command.Parameters.AddWithValue("@idContratoActual", idContratoActual);
+
+            connection.Open();
+            return Convert.ToInt32(command.ExecuteScalar()) > 0;
+        }
+
 
     }
 }

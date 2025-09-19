@@ -11,13 +11,13 @@
 
         <div class="mb-3">
             <label asp-for="fechaInicio_contrato" class="form-label">Fecha de Inicio:</label>
-            <input type="date" asp-for="fechaInicio_contrato" class="form-control">
+            <input type="date" asp-for="fechaInicio_contrato" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")">
             <span asp-validation-for="fechaInicio_contrato" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="fechaFin_contrato" class="form-label">Fecha de Fin:</label>
-            <input type="date" asp-for="fechaFin_contrato" class="form-control">
+            <input type="date" asp-for="fechaFin_contrato" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")">
             <span asp-validation-for="fechaFin_contrato" class="text-danger"></span>
         </div>
 
@@ -39,6 +39,7 @@
                     }
                 }
             </select>
+            <span asp-validation-for="idInquilino" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
@@ -50,7 +51,22 @@
                     <option value="@t.id_inmueble">@t.direccion_inmueble</option>
                 }
             </select>
+            <span asp-validation-for="idInmueble" class="text-danger"></span>
         </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <strong>Se encontraron errores:</strong>
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
 
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>

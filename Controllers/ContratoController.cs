@@ -38,6 +38,14 @@ namespace inmobiliaria.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Contrato contrato)
         {
+            if (contrato.fechaInicio_contrato >= contrato.fechaFin_contrato)
+            {
+                ModelState.AddModelError("fechaFin_contrato", "La fecha de inicio debe ser anterior a la fecha de fin.");
+            }
+            if (repo.ExisteSolapamiento(contrato.idInmueble, contrato.fechaInicio_contrato, contrato.fechaFin_contrato))
+            {
+                ModelState.AddModelError("", "Ya existe un contrato activo para este inmueble en el rango de fechas seleccionado.");
+            }
             if (ModelState.IsValid)
             {
                 int res = repo.AgregarContrato(contrato);
@@ -46,6 +54,9 @@ namespace inmobiliaria.Controllers
                     return RedirectToAction("Index");
                 }
             }
+
+
+
 
             var inquilinos = repoInquilino.obtenerTodos();
             var inmuebles = repoInmueble.obtenerTodos();
