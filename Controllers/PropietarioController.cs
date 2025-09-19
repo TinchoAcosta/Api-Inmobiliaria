@@ -40,17 +40,6 @@ namespace inmobiliaria.Controllers
             return View(p);
         }
 
-        [Authorize(Policy = "Administrador")]
-        public IActionResult Delete(int id)
-        {
-            int res = repo.borrarPropietario(id);
-            if (res == 0)
-            {
-                return NotFound();
-            }
-            return RedirectToAction("Index");
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "Administrador")]

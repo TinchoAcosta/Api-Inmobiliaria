@@ -11,10 +11,7 @@ namespace inmobiliaria.Models
         public int id_propietario { get; set; }
 
         [Required(ErrorMessage = "El DNI es requerido")] // Indica que este campo es obligatorio
-        public int dni_propietario { get; set; }
-
-        [Required(ErrorMessage = "La contraseña es requerida")] // Campo obligatorio
-        public string contrasena_propietario { get; set; }
+        public int? dni_propietario { get; set; }
 
         [Required(ErrorMessage = "El nombre es requerido")] // Campo obligatorio
         public string nombre_propietario { get; set; }
@@ -37,7 +34,6 @@ namespace inmobiliaria.Models
 
         public Propietario()
         {
-            contrasena_propietario = "";
             nombre_propietario = "";
             apellido_propietario = "";
             email_propietario = "";
@@ -45,10 +41,9 @@ namespace inmobiliaria.Models
             Inmuebles = new List<Inmueble>();
         }
 
-        public Propietario(int dni, string contrasena, string nombre, string apellido, string email, string telefono)
+        public Propietario(int dni, string nombre, string apellido, string email, string telefono)
         {
             dni_propietario = dni;
-            contrasena_propietario = contrasena;
             nombre_propietario = nombre;
             apellido_propietario = apellido;
             email_propietario = email;
