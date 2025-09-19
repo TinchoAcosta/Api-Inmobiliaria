@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-09-2025 a las 20:47:10
+-- Tiempo de generación: 19-09-2025 a las 21:58:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -26,6 +26,21 @@ USE `inmobiliaria`;
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `auditoria`
+--
+
+CREATE TABLE `auditoria` (
+  `id_auditoria` int(11) NOT NULL,
+  `entidad` varchar(50) NOT NULL,
+  `id_entidad` int(11) NOT NULL,
+  `accion` varchar(20) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `contrato`
 --
 
@@ -36,16 +51,9 @@ CREATE TABLE `contrato` (
   `fechaFin_contrato` date NOT NULL,
   `idInmueble_contrato` int(11) NOT NULL,
   `idInquilino_contrato` int(11) NOT NULL,
-  `borrado_contrato` tinyint(1) NOT NULL DEFAULT 1
+  `borrado_contrato` tinyint(1) NOT NULL DEFAULT 1,
+  `anulado_contrato` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `contrato`
---
-
-INSERT INTO `contrato` (`id_contrato`, `monto_contrato`, `fechaInicio_contrato`, `fechaFin_contrato`, `idInmueble_contrato`, `idInquilino_contrato`, `borrado_contrato`) VALUES
-(1, 3450, '2025-08-11', '2025-08-20', 2, 1, 0),
-(2, 3, '2025-08-20', '2025-09-06', 2, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -64,16 +72,9 @@ CREATE TABLE `inmueble` (
   `portada_inmueble` varchar(100) DEFAULT NULL,
   `tipo_inmueble` int(11) NOT NULL,
   `uso_inmueble` varchar(50) NOT NULL,
-  `estaActivoInmueble` tinyint(1) DEFAULT 1
+  `estaActivoInmueble` tinyint(1) DEFAULT 1,
+  `disponibilidad_inmueble` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `inmueble`
---
-
-INSERT INTO `inmueble` (`id_inmueble`, `direccion_inmueble`, `ambientes_inmueble`, `superficie_inmueble`, `lat_inmueble`, `long_inmueble`, `PropietarioId`, `portada_inmueble`, `tipo_inmueble`, `uso_inmueble`, `estaActivoInmueble`) VALUES
-(1, 'asd', 33, 232, 2.00000000, 2.00000000, 1, NULL, 2, 'comercial', 0),
-(2, 'asd', 33, 232, 99.99999999, 123.00000000, 1, NULL, 1, 'comercial', 1);
 
 -- --------------------------------------------------------
 
@@ -91,17 +92,6 @@ CREATE TABLE `inquilino` (
   `borrado_inquilino` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `inquilino`
---
-
-INSERT INTO `inquilino` (`id_inquilino`, `nombre_inquilino`, `apellido_inquilino`, `dni_inquilino`, `telefono_inquilino`, `email_inquilino`, `borrado_inquilino`) VALUES
-(1, 'Lucía', 'Fernández', 40123456, '2664001122', 'lucia.fernandez@example.com', 1),
-(2, 'Gonzalo', 'Juarez', 40234567, '2664003344', 'carlos.ramirez@example.com', 1),
-(3, 'inquilino', 'inquilinoapellido', 1112223, '65465464656', 'inquilino@inquilino.inquilino', 1),
-(4, 'asa', 'sas', 123123421, '123213', 'asdasdadsadsa@asas.asa', 0),
-(5, 'borrado_inquilino', 'sas', 134213, '123213', 'asdasdadsadsa@asas.asa', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -115,7 +105,8 @@ CREATE TABLE `pago` (
   `monto_pago` double NOT NULL,
   `detalle_pago` varchar(70) NOT NULL,
   `esta_anulado` tinyint(1) NOT NULL DEFAULT 0,
-  `contratoId` int(11) NOT NULL
+  `contratoId` int(11) NOT NULL,
+  `borrado_pago` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -135,20 +126,22 @@ CREATE TABLE `propietario` (
   `borrado_propietario` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `propietario`
+-- Estructura de tabla para la tabla `tipo_inmueble`
 --
 
-INSERT INTO `propietario` (`id_propietario`, `dni_propietario`, `contrasena_propietario`, `nombre_propietario`, `apellido_propietario`, `email_propietario`, `telefono_propietario`, `borrado_propietario`) VALUES
-(1, 30123456, 'clave123', 'María', 'Gómez', 'maria.gomez@example.com', '2664123456', 1),
-(2, 30234567, 'segura456', 'Juan', 'Pérez', 'juan.perez@example.com', '2664987654', 1),
-(3, 12312, 'adsasd', 'J', 'Perez', 'propietario@p.prop', '123213', 1),
-(4, 213412, 'fdsfds', 'prop2', 'asdaddsa', 'asdads@asd.s', '123213', 0);
+CREATE TABLE `tipo_inmueble` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
--- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuario`
--- --------------------------------------------------------
+--
 
 CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL,
@@ -161,40 +154,24 @@ CREATE TABLE `usuario` (
   `borrado_usuario` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Índices de la tabla `usuario`
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`);
-
--- AUTO_INCREMENT de la tabla `usuario`
-ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
-
-
-
-
-
 --
--- Estructura de tabla para la tabla `tipo_inmueble`
+-- Volcado de datos para la tabla `usuario`
 --
 
-CREATE TABLE `tipo_inmueble` (
-  `id` int(11) NOT NULL,
-  `descripcion` varchar(40) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `tipo_inmueble`
---
-
-INSERT INTO `tipo_inmueble` (`id`, `descripcion`) VALUES
-(1, 'Deposito'),
-(2, 'Local'),
-(3, 'Casa'),
-(4, 'Departamento');
+INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `email_usuario`, `password_usuario`, `rol_usuario`, `avatar_usuario`, `borrado_usuario`) VALUES
+(1, 'Admin', 'Principal', 'admin@inmobiliaria.com', 'J32wk9L+3ZZk+1/0aWcbBZVdSvQDRfMLsRImZOlLk6c=', 'Administrador', NULL, 1),
+(2, 'usser', 'empleado', 'user@empleado.com', 'VnM7FqRhC9u2Lc1HPhR8eDcrUlDE3RklOzmroRZDX6s=', 'Empleado', '/uploads/usuarios/d78ca8d8-ecb6-4dce-8502-70216dac27e5.jpg', 1);
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `auditoria`
+--
+ALTER TABLE `auditoria`
+  ADD PRIMARY KEY (`id_auditoria`),
+  ADD KEY `fk_auditoria_usuario` (`usuario_id`);
 
 --
 -- Indices de la tabla `contrato`
@@ -238,20 +215,32 @@ ALTER TABLE `tipo_inmueble`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id_usuario`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `auditoria`
+--
+ALTER TABLE `auditoria`
+  MODIFY `id_auditoria` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `contrato`
 --
 ALTER TABLE `contrato`
-  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  MODIFY `id_inmueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_inmueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `inquilino`
@@ -275,11 +264,23 @@ ALTER TABLE `propietario`
 -- AUTO_INCREMENT de la tabla `tipo_inmueble`
 --
 ALTER TABLE `tipo_inmueble`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `auditoria`
+--
+ALTER TABLE `auditoria`
+  ADD CONSTRAINT `fk_auditoria_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id_usuario`);
 
 --
 -- Filtros para la tabla `contrato`
