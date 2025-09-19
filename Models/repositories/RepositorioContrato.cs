@@ -77,7 +77,8 @@ namespace inmobiliaria.Models
                     command.Parameters.AddWithValue("@idInquilino", contrato.idInquilino);
 
                     connection.Open();
-                    res = command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                    res = Convert.ToInt32(command.LastInsertedId);
                     connection.Close();
                 }
             }
@@ -247,7 +248,8 @@ namespace inmobiliaria.Models
         {
             var query = @"SELECT COUNT(*) FROM contrato 
                   WHERE idInmueble_contrato = @idInmueble
-                  AND borrado_contrato = 1 
+                  AND borrado_contrato = 1
+                  AND anulado_contrato = 0 
                   AND id_contrato != IFNULL(@idContratoActual, -1)
                   AND (
                         (@inicio BETWEEN fechaInicio_contrato AND fechaFin_contrato)

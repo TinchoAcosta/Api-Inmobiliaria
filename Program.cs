@@ -1,3 +1,4 @@
+using inmobiliaria.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,8 @@ builder.Services.AddScoped<inmobiliaria.Models.RepositorioContrato>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioPago>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioUsuario>();
 builder.Services.AddScoped<inmobiliaria.Models.RepositorioTipoInmueble>();
+
+builder.Services.AddScoped<AuditoriaHelper>();
 
 var app = builder.Build();
 

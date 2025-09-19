@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using inmobiliaria.Models;
 using Microsoft.AspNetCore.Authorization;
+using inmobiliaria.Services;
 
 namespace inmobiliaria.Controllers
 {
@@ -10,12 +11,16 @@ namespace inmobiliaria.Controllers
         private readonly RepositorioContrato repo;
         private readonly RepositorioInquilino repoInquilino;
         private readonly RepositorioInmueble repoInmueble;
+        private readonly AuditoriaHelper helper;
+        private readonly RepositorioUsuario repoUsuario;
 
-        public ContratoController(RepositorioContrato repo, RepositorioInquilino repoInquilino, RepositorioInmueble repoInmueble)
+        public ContratoController(RepositorioContrato repo, RepositorioInquilino repoInquilino, RepositorioInmueble repoInmueble, AuditoriaHelper helper, RepositorioUsuario repoUsuario)
         {
             this.repo = repo;
             this.repoInquilino = repoInquilino;
             this.repoInmueble = repoInmueble;
+            this.helper = helper;
+            this.repoUsuario = repoUsuario;
         }
 
         public IActionResult Index()
@@ -49,8 +54,11 @@ namespace inmobiliaria.Controllers
             if (ModelState.IsValid)
             {
                 int res = repo.AgregarContrato(contrato);
-                if (res != 0)
+                if (res > 0)
                 {
+                    var email_usuario = User.Identity?.Name;
+                    Usuario u = repoUsuario.obtenerUsuarioPorEmail(email_usuario);
+                    helper.RegistrarAuditoria("Contrato", res, "Creacion", u.id_usuario);
                     return RedirectToAction("Index");
                 }
             }
@@ -79,7 +87,7 @@ namespace inmobiliaria.Controllers
             {
                 ModelState.AddModelError("fechaFin_contrato", "La fecha de inicio debe ser anterior a la fecha de fin.");
             }
-            if (repo.ExisteSolapamiento(contrato.idInmueble, contrato.fechaInicio_contrato, contrato.fechaFin_contrato))
+            if (repo.ExisteSolapamiento(contrato.idInmueble, contrato.fechaInicio_contrato, contrato.fechaFin_contrato, contrato.id_contrato))
             {
                 ModelState.AddModelError("", "Ya existe un contrato activo para este inmueble en el rango de fechas seleccionado.");
             }
@@ -89,6 +97,9 @@ namespace inmobiliaria.Controllers
                 int res = repo.modificarContrato(contrato);
                 if (res != 0)
                 {
+                    var email_usuario = User.Identity?.Name;
+                    Usuario u = repoUsuario.obtenerUsuarioPorEmail(email_usuario);
+                    helper.RegistrarAuditoria("Contrato", contrato.id_contrato, "Modificacion", u.id_usuario);
                     return RedirectToAction("Index");
                 }
             }
@@ -100,15 +111,6 @@ namespace inmobiliaria.Controllers
             return View(contr);
         }
 
-        public IActionResult Delete(int id)
-        {
-            int res = repo.borrarContrato(id);
-            if (res == 0)
-            {
-                return NotFound();
-            }
-            return RedirectToAction("Index");
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -116,7 +118,6 @@ namespace inmobiliaria.Controllers
             int res = repo.borrarContrato(id);
             if (res == 0)
             {
-                Console.WriteLine("Contrato no encontrado");
                 return NotFound();
             }
             return RedirectToAction("Index");
@@ -160,8 +161,11 @@ namespace inmobiliaria.Controllers
             if (ModelState.IsValid)
             {
                 int res = repo.AgregarContrato(contrato);
-                if (res != 0)
+                if (res > 0)
                 {
+                    var email_usuario = User.Identity?.Name;
+                    Usuario u = repoUsuario.obtenerUsuarioPorEmail(email_usuario);
+                    helper.RegistrarAuditoria("Contrato", res, "Creacion", u.id_usuario);
                     return RedirectToAction("Index");
                 }
             }
@@ -183,6 +187,9 @@ namespace inmobiliaria.Controllers
             {
                 return NotFound();
             }
+            var email_usuario = User.Identity?.Name;
+            Usuario u = repoUsuario.obtenerUsuarioPorEmail(email_usuario);
+            helper.RegistrarAuditoria("Contrato", id, "Anulacion", u.id_usuario);
             return RedirectToAction("Index");
         }
 
@@ -221,7 +228,7 @@ namespace inmobiliaria.Controllers
             {
                 ModelState.AddModelError("fechaFin_contrato", "La fecha de inicio debe ser anterior a la fecha de fin.");
             }
-            if (repo.ExisteSolapamiento(contrato.idInmueble, contrato.fechaInicio_contrato, contrato.fechaFin_contrato))
+            if (repo.ExisteSolapamiento(contrato.idInmueble, contrato.fechaInicio_contrato, contrato.fechaFin_contrato, contrato.id_contrato))
             {
                 ModelState.AddModelError("", "Ya existe un contrato activo para este inmueble en el rango de fechas seleccionado.");
             }
@@ -230,6 +237,9 @@ namespace inmobiliaria.Controllers
                 int res = repo.renovarContrato(contrato.id_contrato, contrato.monto_contrato, contrato.fechaInicio_contrato, contrato.fechaFin_contrato);
                 if (res != 0)
                 {
+                    var email_usuario = User.Identity?.Name;
+                    Usuario u = repoUsuario.obtenerUsuarioPorEmail(email_usuario);
+                    helper.RegistrarAuditoria("Contrato",contrato.id_contrato,"Renovacion",u.id_usuario);
                     return RedirectToAction("Index");
                 }
             }
