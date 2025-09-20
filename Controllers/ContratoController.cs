@@ -13,14 +13,16 @@ namespace inmobiliaria.Controllers
         private readonly RepositorioInmueble repoInmueble;
         private readonly AuditoriaHelper helper;
         private readonly RepositorioUsuario repoUsuario;
+        private readonly RepositorioAuditoria repoAuditoria;
 
-        public ContratoController(RepositorioContrato repo, RepositorioInquilino repoInquilino, RepositorioInmueble repoInmueble, AuditoriaHelper helper, RepositorioUsuario repoUsuario)
+        public ContratoController(RepositorioContrato repo, RepositorioInquilino repoInquilino, RepositorioInmueble repoInmueble, AuditoriaHelper helper, RepositorioUsuario repoUsuario, RepositorioAuditoria repoAuditoria)
         {
             this.repo = repo;
             this.repoInquilino = repoInquilino;
             this.repoInmueble = repoInmueble;
             this.helper = helper;
             this.repoUsuario = repoUsuario;
+            this.repoAuditoria = repoAuditoria;
         }
 
         public IActionResult Index()
@@ -126,6 +128,8 @@ namespace inmobiliaria.Controllers
         public IActionResult Details(int id)
         {
             var contrato = repo.obtenerPorId(id);
+            var auditorias = repoAuditoria.ObtenerPorEntidad("Contrato",id);
+            ViewBag.auditorias = auditorias;
             return View(contrato);
         }
 

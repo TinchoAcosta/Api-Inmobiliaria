@@ -75,7 +75,7 @@ namespace inmobiliaria.Models
             var lista = new List<Auditoria>();
             using var conn = new MySqlConnection(connectionString);
             string sql = @"SELECT a.id_auditoria, a.entidad, a.id_entidad, a.accion, a.usuario_id, a.fecha,
-                              u.nombre_usuario
+                              u.nombre_usuario, u.apellido_usuario
                        FROM auditoria a
                        INNER JOIN usuario u ON a.usuario_id = u.id_usuario
                        WHERE a.entidad = @entidad AND a.id_entidad = @idEntidad
@@ -97,6 +97,7 @@ namespace inmobiliaria.Models
                             new Usuario
                             {
                                 nombre_usuario = reader.GetString("nombre_usuario"),
+                                apellido_usuario = reader.GetString("apellido_usuario"),
                             }
                         ));
             }

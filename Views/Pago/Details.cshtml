@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Detalle del Pago";
+    var auditorias = ViewBag.auditorias as IList<inmobiliaria.Models.Auditoria>;
 }
 
 <div class="container mt-5">
@@ -55,7 +56,84 @@
         </div>
     </div>
 
+    @if (User.IsInRole("Administrador"))
+    {
+        @if (auditorias != null && auditorias.Any())
+        {
+            <div class="card shadow-sm rounded-4 p-4 border-0 mt-5">
+                <h5 class="card-title text-purple fw-bold mb-4 text-center">Historial de Auditoría</h5>
+                <ul class="timeline list-unstyled">
+                    @foreach (var a in auditorias)
+                    {
+                        <li class="timeline-item mb-4">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <span class="badge bg-light text-purple border border-purple px-3 py-2 fw-semibold">
+                                    @a.accion
+                                </span>
+                                <div class="fw-bold text-dark mt-2">@a.usuario?.nombre_usuario @a.usuario.apellido_usuario</div>
+                                <div class="text-muted small">@a.fecha.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info mt-5 text-center rounded-4 shadow-sm">
+                <i class="bi bi-info-circle"></i> No hay registros de auditoría para este contrato.
+            </div>
+        }
+    }
+
     <div class="mt-4 text-center">
         <a asp-action="Index" class="btn btn-gradient-success fw-semibold px-4">Volver al Listado</a>
     </div>
 </div>
+
+<style>
+
+    .timeline {
+        position: relative;
+        padding-left: 25px;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 10px;
+        width: 3px;
+        height: 100%;
+        background: #6f42c1;
+    }
+
+    .timeline-item {
+        position: relative;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: -2px;
+        top: 5px;
+        width: 15px;
+        height: 15px;
+        background-color: #6f42c1;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 2px #6f42c1;
+    }
+
+    .timeline-content {
+        margin-left: 30px;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+    }
+
+    .border-purple {
+        border-color: #6f42c1 !important;
+    }
+</style>

@@ -18,13 +18,15 @@ namespace inmobiliaria.Controllers
         private readonly RepositorioContrato repositorioContrato;
         private readonly AuditoriaHelper helper;
         private readonly RepositorioUsuario repoUsuario;
+        private readonly RepositorioAuditoria repoAuditoria;
 
-        public PagoController(RepositorioPago repo, RepositorioContrato repositorioContrato, AuditoriaHelper helper, RepositorioUsuario repoUsuario)
+        public PagoController(RepositorioPago repo, RepositorioContrato repositorioContrato, AuditoriaHelper helper, RepositorioUsuario repoUsuario, RepositorioAuditoria repoAuditoria)
         {
             this.repo = repo;
             this.repositorioContrato = repositorioContrato;
             this.helper = helper;
             this.repoUsuario = repoUsuario;
+            this.repoAuditoria = repoAuditoria;
         }
 
         public IActionResult FiltrarPorContrato(int contratoId)
@@ -126,6 +128,8 @@ namespace inmobiliaria.Controllers
             {
                 return NotFound();
             }
+            var auditorias = repoAuditoria.ObtenerPorEntidad("Pago",id);
+            ViewBag.auditorias = auditorias;
             return View(pago);
         }
 
