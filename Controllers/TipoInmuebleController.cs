@@ -64,5 +64,22 @@ namespace inmobiliaria.Controllers
             var tipo = repo.obtenerTipoPorId(t.id);
             return View(tipo);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            if (!repo.EstaEnUso(id))
+            {
+                int res = repo.borrarTipo(id);
+                if (res == 0)
+                {
+                    return NotFound();
+                }
+                return RedirectToAction("Index");
+            }
+            TempData["ErrorMessage"] = "No se puede borrar el tipo de inmueble porque está en uso.";
+            return RedirectToAction("Index");
+        }
     }
 }

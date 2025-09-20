@@ -75,7 +75,7 @@ namespace inmobiliaria.Models
                 return tipo;
             }
         }
-        
+
         public int editarTipo(TipoInmueble t)
         {
             int res = 0;
@@ -93,5 +93,41 @@ namespace inmobiliaria.Models
             }
             return res;
         }
+
+        public bool EstaEnUso(int idTipo)
+        {
+            bool enUso = false;
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT COUNT(*) 
+                               FROM inmueble 
+                               WHERE tipo_inmueble = @idTipo;";
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idTipo", idTipo);
+                    conn.Open();
+                    var result = Convert.ToInt32(cmd.ExecuteScalar());
+                    enUso = true ? result > 0 : false;
+                }
+            }
+            return enUso;
+        }
+
+        public int borrarTipo(int id)
+        {
+            int res = 0;
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                string sql = @"DELETE FROM `tipo_inmueble` WHERE `id` = @id;";
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            return res;
+        }
     }
- }
+}
