@@ -16,12 +16,12 @@
 
 - **Email:**
   admin@inmobiliaria.com
-- **Contraseña**
+- **Contraseña:**
   Admin123
 
 ## Empleado
 
 - **Email:**
   user@empleado.com
-- **Contraseña**
+- **Contraseña:**
   123456
