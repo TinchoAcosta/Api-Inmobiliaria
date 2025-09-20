@@ -109,7 +109,8 @@ INNER JOIN inmueble inm ON c.idInmueble_contrato = inm.id_inmueble;";
                     command.Parameters.AddWithValue("@esta_anulado", p.esta_anulado);
                     command.Parameters.AddWithValue("@contratoId", p.contratoId);
                     connection.Open();
-                    res = command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                    res = Convert.ToInt32(command.LastInsertedId);
                     connection.Close();
                 }
             }

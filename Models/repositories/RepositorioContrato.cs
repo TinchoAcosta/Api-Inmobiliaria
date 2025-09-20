@@ -210,7 +210,7 @@ namespace inmobiliaria.Models
         FROM contrato c
         INNER JOIN inquilino i ON c.idInquilino_contrato = i.id_inquilino
         INNER JOIN inmueble inm ON c.idInmueble_contrato = inm.id_inmueble
-        WHERE c.borrado_contrato = 0;";
+        WHERE c.borrado_contrato = 1 AND c.anulado_contrato = 0;";
 
                 using (var command = new MySqlCommand(sql, connection))
                 {

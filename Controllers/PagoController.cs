@@ -2,6 +2,7 @@ using inmobiliaria.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using inmobiliaria.Services;
 
 
 
@@ -15,11 +16,15 @@ namespace inmobiliaria.Controllers
 
         private readonly RepositorioPago repo;
         private readonly RepositorioContrato repositorioContrato;
+        private readonly AuditoriaHelper helper;
+        private readonly RepositorioUsuario repoUsuario;
 
-        public PagoController(RepositorioPago repo, RepositorioContrato repositorioContrato)
+        public PagoController(RepositorioPago repo, RepositorioContrato repositorioContrato, AuditoriaHelper helper, RepositorioUsuario repoUsuario)
         {
             this.repo = repo;
             this.repositorioContrato = repositorioContrato;
+            this.helper = helper;
+            this.repoUsuario = repoUsuario;
         }
 
         public IActionResult FiltrarPorContrato(int contratoId)
@@ -57,8 +62,11 @@ namespace inmobiliaria.Controllers
             if (ModelState.IsValid)
             {
                 int res = repo.agregarPago(pago);
-                if (res != 0)
+                if (res > 0)
                 {
+                    var email_usuario = User.Identity?.Name;
+                    Usuario u = repoUsuario.obtenerUsuarioPorEmail(email_usuario);
+                    helper.RegistrarAuditoria("Pago", res, "Creacion", u.id_usuario);
                     return RedirectToAction("Index");
                 }
             }
@@ -85,6 +93,9 @@ namespace inmobiliaria.Controllers
 
             if (res != 0)
             {
+                var email_usuario = User.Identity?.Name;
+                Usuario u = repoUsuario.obtenerUsuarioPorEmail(email_usuario);
+                helper.RegistrarAuditoria("Pago", id_pago, "Modificacion", u.id_usuario);
                 return RedirectToAction("Index");
             }
             var pagos = repo.obtenerTodos();
@@ -96,17 +107,6 @@ namespace inmobiliaria.Controllers
         }
 
 
-        public IActionResult Delete(int id)
-        {
-            //DEBERIA REGISTRAR EL EMPLEADO QUE REALIZA LA ANULACION
-            int res = repo.anularPago(id);
-            if (res == 0)
-            {
-                return NotFound();
-            }
-            return RedirectToAction("Index");
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -114,7 +114,6 @@ namespace inmobiliaria.Controllers
             int res = repo.anularPago(id);
             if (res == 0)
             {
-                Console.WriteLine("Pago no encontrado");
                 return NotFound();
             }
             return RedirectToAction("Index");
@@ -128,6 +127,19 @@ namespace inmobiliaria.Controllers
                 return NotFound();
             }
             return View(pago);
+        }
+
+        public IActionResult AnularPago(int id)
+        {
+            int res = repo.anularPago(id);
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            var email_usuario = User.Identity?.Name;
+            Usuario u = repoUsuario.obtenerUsuarioPorEmail(email_usuario);
+            helper.RegistrarAuditoria("Pago", id, "Anulacion", u.id_usuario);
+            return RedirectToAction("Index");
         }
 
     }

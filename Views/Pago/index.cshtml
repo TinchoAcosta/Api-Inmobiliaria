@@ -54,10 +54,15 @@
                         <td>
                             <a class="btn btn-sm btn-info me-1" asp-action="Details" asp-route-id="@pago.id_pago">Ver</a>
                             <a class="btn btn-sm btn-warning me-1" asp-action="Edit" asp-route-id="@pago.id_pago">Editar</a>
-                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@pago.id_pago" data-nombre="@pago.numero_pago">
-                                 @(User.IsInRole("Administrador") ? "Eliminar" : "Anular")
-                            </button>
+                             <a class="btn btn-sm btn-warning me-1" asp-action="AnularPago" asp-route-id="@pago.id_pago">Anular</a>
+                            @if(User.IsInRole("Administrador"))
+                            {
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal" data-id="@pago.id_pago"
+                                    data-nombre="Pago #@pago.id_pago">
+                                    Eliminar
+                                </button>
+                            }
                         </td>
                     </tr>
                 }
