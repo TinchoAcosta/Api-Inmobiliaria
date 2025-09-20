@@ -12,9 +12,6 @@
             <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
                 <h5 class="card-title text-purple fw-bold mb-3">Información Personal</h5>
                 <div class="mb-2">
-                    <strong>ID:</strong> @Model.id_usuario
-                </div>
-                <div class="mb-2">
                     <strong>Nombre:</strong> @Model.nombre_usuario
                 </div>
                 <div class="mb-2">
@@ -34,7 +31,8 @@
                 <h5 class="card-title text-purple fw-bold mb-3">Avatar</h5>
                 @if (!string.IsNullOrEmpty(Model.avatar_usuario))
                 {
-                    <img src="@Model.avatar_usuario" alt="Avatar del usuario" class="img-fluid rounded-circle shadow-sm" style="max-width: 150px;" />
+                    <img src="@Model.avatar_usuario" alt="Avatar del usuario" class="img-fluid rounded-circle shadow-sm"
+                        style="max-width: 150px;" />
                 }
                 else
                 {

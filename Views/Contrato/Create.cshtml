@@ -5,70 +5,82 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Alta de Contratos</h2>
-
-    <form asp-action="Create" method="post">
-
-        <div class="mb-3">
-            <label asp-for="fechaInicio_contrato" class="form-label">Fecha de Inicio:</label>
-            <input type="date" asp-for="fechaInicio_contrato" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")">
-            <span asp-validation-for="fechaInicio_contrato" class="text-danger"></span>
+    <div class="card shadow-lg rounded-4 border-0 p-4 mx-auto" style="max-width: 600px;">
+        <div class="text-center mb-4">
+            <i class="bi bi-file-earmark-plus display-3 text-purple"></i>
+            <h3 class="fw-bold text-purple mt-2">Alta de Contratos</h3>
+            <p class="text-muted">Complete los datos para registrar un nuevo contrato</p>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="fechaFin_contrato" class="form-label">Fecha de Fin:</label>
-            <input type="date" asp-for="fechaFin_contrato" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")">
-            <span asp-validation-for="fechaFin_contrato" class="text-danger"></span>
-        </div>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger small"></div>
 
-        <div class="mb-3">
-            <label asp-for="monto_contrato" class="form-label">Monto:</label>
-            <input type="text" asp-for="monto_contrato" class="form-control">
-            <span asp-validation-for="monto_contrato" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="idInquilino" class="form-label">Inquilino:</label>
-            <select asp-for="idInquilino" class="form-control">
-                <option value="">Seleccione un inquilino</option>
-                @foreach (var p in ViewBag.inquilinos)
-                {
-                    if (p != null)
-                    {
-                        <option value="@p.id_inquilino">@p.nombre_inquilino</option>
-                    }
-                }
-            </select>
-            <span asp-validation-for="idInquilino" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="idInmueble" class="form-label">Inmueble:</label>
-            <select asp-for="idInmueble" class="form-control">
-                <option value="">Seleccione el inmueble</option>
-                @foreach (var t in ViewBag.inmuebles)
-                {
-                    <option value="@t.id_inmueble">@t.direccion_inmueble</option>
-                }
-            </select>
-            <span asp-validation-for="idInmueble" class="text-danger"></span>
-        </div>
-
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger">
-                <strong>Se encontraron errores:</strong>
-                <ul>
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <li>@error.ErrorMessage</li>
-                    }
-                </ul>
+            <div class="mb-3">
+                <label asp-for="fechaInicio_contrato" class="form-label fw-semibold text-purple">Fecha de Inicio:</label>
+                <input type="date" asp-for="fechaInicio_contrato" class="form-control rounded-3 shadow-sm" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                <span asp-validation-for="fechaInicio_contrato" class="text-danger small"></span>
             </div>
-        }
 
+            <div class="mb-3">
+                <label asp-for="fechaFin_contrato" class="form-label fw-semibold text-purple">Fecha de Fin:</label>
+                <input type="date" asp-for="fechaFin_contrato" class="form-control rounded-3 shadow-sm" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                <span asp-validation-for="fechaFin_contrato" class="text-danger small"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
-    </form>
+            <div class="mb-3">
+                <label asp-for="monto_contrato" class="form-label fw-semibold text-purple">Monto:</label>
+                <input type="text" asp-for="monto_contrato" class="form-control rounded-3 shadow-sm">
+                <span asp-validation-for="monto_contrato" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="idInquilino" class="form-label fw-semibold text-purple">Inquilino:</label>
+                <select asp-for="idInquilino" class="form-select rounded-3 shadow-sm">
+                    <option value="">Seleccione un inquilino</option>
+                    @foreach (var p in ViewBag.inquilinos)
+                    {
+                        if (p != null)
+                        {
+                            <option value="@p.id_inquilino">@p.nombre_inquilino @p.apellido_inquilino</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="idInquilino" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="idInmueble" class="form-label fw-semibold text-purple">Inmueble:</label>
+                <select asp-for="idInmueble" class="form-select rounded-3 shadow-sm">
+                    <option value="">Seleccione el inmueble</option>
+                    @foreach (var t in ViewBag.inmuebles)
+                    {
+                        <option value="@t.id_inmueble">@t.direccion_inmueble</option>
+                    }
+                </select>
+                <span asp-validation-for="idInmueble" class="text-danger small"></span>
+            </div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger mt-3 small">
+                    <strong>Se encontraron errores:</strong>
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-save"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

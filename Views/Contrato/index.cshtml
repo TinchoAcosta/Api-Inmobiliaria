@@ -5,17 +5,22 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4 text-purple fw-bold">@ViewData["Title"]</h2>
-    <div>
-        <a  asp-action="ContratosAnulados" class="btn btn-secondary mb-3">
-            Ver Contratos Anulados
-        </a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-purple">@ViewData["Title"]</h2>
+        <div class="d-flex gap-2">
+            <a asp-action="ContratosAnulados" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                <i class="bi bi-x-octagon me-1"></i> Contratos Anulados
+            </a>
+            <a asp-action="Create" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                <i class="bi bi-plus-circle me-1"></i> Nuevo Contrato
+            </a>
+        </div>
     </div>
+
     <div class="table-responsive">
         <table class="table table-hover table-striped align-middle shadow-sm rounded-3 bg-white">
             <thead class="bg-light-purple text-purple">
                 <tr>
-
                     <th>Fecha de inicio</th>
                     <th>Fecha de fin</th>
                     <th>Monto</th>
@@ -32,20 +37,26 @@
                         <td>@contrato.fechaFin_contrato.ToString("dd/MM/yyyy")</td>
                         <td>$@contrato.monto_contrato</td>
                         <td>@contrato.idInmueble</td>
-                        <td>@contrato.Inquilino.nombre_inquilino</td>
+                        <td>@contrato.Inquilino.nombre_inquilino @contrato.Inquilino.apellido_inquilino</td>
                         <td>
-                            <a class="btn btn-sm btn-info me-1" asp-action="Details"
-                                asp-route-id="@contrato.id_contrato">Ver</a>
-                            <a class="btn btn-sm btn-warning me-1" asp-action="Edit"
-                                asp-route-id="@contrato.id_contrato">Editar</a>
-                            <a class="btn btn-sm btn-warning me-1" asp-action="BajaContrato"
-                                asp-route-id="@contrato.id_contrato">Dar de Baja</a>
-                            @if(User.IsInRole("Administrador"))
+                            <a class="btn btn-sm btn-info me-1 rounded-3" asp-action="Details"
+                                asp-route-id="@contrato.id_contrato">
+                                <i class="bi bi-eye"></i> Ver
+                            </a>
+                            <a class="btn btn-sm btn-warning me-1 rounded-3" asp-action="Edit"
+                                asp-route-id="@contrato.id_contrato">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a class="btn btn-sm btn-danger me-1 rounded-3" asp-action="BajaContrato"
+                                asp-route-id="@contrato.id_contrato">
+                                <i class="bi bi-slash-circle"></i> Dar de Baja
+                            </a>
+                            @if (User.IsInRole("Administrador"))
                             {
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-sm btn-danger rounded-3" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal" data-id="@contrato.id_contrato"
                                     data-nombre="Contrato #@contrato.id_contrato">
-                                    Eliminar
+                                    <i class="bi bi-trash"></i> Eliminar
                                 </button>
                             }
                         </td>
@@ -55,47 +66,44 @@
         </table>
     </div>
 
-    <div class="mt-4">
-        <a class="btn btn-gradient-success fw-semibold" asp-action="Create">Agregar Nuevo Contrato</a>
-    </div>
-</div>
-
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4 shadow-sm">
-            <div class="modal-header border-0">
-                <h5 class="modal-title text-purple fw-bold" id="deleteModalLabel">Confirmar eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                ¿Seguro que deseas eliminar el contrato <strong id="contratoNombre"></strong>?
-            </div>
-            <div class="modal-footer border-0">
-                <form id="deleteForm" method="post" asp-action="DeleteConfirmed" asp-controller="Contrato">
-                    <input type="hidden" name="id" id="deleteId" />
-                    @Html.AntiForgeryToken()
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow-sm">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-purple fw-bold" id="deleteModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Seguro que deseas eliminar el contrato <strong id="contratoNombre"></strong>?
+                </div>
+                <div class="modal-footer border-0">
+                    <form id="deleteForm" method="post" asp-action="DeleteConfirmed" asp-controller="Contrato">
+                        <input type="hidden" name="id" id="deleteId" />
+                        @Html.AntiForgeryToken()
+                        <button type="button" class="btn btn-secondary rounded-3"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger rounded-3">Eliminar</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+    @section Scripts {
+        <script>
+            var deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var id = button.getAttribute('data-id');
+                var nombre = button.getAttribute('data-nombre');
+
+                var inputId = deleteModal.querySelector('#deleteId');
+                var nombreSpan = deleteModal.querySelector('#contratoNombre');
+                inputId.value = id;
+                nombreSpan.textContent = nombre;
+                var form = deleteModal.querySelector('#deleteForm');
+                form.action = '/Contrato/DeleteConfirmed';
+            });
+        </script>
+    }
 </div>
-
-@section Scripts {
-    <script>
-        var deleteModal = document.getElementById('deleteModal');
-        deleteModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var id = button.getAttribute('data-id');
-            var nombre = button.getAttribute('data-nombre');
-
-            var inputId = deleteModal.querySelector('#deleteId');
-            var nombreSpan = deleteModal.querySelector('#contratoNombre');
-            inputId.value = id;
-            nombreSpan.textContent = nombre;
-            var form = deleteModal.querySelector('#deleteForm');
-            form.action = '/Contrato/DeleteConfirmed';
-        });
-    </script>
-}

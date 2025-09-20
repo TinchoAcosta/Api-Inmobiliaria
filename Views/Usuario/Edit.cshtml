@@ -1,82 +1,92 @@
-@* 
-deberia editar admin hacia los empleados
-editar del empleado a si mismo pero no a otros empleados
- *@
- @model inmobiliaria.Models.Usuario
+@model inmobiliaria.Models.Usuario
 
 @{
-    ViewData["Title"] = "Registrar un Usuario Nuevo";
+    ViewData["Title"] = "Modificar Usuario";
 }
+
 <div class="container mt-5">
-    <h2 class="mb-4">Modificación de Usuarios</h2>
-    <form asp-action="Edit" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="id_usuario" />
-    <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="mb-3">
-            <label asp-for="nombre_usuario" class=" form-label">Nombre:</label>
-            <input asp-for="nombre_usuario" class="form-control" />
-            <span asp-validation-for="nombre_usuario" class="text-danger"></span>
+    <div class="card shadow-lg rounded-4 border-0 p-4 mx-auto" style="max-width: 600px;">
+        <div class="text-center mb-4">
+            <i class="bi bi-person-fill display-3 text-purple"></i>
+            <h3 class="fw-bold text-purple mt-2">Modificación de Usuario</h3>
+            <p class="text-muted">Actualice la información del usuario</p>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="apellido_usuario" class="form-label">Apellido:</label>
-            <input asp-for="apellido_usuario" class="form-control" />
-            <span asp-validation-for="apellido_usuario" class="text-danger"></span>
-        </div>
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="id_usuario" />
+            <div asp-validation-summary="All" class="text-danger"></div>
 
-        <div class="mb-3">
-            <label asp-for="email_usuario" class="form-label">Email:</label>
-            <input asp-for="email_usuario" type="email" class="form-control" />
-            <span asp-validation-for="email_usuario" class="text-danger"></span>
-            <span ></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="nombre_usuario" class="form-label fw-semibold text-purple">Nombre:</label>
+                <input asp-for="nombre_usuario" class="form-control rounded-3 shadow-sm" />
+                <span asp-validation-for="nombre_usuario" class="text-danger small"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="password_usuario" class="form-label">Contraseña:</label>
-            <input asp-for="password_usuario" class="form-control" type="password" />
-            <span asp-validation-for="password_usuario" class="text-danger"></span>
-        </div>
-@*         
-    TODO : Agregar campo para confirmar contraseña
-<div class="mb-3">
-            <label asp-for="password_usuario" class="form-label">Monto</label>
-            <input asp-for="password_usuario" class="form-control" type="password" />
-            <span asp-validation-for="password_usuario" class="text-danger"></span>
-        </div> *@
+            <div class="mb-3">
+                <label asp-for="apellido_usuario" class="form-label fw-semibold text-purple">Apellido:</label>
+                <input asp-for="apellido_usuario" class="form-control rounded-3 shadow-sm" />
+                <span asp-validation-for="apellido_usuario" class="text-danger small"></span>
+            </div>
 
-        @if (User.IsInRole("Administrador")){
-        <div class="mb-3">
-            <select asp-for="rol_usuario" class="form-control">
-                <option value="">Seleccione un rol</option>
-                <option value="Administrador">Administrador</option>
-                <option value="Empleado">Empleado</option>
-            </select>
-        </div>
-        }
-        <div class="mb-3">
-            <label asp-for="avatar_form" class="form-label">Avatar:</label>
-            <input type="file" asp-for="avatar_form" class="form-control" accept="image/*" id="avatarInput"/>
-            <span asp-validation-for="avatar_form" class="text-danger"></span>
-        </div>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="eliminarAvatar" name="EliminarAvatar" value="true" />
-            <label class="form-check-label" for="eliminarAvatar">Eliminar avatar</label>
-        </div>
+            <div class="mb-3">
+                <label asp-for="email_usuario" class="form-label fw-semibold text-purple">Email:</label>
+                <input asp-for="email_usuario" type="email" class="form-control rounded-3 shadow-sm" />
+                <span asp-validation-for="email_usuario" class="text-danger small"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Modificar</button>
-        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
-    </form>
+            <div class="mb-3">
+                <label asp-for="password_usuario" class="form-label fw-semibold text-purple">Contraseña:</label>
+                <input asp-for="password_usuario" class="form-control rounded-3 shadow-sm" type="password" />
+                <span asp-validation-for="password_usuario" class="text-danger small"></span>
+            </div>
+
+            @if (User.IsInRole("Administrador"))
+            {
+                <div class="mb-3">
+                    <label asp-for="rol_usuario" class="form-label fw-semibold text-purple">Rol:</label>
+                    <select asp-for="rol_usuario" class="form-select rounded-3 shadow-sm">
+                        <option value="">Seleccione un rol</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Empleado">Empleado</option>
+                    </select>
+                    <span asp-validation-for="rol_usuario" class="text-danger small"></span>
+                </div>
+            }
+
+            <div class="mb-3">
+                <label asp-for="avatar_form" class="form-label fw-semibold text-purple">Avatar:</label>
+                <input type="file" asp-for="avatar_form" class="form-control rounded-3 shadow-sm" accept="image/*"
+                    id="avatarInput" />
+                <span asp-validation-for="avatar_form" class="text-danger small"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="eliminarAvatar" name="EliminarAvatar"
+                    value="true" />
+                <label class="form-check-label fw-semibold text-purple" for="eliminarAvatar">Eliminar avatar</label>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-save"></i> Modificar
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
     const avatarInput = document.getElementById("avatarInput");
-    const checkbox = document.getElementById("eliminarAvatar"); 
+    const checkbox = document.getElementById("eliminarAvatar");
     checkbox.addEventListener("change", function () {
-        if(checkbox.checked){
-            avatarInput.disabled=true;
-            avatarInput.value="";
-        }else{
-            avatarInput.disabled=false;
+        if (checkbox.checked) {
+            avatarInput.disabled = true;
+            avatarInput.value = "";
+        } else {
+            avatarInput.disabled = false;
         }
     });
 </script>

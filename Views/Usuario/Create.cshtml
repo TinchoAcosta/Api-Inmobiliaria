@@ -5,58 +5,68 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Alta de Usuarios</h2>
-
-    <form asp-action="Create" method="post" enctype="multipart/form-data">
-    
-    <div asp-validation-summary="All" class="text-danger"></div>
-
-        <div class="mb-3">
-            <label asp-for="nombre_usuario" class=" form-label">Nombre:</label>
-            <input asp-for="nombre_usuario" class="form-control" />
-            <span asp-validation-for="nombre_usuario" class="text-danger"></span>
+    <div class="card shadow-lg rounded-4 border-0 p-4 mx-auto" style="max-width: 600px;">
+        <div class="text-center mb-4">
+            <i class="bi bi-person-plus display-3 text-purple"></i>
+            <h3 class="fw-bold text-purple mt-2">Alta de Usuario</h3>
+            <p class="text-muted">Complete los datos para registrar un nuevo usuario</p>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="apellido_usuario" class="form-label">Apellido:</label>
-            <input asp-for="apellido_usuario" class="form-control" />
-            <span asp-validation-for="apellido_usuario" class="text-danger"></span>
-        </div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
 
-        <div class="mb-3">
-            <label asp-for="email_usuario" class="form-label">Email:</label>
-            <input asp-for="email_usuario" type="email" class="form-control" />
-            <span asp-validation-for="email_usuario" class="text-danger"></span>
-            <span ></span>
-        </div>
+            <div class=" mb-3">
+                <label asp-for="nombre_usuario" class="form-label fw-semibold text-purple">Nombre</label>
+                <input asp-for="nombre_usuario" class="form-control rounded-3 shadow-sm"
+                    placeholder="Ingrese el nombre" />
+                <span asp-validation-for="nombre_usuario" class="text-danger small"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="password_usuario" class="form-label">Contraseña:</label>
-            <input asp-for="password_usuario" class="form-control" type="password" />
-            <span asp-validation-for="password_usuario" class="text-danger"></span>
-        </div>
-@*         
-    TODO : Agregar campo para confirmar contraseña
-<div class="mb-3">
-            <label asp-for="password_usuario" class="form-label">Monto</label>
-            <input asp-for="password_usuario" class="form-control" type="password" />
-            <span asp-validation-for="password_usuario" class="text-danger"></span>
-        </div> *@
-        <div class="mb-3">
-            <select asp-for="rol_usuario" class="form-control">
-                <option value="">Seleccione un rol</option>
-                <option value="Administrador">Administrador</option>
-                <option value="Empleado">Empleado</option>
-            </select>
-        </div>
+            <div class="mb-3">
+                <label asp-for="apellido_usuario" class="form-label fw-semibold text-purple">Apellido</label>
+                <input asp-for="apellido_usuario" class="form-control rounded-3 shadow-sm"
+                    placeholder="Ingrese el apellido" />
+                <span asp-validation-for="apellido_usuario" class="text-danger small"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="avatar_form" class="form-label">Avatar:</label>
-            <input type="file" asp-for="avatar_form" class="form-control" accept="image/*"/>
-            <span asp-validation-for="avatar_form" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="email_usuario" class="form-label fw-semibold text-purple">Email</label>
+                <input asp-for="email_usuario" type="email" class="form-control rounded-3 shadow-sm"
+                    placeholder="ejemplo@correo.com" />
+                <span asp-validation-for="email_usuario" class="text-danger small"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
-    </form>
+            <div class="mb-3">
+                <label asp-for="password_usuario" class="form-label fw-semibold text-purple">Contraseña</label>
+                <input asp-for="password_usuario" class="form-control rounded-3 shadow-sm" type="password"
+                    placeholder="********" />
+                <span asp-validation-for="password_usuario" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="rol_usuario" class="form-label fw-semibold text-purple">Rol</label>
+                <select asp-for="rol_usuario" class="form-select rounded-3 shadow-sm">
+                    <option value="">Seleccione un rol</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Empleado">Empleado</option>
+                </select>
+                <span asp-validation-for="rol_usuario" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="avatar_form" class="form-label fw-semibold text-purple">Avatar</label>
+                <input type="file" asp-for="avatar_form" class="form-control rounded-3 shadow-sm" accept="image/*" />
+                <span asp-validation-for="avatar_form" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-purple fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-save"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

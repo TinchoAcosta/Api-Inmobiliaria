@@ -12,9 +12,6 @@
             <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
                 <h5 class="card-title text-purple fw-bold mb-3">Información General</h5>
                 <div class="mb-2">
-                    <strong>ID:</strong> @Model.id_inmueble
-                </div>
-                <div class="mb-2">
                     <strong>Dirección:</strong> @Model.direccion_inmueble
                 </div>
                 <div class="mb-2">
@@ -36,10 +33,14 @@
             <div class="card shadow-sm rounded-4 p-4 h-100 border-0">
                 <h5 class="card-title text-purple fw-bold mb-3">Detalles Adicionales</h5>
                 <div class="mb-2">
-                    <strong>Propietario ID:</strong> @Model.PropietarioId
+                    <strong>Nombre propietario</strong> @Model.propietario_inmueble.nombre_propietario
+                    @Model.propietario_inmueble.apellido_propietario
                 </div>
                 <div class="mb-2">
-                    <strong>Tipo de Inmueble:</strong> @Model.tipo_inmueble
+                    <strong>DNI Propietario:</strong> @Model.propietario_inmueble.dni_propietario
+                </div>
+                <div class="mb-2">
+                    <strong>Tipo de Inmueble:</strong> @Model.tipoInmueble.descripcion
                 </div>
                 <div class="mb-2">
                     <strong>Uso:</strong> @Model.uso_inmueble

@@ -3,24 +3,36 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Buscar Inmuebles Disponibles</h2>
-
-    <form asp-action="FiltrarInmuebles" method="post" class="row g-3 shadow-sm p-4 bg-white rounded-3">
-        <div asp-validation-summary="All" class="text-danger"></div>
-
-        <div class="col-md-6">
-            <label for="fechaInicio" class="form-label fw-semibold">Fecha de inicio</label>
-            <input type="date" name="fechaInicio" id="fechaInicio" class="form-control" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+    <div class="card shadow-lg rounded-4 border-0 p-4 mx-auto" style="max-width: 600px;">
+        <div class="text-center mb-4">
+            <i class="bi bi-search display-3 text-purple"></i>
+            <h3 class="fw-bold text-purple mt-2">Buscar Inmuebles Disponibles</h3>
+            <p class="text-muted">Seleccione un rango de fechas para ver los inmuebles disponibles</p>
         </div>
 
-        <div class=" col-md-6">
-            <label for="fechaFin" class="form-label fw-semibold">Fecha de fin</label>
-            <input type="date" name="fechaFin" id="fechaFin" class="form-control" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
-        </div>
+        <form asp-action="FiltrarInmuebles" method="post" class="row g-3">
+            <div asp-validation-summary="All" class="text-danger"></div>
 
-        <div class=" col-12 text-end">
-            <button type="submit" class="btn btn-primary px-4">Buscar</button>
-            <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
-        </div>
-    </form>
+            <div class="col-md-6">
+                <label for="fechaInicio" class="form-label fw-semibold text-purple">Fecha de inicio</label>
+                <input type="date" name="fechaInicio" id="fechaInicio" class="form-control rounded-3 shadow-sm" required
+                    min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class=" col-md-6">
+                <label for="fechaFin" class="form-label fw-semibold text-purple">Fecha de fin</label>
+                <input type="date" name="fechaFin" id="fechaFin" class="form-control rounded-3 shadow-sm" required
+                    min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class=" col-12 d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-search"></i> Buscar
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

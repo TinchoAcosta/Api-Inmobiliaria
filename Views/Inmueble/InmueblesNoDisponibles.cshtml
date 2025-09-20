@@ -5,28 +5,31 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4 text-purple fw-bold">@ViewData["Title"]</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-purple fw-bold">@ViewData["Title"]</h2>
+        <a class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm" asp-action="Index">
+            <i class="bi bi-house-check"></i> Ver Disponibles
+        </a>
+    </div>
+<div asp-validation-summary="All" class="text-danger"></div>
+    <div class="d-flex gap-2 mb-3">
+        <a class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm" asp-controller="TipoInmueble"
+            asp-action="Index">
 
-    <div class="table-responsive">
-        <div>
-            <a asp-action="Index">
-                <button class="btn btn-outline-secondary mb-3">Ver Inmuebles Disponibles</button>
-            </a>
-        </div>
-        <table class="table table-hover table-striped align-middle shadow-sm rounded-3 bg-white">
+            <i class="bi bi-tags"></i> Tipos
+        </a>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded-4">
+        <table class="table table-hover table-striped align-middle mb-0 bg-white">
             <thead class="bg-light-purple text-purple">
                 <tr>
                     <th>Dirección</th>
                     <th>Ambientes</th>
                     <th>Superficie</th>
                     <th>Dueño</th>
-                    <th>
-                        Tipo
-                        <a class="btn btn-gradient-success fw-semibold" asp-controller="TipoInmueble"
-                            asp-action="Index">Mas</a>
-                    </th>
-                    <th>Portada</th>
-                    <th>Acciones</th>
+                    <th>Tipo</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,35 +41,28 @@
                         <td>@inmueble.superficie_inmueble m²</td>
                         <td>@(inmueble.propietario_inmueble?.nombre_propietario ?? "Sin dueño")</td>
                         <td>@inmueble.tipoInmueble?.descripcion</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(inmueble.portada_inmueble))
-                            {
-                                <img src="~/images/@inmueble.portada_inmueble" alt="Portada" class="img-thumbnail"
-                                    style="width:80px;height:auto;" />
-                            }
-                            else
-                            {
-                                <span class="text-muted">Sin imagen</span>
-                            }
-                        </td>
-                        <td>
-                            <a class="btn btn-sm btn-info me-1" asp-action="Details"
-                                asp-route-id="@inmueble.id_inmueble">Ver</a>
-                            <a class="btn btn-sm btn-warning me-1" asp-action="Edit"
-                                asp-route-id="@inmueble.id_inmueble">Editar</a>
-                            <a class="btn btn-sm btn-warning me-3" asp-action="DarDeAlta"
-                                asp-route-id="@inmueble.id_inmueble">Dar de alta</a>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-info text-white shadow-sm me-1" asp-action="Details"
+                                asp-route-id="@inmueble.id_inmueble">
+                                <i class="bi bi-eye"></i> Ver
+                            </a>
+                            <a class="btn btn-sm btn-warning text-white shadow-sm me-1" asp-action="Edit"
+                                asp-route-id="@inmueble.id_inmueble">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a class="btn btn-sm btn-success text-white shadow-sm me-1" asp-action="DarDeAlta"
+                                asp-route-id="@inmueble.id_inmueble">
+                                <i class="bi bi-arrow-up-circle"></i> Alta
+                            </a>
 
                             @if (User.IsInRole("Administrador"))
                             {
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-sm btn-danger shadow-sm" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal" data-id="@inmueble.id_inmueble"
                                     data-nombre="@inmueble.direccion_inmueble">
-                                    Eliminar
+                                    <i class="bi bi-trash"></i> Eliminar
                                 </button>
                             }
-
-
                         </td>
                     </tr>
                 }

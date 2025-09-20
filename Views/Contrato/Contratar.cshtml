@@ -1,64 +1,78 @@
 @model inmobiliaria.Models.Contrato
 
 @{
-    ViewData["Title"] = "Agregar un Contrato";
+    ViewData["Title"] = "Contratar!";
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Contratar!</h2>
-
-    <form asp-action="ConfirmarContratacion" method="post">
-
-        <div class="mb-3">
-            <label class="form-label">Fecha de Inicio:</label>
-            <input type="date" class="form-control" value="@ViewBag.fechaInicio" readonly />
-            <input type="hidden" name="fechaInicio_contrato" value="@ViewBag.fechaInicio" />
+    <div class="card shadow-lg rounded-4 border-0 p-4 mx-auto" style="max-width: 600px;">
+        <div class="text-center mb-4">
+            <i class="bi bi-file-earmark-person display-3 text-purple"></i>
+            <h3 class="fw-bold text-purple mt-2">Contratar!</h3>
+            <p class="text-muted">Revise los datos para confirmar la contratación</p>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Fecha de Fin:</label>
-            <input type="date" class="form-control" value="@ViewBag.fechaFin" readonly />
-            <input type="hidden" name="fechaFin_contrato" value="@ViewBag.fechaFin" />
-        </div>
+        <form asp-action="ConfirmarContratacion" method="post">
+            <div asp-validation-summary="All" class="text-danger small"></div>
 
-        <div class="mb-3">
-            <label asp-for="monto_contrato" class="form-label">Monto:</label>
-            <input type="text" asp-for="monto_contrato" class="form-control">
-            <span asp-validation-for="monto_contrato" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="idInquilino" class="form-label">Inquilino:</label>
-            <select asp-for="idInquilino" class="form-control">
-                <option value="">Seleccione un inquilino</option>
-                @foreach (var p in ViewBag.inquilinos)
-                {
-                    <option value="@p.id_inquilino">@p.nombre_inquilino</option>
-                }
-            </select>
-            <span asp-validation-for="idInquilino" class="text-danger"></span>
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">Inmueble:</label>
-            <input type="text" class="form-control" value="@ViewBag.inmueble.direccion_inmueble" readonly />
-            <input type="hidden" name="idInmueble" value="@ViewBag.inmueble.id_inmueble" />
-        </div>
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger">
-                <strong>Se encontraron errores:</strong>
-                <ul>
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <li>@error.ErrorMessage</li>
-                    }
-                </ul>
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-purple">Fecha de Inicio:</label>
+                <input type="date" class="form-control rounded-3 shadow-sm" value="@ViewBag.fechaInicio" readonly />
+                <input type="hidden" name="fechaInicio_contrato" value="@ViewBag.fechaInicio" />
             </div>
-        }
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
-    </form>
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-purple">Fecha de Fin:</label>
+                <input type="date" class="form-control rounded-3 shadow-sm" value="@ViewBag.fechaFin" readonly />
+                <input type="hidden" name="fechaFin_contrato" value="@ViewBag.fechaFin" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="monto_contrato" class="form-label fw-semibold text-purple">Monto:</label>
+                <input type="text" asp-for="monto_contrato" class="form-control rounded-3 shadow-sm">
+                <span asp-validation-for="monto_contrato" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="idInquilino" class="form-label fw-semibold text-purple">Inquilino:</label>
+                <select asp-for="idInquilino" class="form-select rounded-3 shadow-sm">
+                    <option value="">Seleccione un inquilino</option>
+                    @foreach (var p in ViewBag.inquilinos)
+                    {
+                        <option value="@p.id_inquilino">@p.nombre_inquilino @p.apellido_inquilino</option>
+                    }
+                </select>
+                <span asp-validation-for="idInquilino" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-purple">Inmueble:</label>
+                <input type="text" class="form-control rounded-3 shadow-sm" value="@ViewBag.inmueble.direccion_inmueble"
+                    readonly />
+                <input type="hidden" name="idInmueble" value="@ViewBag.inmueble.id_inmueble" />
+            </div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger mt-3 small">
+                    <strong>Se encontraron errores:</strong>
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-save"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

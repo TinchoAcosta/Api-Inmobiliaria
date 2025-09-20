@@ -28,13 +28,20 @@ namespace inmobiliaria.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Inmueble inmueble)
         {
-            if (ModelState.IsValid)
+            try
             {
-                int res = repo.AgregarInmueble(inmueble);
-                if (res != 0)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction("Index");
+                    int res = repo.AgregarInmueble(inmueble);
+                    if (res != 0)
+                    {
+                        return RedirectToAction("Index");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al crear el inmueble: " + ex.Message);
             }
 
             var propietarios = repoPropietario.ObtenerTodos();
@@ -65,10 +72,17 @@ namespace inmobiliaria.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Inmueble inmueble)
         {
-            int res = repo.modificarInmueble(inmueble);
-            if (res != 0)
+            try
             {
-                return RedirectToAction("Index");
+                int res = repo.modificarInmueble(inmueble);
+                if (res != 0)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al modificar el inmueble: " + ex.Message);
             }
             var inm = repo.obtenerPorId(inmueble.id_inmueble);
             var propietarios = repoPropietario.ObtenerTodos();

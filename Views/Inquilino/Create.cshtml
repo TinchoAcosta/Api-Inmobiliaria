@@ -5,40 +5,54 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Alta de Inquilinos</h2>
-
-     <form asp-action="Create" method="post">
-        <div class="mb-3">
-            <label asp-for="dni_inquilino" class="form-label">DNI</label>
-            <input asp-for="dni_inquilino" class="form-control" />
-            <span asp-validation-for="dni_inquilino" class="text-danger"></span>
+    <div class="card shadow-lg rounded-4 border-0 p-4 mx-auto" style="max-width: 600px;">
+        <div class="text-center mb-4">
+            <i class="bi bi-person-plus display-3 text-purple"></i>
+            <h3 class="fw-bold text-purple mt-2">Alta de Inquilinos</h3>
+            <p class="text-muted">Complete los datos para registrar un nuevo inquilino</p>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="nombre_inquilino" class="form-label">Nombre</label>
-            <input asp-for="nombre_inquilino" class="form-control" />
-            <span asp-validation-for="nombre_inquilino" class="text-danger"></span>
-        </div>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger small"></div>
 
-        <div class="mb-3">
-            <label asp-for="apellido_inquilino" class="form-label">Apellido</label>
-            <input asp-for="apellido_inquilino" class="form-control" />
-            <span asp-validation-for="apellido_inquilino" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="dni_inquilino" class="form-label fw-semibold text-purple">DNI</label>
+                <input asp-for="dni_inquilino" class="form-control rounded-3 shadow-sm" />
+                <span asp-validation-for="dni_inquilino" class="text-danger small"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="email_inquilino" class="form-label">Email</label>
-            <input asp-for="email_inquilino" class="form-control" />
-            <span asp-validation-for="email_inquilino" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="nombre_inquilino" class="form-label fw-semibold text-purple">Nombre</label>
+                <input asp-for="nombre_inquilino" class="form-control rounded-3 shadow-sm" />
+                <span asp-validation-for="nombre_inquilino" class="text-danger small"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="telefono_inquilino" class="form-label">Teléfono</label>
-            <input asp-for="telefono_inquilino" class="form-control" />
-            <span asp-validation-for="telefono_inquilino" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="apellido_inquilino" class="form-label fw-semibold text-purple">Apellido</label>
+                <input asp-for="apellido_inquilino" class="form-control rounded-3 shadow-sm" />
+                <span asp-validation-for="apellido_inquilino" class="text-danger small"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
-    </form>
+            <div class="mb-3">
+                <label asp-for="email_inquilino" class="form-label fw-semibold text-purple">Email</label>
+                <input asp-for="email_inquilino" class="form-control rounded-3 shadow-sm" />
+                <span asp-validation-for="email_inquilino" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="telefono_inquilino" class="form-label fw-semibold text-purple">Teléfono</label>
+                <input asp-for="telefono_inquilino" class="form-control rounded-3 shadow-sm" />
+                <span asp-validation-for="telefono_inquilino" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-save"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

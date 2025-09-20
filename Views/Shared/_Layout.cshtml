@@ -26,9 +26,6 @@
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <div class="d-flex gap-3">
-                        <a class="nav-link text-purple fw-semibold" asp-controller="Home" asp-action="Index">
-                            Inicio
-                        </a>
                         <a class="btn btn-gradient-success fw-semibold px-3" asp-controller="Usuario" asp-action="Login">
                             Acceder
                         </a>

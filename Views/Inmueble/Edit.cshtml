@@ -5,65 +5,92 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Modificación de Inmuebles</h2>
+    <div class="card shadow-lg rounded-4 border-0 p-4 mx-auto" style="max-width: 600px;">
+        <div class="text-center">
+            <i class="bi bi-house-door-fill display-3 text-purple"></i>
+            <h3 class="fw-bold text-purple">Modificación de Inmuebles</h3>
+            <p class="text-muted">Actualice los datos del inmueble</p>
+        </div>
 
-    <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="id_inmueble" />
-        <div class="mb-3">
-            <label asp-for="direccion_inmueble" class="form-label">Direccion:</label>
-            <input type="text" asp-for="direccion_inmueble" class="form-control">
-            <span asp-validation-for="direccion_inmueble" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="ambientes_inmueble" class="form-label">ambientes:</label>
-            <input type="text" asp-for="ambientes_inmueble" class="form-control">
-            <span asp-validation-for="ambientes_inmueble" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="superficie_inmueble" class="form-label">superficie:</label>
-            <input type="text" asp-for="superficie_inmueble" class="form-control">
-            <span asp-validation-for="superficie_inmueble" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="lat_inmueble" class="form-label">lat:</label>
-            <input type="text" asp-for="lat_inmueble" class="form-control">
-            <span asp-validation-for="lat_inmueble" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="long_inmueble" class="form-label">long:</label>
-            <input type="text" asp-for="long_inmueble" class="form-control">
-            <span asp-validation-for="long_inmueble" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <select asp-for="PropietarioId" class="form-control">
-                <option value="">Seleccione un propietario</option>
-                @foreach (var p in ViewBag.propietarios)
-                {
-                    if (p != null)
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="id_inmueble" />
+
+            <div class="mb-3">
+                <label asp-for="direccion_inmueble" class="form-label fw-semibold text-purple">Dirección</label>
+                <input type="text" asp-for="direccion_inmueble" class="form-control rounded-3 shadow-sm">
+                <span asp-validation-for="direccion_inmueble" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ambientes_inmueble" class="form-label fw-semibold text-purple">Ambientes</label>
+                <input type="text" asp-for="ambientes_inmueble" class="form-control rounded-3 shadow-sm">
+                <span asp-validation-for="ambientes_inmueble" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="superficie_inmueble" class="form-label fw-semibold text-purple">Superficie</label>
+                <input type="text" asp-for="superficie_inmueble" class="form-control rounded-3 shadow-sm">
+                <span asp-validation-for="superficie_inmueble" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="lat_inmueble" class="form-label fw-semibold text-purple">Latitud</label>
+                <input type="text" asp-for="lat_inmueble" class="form-control rounded-3 shadow-sm">
+                <span asp-validation-for="lat_inmueble" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="long_inmueble" class="form-label fw-semibold text-purple">Longitud</label>
+                <input type="text" asp-for="long_inmueble" class="form-control rounded-3 shadow-sm">
+                <span asp-validation-for="long_inmueble" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PropietarioId" class="form-label fw-semibold text-purple">Propietario</label>
+                <select asp-for="PropietarioId" class="form-select rounded-3 shadow-sm">
+                    <option value="">Seleccione un propietario</option>
+                    @foreach (var p in ViewBag.propietarios)
                     {
-                        <option value="@p.id_propietario">@p.nombre_propietario</option>
+                        if (p != null)
+                        {
+                            <option value="@p.id_propietario">@p.nombre_propietario</option>
+                        }
                     }
-                }
-            </select>
+                </select>
+                <span asp-validation-for="PropietarioId" class="text-danger small"></span>
+            </div>
 
-        </div>
-        <div class="mb-3">
-            <select asp-for="tipo_inmueble" class="form-control">
-                <option value="">Seleccione un tipo de inmueble</option>
-                @foreach (var t in ViewBag.tiposInmueble)
-                {
-                    <option value="@t.id">@t.descripcion</option>
-                }
-            </select>
-        </div>
-        <div class="mb-3">
-            <select asp-for="uso_inmueble" class="form-control">
-                <option value="">Seleccione un Uso</option>
-                <option value="comercial">Comercial</option>
-                <option value="residencial">Residencial</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
-    </form>
+            <div class="mb-3">
+                <label asp-for="tipo_inmueble" class="form-label fw-semibold text-purple">Tipo de Inmueble</label>
+                <select asp-for="tipo_inmueble" class="form-select rounded-3 shadow-sm">
+                    <option value="">Seleccione un tipo de inmueble</option>
+                    @foreach (var t in ViewBag.tiposInmueble)
+                    {
+                        <option value="@t.id">@t.descripcion</option>
+                    }
+                </select>
+                <span asp-validation-for="tipo_inmueble" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="uso_inmueble" class="form-label fw-semibold text-purple">Uso</label>
+                <select asp-for="uso_inmueble" class="form-select rounded-3 shadow-sm">
+                    <option value="">Seleccione un Uso</option>
+                    <option value="comercial">Comercial</option>
+                    <option value="residencial">Residencial</option>
+                </select>
+                <span asp-validation-for="uso_inmueble" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-gradient-success fw-semibold rounded-3 shadow-sm px-4">
+                    <i class="bi bi-save"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
