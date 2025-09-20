@@ -10,18 +10,18 @@
 - **Control de Pagos**: Registra y sigue los pagos.
 - **Auditoría**: Lleva una auditoria de todas las acciones para seguir un registro de cada usuario.
 
-## Usuarios
+# Usuarios 🧑‍💻
 
-# Administrador
+## Administrador
 
-**Email:**
-admin@inmobiliaria.com
-**Contraseña**
-Admin123
+- **Email:**
+  admin@inmobiliaria.com
+- **Contraseña**
+  Admin123
 
-# Empleado
+## Empleado
 
-**Email:**
-user@empleado.com
-**Contraseña**
-123456
+- **Email:**
+  user@empleado.com
+- **Contraseña**
+  123456
