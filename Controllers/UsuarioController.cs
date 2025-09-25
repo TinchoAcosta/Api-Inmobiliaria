@@ -266,7 +266,6 @@ namespace inmobiliaria.Controllers
                 int res = repo.modificarUsuario(u);
                 if (res != 0)
                 {
-
                     return RedirectToAction("Index");
                 }
 
