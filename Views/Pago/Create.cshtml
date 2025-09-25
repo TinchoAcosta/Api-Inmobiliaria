@@ -13,17 +13,16 @@
         </div>
 
         <form asp-action="Create" method="post">
-            <div asp-validation-summary="All" class="text-danger small"></div>
 
             <div class="mb-3">
                 <label asp-for="numero_pago" class="form-label fw-semibold text-purple">Número del pago</label>
-                <input asp-for="numero_pago" class="form-control rounded-3 shadow-sm" />
+                <input asp-for="numero_pago" class="form-control rounded-3 shadow-sm" type="number" />
                 <span asp-validation-for="numero_pago" class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="detalle_pago" class="form-label fw-semibold text-purple">Detalle</label>
-                <input asp-for="detalle_pago" class="form-control rounded-3 shadow-sm" />
+                <input asp-for="detalle_pago" class="form-control rounded-3 shadow-sm" type="text" />
                 <span asp-validation-for="detalle_pago" class="text-danger small"></span>
             </div>
 
@@ -65,5 +64,17 @@
                 </button>
             </div>
         </form>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger mt-3 small">
+                <strong>Se encontraron errores:</strong>
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
 </div>

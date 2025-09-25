@@ -14,7 +14,6 @@
 
         <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="id_propietario" />
-            <div asp-validation-summary="All" class="text-danger small"></div>
 
             <div class="mb-3">
                 <label asp-for="dni_propietario" class="form-label fw-semibold text-purple">DNI</label>
@@ -55,5 +54,17 @@
                 </button>
             </div>
         </form>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger mt-3 small">
+                <strong>Se encontraron errores:</strong>
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
 </div>

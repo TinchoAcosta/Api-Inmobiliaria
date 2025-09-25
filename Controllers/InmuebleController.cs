@@ -39,9 +39,9 @@ namespace inmobiliaria.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al crear el inmueble: " + ex.Message);
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al crear el inmueble ");
             }
 
             var propietarios = repoPropietario.ObtenerTodos();
@@ -80,9 +80,9 @@ namespace inmobiliaria.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al modificar el inmueble: " + ex.Message);
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al modificar el inmueble ");
             }
             var inm = repo.obtenerPorId(inmueble.id_inmueble);
             var propietarios = repoPropietario.ObtenerTodos();

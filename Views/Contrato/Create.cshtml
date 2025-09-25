@@ -13,23 +13,26 @@
         </div>
 
         <form asp-action="Create" method="post">
-            <div asp-validation-summary="All" class="text-danger small"></div>
+
 
             <div class="mb-3">
-                <label asp-for="fechaInicio_contrato" class="form-label fw-semibold text-purple">Fecha de Inicio:</label>
-                <input type="date" asp-for="fechaInicio_contrato" class="form-control rounded-3 shadow-sm" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                <label asp-for="fechaInicio_contrato" class="form-label fw-semibold text-purple">Fecha de
+                    Inicio:</label>
+                <input type="date" asp-for="fechaInicio_contrato" class="form-control rounded-3 shadow-sm"
+                    min="@DateTime.Now.ToString("yyyy-MM-dd")">
                 <span asp-validation-for="fechaInicio_contrato" class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="fechaFin_contrato" class="form-label fw-semibold text-purple">Fecha de Fin:</label>
-                <input type="date" asp-for="fechaFin_contrato" class="form-control rounded-3 shadow-sm" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                <input type="date" asp-for="fechaFin_contrato" class="form-control rounded-3 shadow-sm"
+                    min="@DateTime.Now.ToString("yyyy-MM-dd")">
                 <span asp-validation-for="fechaFin_contrato" class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="monto_contrato" class="form-label fw-semibold text-purple">Monto:</label>
-                <input type="text" asp-for="monto_contrato" class="form-control rounded-3 shadow-sm">
+                <input type="number" asp-for="monto_contrato" class="form-control rounded-3 shadow-sm">
                 <span asp-validation-for="monto_contrato" class="text-danger small"></span>
             </div>
 

@@ -14,7 +14,6 @@
 
         <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="id_usuario" />
-            <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="mb-3">
                 <label asp-for="nombre_usuario" class="form-label fw-semibold text-purple">Nombre:</label>
@@ -75,6 +74,18 @@
                 </button>
             </div>
         </form>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger mt-3 small">
+                <strong>Se encontraron errores:</strong>
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
 </div>
 

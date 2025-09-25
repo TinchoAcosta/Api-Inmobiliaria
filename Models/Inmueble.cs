@@ -10,14 +10,32 @@ namespace inmobiliaria.Models
     public class Inmueble
     {
         public int id_inmueble { get; set; }
+
+        [Required(ErrorMessage = "La dirección es requerida")]
+        [StringLength(100, ErrorMessage = "La dirección no puede superar los 100 caracteres")]
         public string? direccion_inmueble { get; set; }
+
+        [Required(ErrorMessage = "Los ambientes son requeridos")]
+        [Range(1, 50, ErrorMessage = "Debe ingresar entre 1 y 50 ambientes")]
         public int ambientes_inmueble { get; set; }
+
+
+        [Required(ErrorMessage = "La superficie es requerida")]
+        [Range(1, 10000, ErrorMessage = "Debe ingresar una superficie válida")]
         public int superficie_inmueble { get; set; }
+        [Required(ErrorMessage = "La latitud es requerida")]
+        [Range(typeof(decimal), "-90", "90", ErrorMessage = "La latitud debe estar entre -90 y 90")]
+        [Column(TypeName = "decimal(9,6)")]
         public decimal lat_inmueble { get; set; }
+        [Required(ErrorMessage = "La longitud es requerida")]
+        [Range(typeof(decimal), "-180", "180", ErrorMessage = "La longitud debe estar entre -180 y 180")]
+        [Column(TypeName = "decimal(9,6)")]
         public decimal long_inmueble { get; set; }
         public int PropietarioId { get; set; }
 
+        [Required(ErrorMessage = "El uso del inmueble es requerido")]
         public String uso_inmueble { get; set; }
+        [Required(ErrorMessage = "El tipo de inmueble es requerido")]
         public int tipo_inmueble { get; set; }
         public TipoInmueble? tipoInmueble { get; set; }
         public Propietario? propietario_inmueble { get; set; }
@@ -79,9 +97,4 @@ namespace inmobiliaria.Models
         }
 
     };
-
-
-
-
-
 }

@@ -22,9 +22,6 @@ namespace inmobiliaria.Models
         public Inmueble? Inmueble { get; set; }
         public Inquilino? Inquilino { get; set; }
 
-        //preguntar al profe
-        //public List<Pago> pagos_contrato { get; set; }
-
         public bool anulado_contrato { get; set; } = false;
         public Contrato() { }
 

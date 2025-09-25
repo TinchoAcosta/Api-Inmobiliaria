@@ -15,19 +15,19 @@ namespace inmobiliaria.Models
 
         public int id_usuario { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El nombre es requerido")]
         public string nombre_usuario { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "El apellido es requerido")]
         public string apellido_usuario { get; set; } = string.Empty;
 
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "El email es requerido"), EmailAddress(ErrorMessage = "El formato del email no es válido")]
         public string email_usuario { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "La contraseña es requerida")]
         public string password_usuario { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "El rol es requerido")]
         public string rol_usuario { get; set; } = Roles.Empleado.ToString();
 
         // Esta es la URL del avatar del usuario
