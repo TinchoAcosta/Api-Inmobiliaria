@@ -1,7 +1,15 @@
 using inmobiliaria.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+var connectionString = builder.Configuration.GetConnectionString("MySql");
+builder.Services.AddDbContext<inmobiliaria.Models.DataContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Aca se agregan todoso los controladores y vistas
 builder.Services.AddControllersWithViews();
@@ -13,6 +21,22 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LogoutPath = "/Usuario/Logout";
         options.AccessDeniedPath = "/Home";
         //options.ExpireTimeSpan = TimeSpan.FromMinutes(5);//Tiempo de expiración
+    })
+    .AddJwtBearer(options =>
+    {
+        var secreto = configuration["TokenAuthentication:SecretKey"];
+		if (string.IsNullOrEmpty(secreto))
+			throw new Exception("Falta configurar TokenAuthentication:Secret");
+		options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidateAudience = true,
+			ValidateLifetime = true,
+			ValidateIssuerSigningKey = true,
+			ValidIssuer = configuration["TokenAuthentication:Issuer"],
+			ValidAudience = configuration["TokenAuthentication:Audience"],
+			IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(secreto)),
+		};
     });
 builder.Services.AddAuthorization(options =>
 {
