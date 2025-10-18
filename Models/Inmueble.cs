@@ -14,30 +14,30 @@ namespace inmobiliaria.Models
         [JsonPropertyName("idInmueble")]
         public int id_inmueble { get; set; }
 
-        [Required(ErrorMessage = "La dirección es requerida")]
+        //[Required(ErrorMessage = "La dirección es requerida")]
         [StringLength(100, ErrorMessage = "La dirección no puede superar los 100 caracteres")]
         [JsonPropertyName("direccion")]
         public string? direccion_inmueble { get; set; }
 
         [Required(ErrorMessage = "Los ambientes son requeridos")]
-        [Range(1, 50, ErrorMessage = "Debe ingresar entre 1 y 50 ambientes")]
+        //[Range(1, 50, ErrorMessage = "Debe ingresar entre 1 y 50 ambientes")]
         [JsonPropertyName("ambientes")]
         public int ambientes_inmueble { get; set; }
 
 
-        [Required(ErrorMessage = "La superficie es requerida")]
-        [Range(1, 10000, ErrorMessage = "Debe ingresar una superficie válida")]
+        //[Required(ErrorMessage = "La superficie es requerida")]
+        //[Range(1, 10000, ErrorMessage = "Debe ingresar una superficie válida")]
         [Column("superficie")]
         [JsonPropertyName("superficie")]
         public int superficie_inmueble { get; set; }
-        [Required(ErrorMessage = "La latitud es requerida")]
+        //[Required(ErrorMessage = "La latitud es requerida")]
         [Range(typeof(decimal), "-90", "90", ErrorMessage = "La latitud debe estar entre -90 y 90")]
         //[Column(TypeName = "decimal(9,6)")]
         [Column("latitud")]
         [JsonPropertyName("latitud")]
         public decimal lat_inmueble { get; set; }
-        [Required(ErrorMessage = "La longitud es requerida")]
-        [Range(typeof(decimal), "-180", "180", ErrorMessage = "La longitud debe estar entre -180 y 180")]
+       // [Required(ErrorMessage = "La longitud es requerida")]
+        //[Range(typeof(decimal), "-180", "180", ErrorMessage = "La longitud debe estar entre -180 y 180")]
         //[Column(TypeName = "decimal(9,6)")]
         [Column("longitud")]
         [JsonPropertyName("longitud")]
@@ -46,10 +46,10 @@ namespace inmobiliaria.Models
         [JsonPropertyName("idPropietario")]
         public int PropietarioId { get; set; }
 
-        [Required(ErrorMessage = "El uso del inmueble es requerido")]
+        //[Required(ErrorMessage = "El uso del inmueble es requerido")]
         [JsonPropertyName("uso")]
-        public String uso_inmueble { get; set; }
-        [Required(ErrorMessage = "El tipo de inmueble es requerido")]
+        public String? uso_inmueble { get; set; }
+        //[Required(ErrorMessage = "El tipo de inmueble es requerido")]
         [NotMapped]
         [JsonIgnore]
         public int tipo_inmueble { get; set; }
