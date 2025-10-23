@@ -8,20 +8,37 @@ namespace inmobiliaria.Models
 {
     public class Contrato
     {
+        [Key]
+        [Column("idContrato")]
         public int id_contrato { get; set; }
+
+        [Column("fechaInicio")]
         public DateTime fechaInicio_contrato { get; set; }
+
+        [Column("fechaFinalizacion")]
         public DateTime fechaFin_contrato { get; set; }
 
         [Required(ErrorMessage = "El monto del contrato es obligatorio.")]
+        [Column("montoAlquiler")]
         public int monto_contrato { get; set; }
+
+        [ForeignKey("Inmueble")]
+        [Column("idInmueble")]
         public int idInmueble { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar un inquilino.")]
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione un inquilino válido.")]
+        [ForeignKey("Inquilino")]
+        [Column("idInquilino")]
         public int idInquilino { get; set; }
+
         public Inmueble? Inmueble { get; set; }
         public Inquilino? Inquilino { get; set; }
 
+        [Column("estado")]
+        public int estado { get; set; }
+
+        [NotMapped]
         public bool anulado_contrato { get; set; } = false;
         public Contrato() { }
 

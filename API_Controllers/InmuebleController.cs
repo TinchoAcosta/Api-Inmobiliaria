@@ -82,5 +82,26 @@ namespace inmobiliaria.API_Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+
+        [HttpGet("GetContratoVigente")]
+        public async Task<ActionResult<List<Inmueble>>> obtenerInmueblesConContrato()
+        {
+            var idClaim = User.FindFirst("Id")?.Value;
+            if (string.IsNullOrEmpty(idClaim))
+                return Unauthorized("Token inválido");
+
+            int idPropietario = int.Parse(idClaim);
+
+            var inmuebles = await contexto.Inmueble
+                .Where(i => i.PropietarioId == idPropietario && i.tieneContratoVigente)
+                .Where(i => contexto.Contrato.Any(c =>
+                    c.idInmueble == i.id_inmueble &&
+                    c.estado==1 &&
+                    c.fechaInicio_contrato <= DateTime.Now &&
+                    c.fechaFin_contrato >= DateTime.Now))
+                .ToListAsync();
+
+            return inmuebles;
+        }
     }
 }

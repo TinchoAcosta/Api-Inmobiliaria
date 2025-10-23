@@ -1,26 +1,34 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace inmobiliaria.Models
 {
     public class Inquilino
     {
-        public int id_inquilino { get; set; }
+        [Key]
+    [Column("id_inquilino")]
+    public int id_inquilino { get; set; }
 
-        [Required(ErrorMessage = "El DNI es requerido")]
-        public int dni_inquilino { get; set; }
+    [Required(ErrorMessage = "El DNI es requerido")]
+    [Column("dni_inquilino")]
+    public int dni_inquilino { get; set; }
 
-        [Required(ErrorMessage = "El nombre es requerido")]
-        public string nombre_inquilino { get; set; }
+    [Required(ErrorMessage = "El nombre es requerido")]
+    [Column("nombre_inquilino")]
+    public string nombre_inquilino { get; set; }
 
-        [Required(ErrorMessage = "El apellido es requerido")]
-        public string apellido_inquilino { get; set; }
+    [Required(ErrorMessage = "El apellido es requerido")]
+    [Column("apellido_inquilino")]
+    public string apellido_inquilino { get; set; }
 
-        [Required(ErrorMessage = "El email es requerido")]
-        [EmailAddress(ErrorMessage = "El formato del email no es válido")]
-        public string email_inquilino { get; set; }
+    [Required(ErrorMessage = "El email es requerido")]
+    [EmailAddress(ErrorMessage = "El formato del email no es válido")]
+    [Column("email")]
+    public string email_inquilino { get; set; }
 
-        [Required(ErrorMessage = "El teléfono es requerido")]
-        public string telefono_inquilino { get; set; }
+    [Required(ErrorMessage = "El teléfono es requerido")]
+    [Column("telefono_inquilino")]
+    public string telefono_inquilino { get; set; }
 
         public Inquilino()
         {
