@@ -96,7 +96,7 @@ namespace inmobiliaria.API_Controllers
                 .Where(i => i.PropietarioId == idPropietario && i.tieneContratoVigente)
                 .Where(i => contexto.Contrato.Any(c =>
                     c.idInmueble == i.id_inmueble &&
-                    c.estado==1 &&
+                    c.estado &&
                     c.fechaInicio_contrato <= DateTime.Now &&
                     c.fechaFin_contrato >= DateTime.Now))
                 .ToListAsync();

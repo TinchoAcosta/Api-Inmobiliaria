@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Text.Json.Serialization;
 
 namespace inmobiliaria.Models
 {
@@ -10,17 +10,27 @@ namespace inmobiliaria.Models
     {
         [Key]
         [Column("idContrato")]
+        [JsonPropertyName("idContrato")]
         public int id_contrato { get; set; }
 
         [Column("fechaInicio")]
+        [JsonPropertyName("fechaInicio")]
         public DateTime fechaInicio_contrato { get; set; }
 
         [Column("fechaFinalizacion")]
+        [JsonPropertyName("fechaFinalizacion")]
         public DateTime fechaFin_contrato { get; set; }
 
         [Required(ErrorMessage = "El monto del contrato es obligatorio.")]
-        [Column("montoAlquiler")]
+        [NotMapped]
+        [JsonIgnore]
         public int monto_contrato { get; set; }
+
+        [Required(ErrorMessage = "El monto del contrato es obligatorio.")]
+        [Column("montoAlquiler")]
+        [JsonPropertyName("montoAlquiler")]
+        public double montoAlquiler_real { get; set; }
+
 
         [ForeignKey("Inmueble")]
         [Column("idInmueble")]
@@ -36,9 +46,10 @@ namespace inmobiliaria.Models
         public Inquilino? Inquilino { get; set; }
 
         [Column("estado")]
-        public int estado { get; set; }
+        public bool estado { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public bool anulado_contrato { get; set; } = false;
         public Contrato() { }
 

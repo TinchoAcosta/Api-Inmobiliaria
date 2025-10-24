@@ -1,28 +1,47 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace inmobiliaria.Models
 {
     public class Pago
     {
+        [Key]
+        [Column("idPago")]
+        [JsonPropertyName("idPago")]
         public int id_pago { get; set; }
 
         [Required(ErrorMessage = "El número de pago es obligatorio.")]
         [Range(1, int.MaxValue, ErrorMessage = "Debe ingresar un número válido.")]
+        [NotMapped]
+        [JsonIgnore]
         public int numero_pago { get; set; }
 
         [Required(ErrorMessage = "El detalle del pago es obligatorio.")]
         [StringLength(200, ErrorMessage = "El detalle no puede superar los 200 caracteres.")]
-        public String detalle_pago { get; set; }
+        [Column("detalle")]
+        [JsonPropertyName("detalle")]
+        public string detalle_pago { get; set; }
 
         [Required(ErrorMessage = "La fecha de pago es obligatoria.")]
+        [Column("fechaPago", TypeName = "date")]
+        [JsonPropertyName("fechaPago")]
         public DateTime fecha_de_pago { get; set; }
 
         [Required(ErrorMessage = "El monto del pago es obligatorio.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Ingrese un monto válido.")]
-        public Double monto_pago { get; set; }
+        [Column("monto", TypeName = "double")]
+        [JsonPropertyName("monto")]
+        public double monto_pago { get; set; }
 
-        public Boolean esta_anulado { get; set; }
+        [Column("estado")]
+        [JsonPropertyName("estado")]
+        public bool esta_anulado { get; set; }
+
+        [ForeignKey("Contrato")]
+        [Column("idContrato")]
+        [JsonPropertyName("idContrato")]
         public int contratoId { get; set; }
         public Contrato? Contrato { get; set; }
 
