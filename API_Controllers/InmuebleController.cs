@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 
 namespace inmobiliaria.API_Controllers
@@ -102,6 +103,66 @@ namespace inmobiliaria.API_Controllers
                 .ToListAsync();
 
             return inmuebles;
+        }
+
+        [HttpPost("cargar")]
+        public async Task<IActionResult> cargarInmueble([FromForm] IFormFile imagen, [FromForm] string inmueble)
+        {
+            if (imagen == null || imagen.Length == 0)
+                return BadRequest("No se ha seleccionado ninguna imagen.");
+
+            if (string.IsNullOrWhiteSpace(inmueble))
+                return BadRequest("El JSON del inmueble es requerido.");
+
+            var idClaim = User.FindFirst("Id")?.Value;
+            if (string.IsNullOrEmpty(idClaim))
+                return Unauthorized("Token inválido");
+
+            if (!int.TryParse(idClaim, out int idPropietario))
+                return Unauthorized("Id de propietario inválido");
+
+            // Deserializar el JSON
+            Inmueble nuevoInmueble;
+            try
+            {
+                nuevoInmueble = JsonSerializer.Deserialize<Inmueble>(inmueble);
+            }
+            catch (JsonException ex)
+            {
+                return BadRequest($"Error al deserializar el JSON del inmueble: {ex.Message}");
+            }
+
+            // Asignar el propietario al inmueble
+            nuevoInmueble.PropietarioId = idPropietario;
+            contexto.Inmueble.Add(nuevoInmueble);
+            await contexto.SaveChangesAsync();
+
+            //subir la imagen a mi carpeta wwwroot/uploads/inmuebles
+            var uploadsFolder = Path.Combine(environment.WebRootPath, "uploads/inmuebles");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }//poner nombre de archivo como "inmueble_foto"+id del inmueble
+            var fileName = $"inmueble_foto{nuevoInmueble.id_inmueble}.jpg";
+            var filePath = Path.Combine(uploadsFolder, fileName);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await imagen.CopyToAsync(fileStream);
+            }
+
+            // Actualizar inmueble con la ruta de imagen
+            nuevoInmueble.imagen = $"/uploads/inmuebles/{fileName}";
+            contexto.Inmueble.Update(nuevoInmueble);
+            await contexto.SaveChangesAsync();
+
+            return Ok(new
+            {
+                mensaje = "Inmueble creado correctamente",
+                id = nuevoInmueble.id_inmueble,
+                imagen = nuevoInmueble.imagen
+            });
+
+
         }
     }
 }

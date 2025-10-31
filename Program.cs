@@ -5,7 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("http://0.0.0.0:5090");
+
 var configuration = builder.Configuration;
+
 
 var connectionString = builder.Configuration.GetConnectionString("MySql");
 builder.Services.AddDbContext<inmobiliaria.Models.DataContext>(options =>
@@ -66,8 +69,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
